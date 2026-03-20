@@ -1,0 +1,20 @@
+id,building,unit_code,first_name,last_name,contact,term_lease,occupancy,capacity,room_size,unit_type,furnish,restroom,curfew,price_lease,start_lease,end_lease,status
+0,D' NorthGate,NG202,Camille,Reyes,9434567890,6,2,2,25,Studio,Semi Furnished,Shared,2:00 am,8000,5 02 2026,5 08 2026,Occupied
+1,D' NorthWay,NW102,Cassandra,Abrasia,9123456789,12,3,3,30,1-Bedroom,Fully Furnished,Private,None,15000,25 11 2025,25 11 2026,Occupied
+2,D' NorthGate,NG101,Marco,Santos,9023456789,6,2,2,25,Studio,Unfurnished,Shared,2:00 am,6000,10 12 2025,10 06 2026,Occupied
+3,NorthPoint Atrium,NP101,Esther,Flores,9623456789,12,4,4,45,2-Bedroom,Semi Furnished,Private,12:00 am,12000,18 08 2025,18 08 2026,Occupied
+4,D' NorthWay,NW201,Hannah,Aguilar,9323456789,6,3,3,30,1-Bedroom,Unfurnished,Shared,None,9000,15 12 2025,15 06 2026,Occupied
+5,D' NorthGate,NG301,,,,12,0,2,25,Studio,Fully Furnished,Private,2:00 am,10000,,,Available
+6,NorthPoint Atrium,NP201,Lance,Lacson,9823456789,12,4,4,45,2-Bedroom,Semi Furnished,Private,12:00 am,12000,1 12 2025,1 12 2026,Occupied
+7,D' NorthGate,NG203,Mohammad,Calulong,9534567890,6,2,2,25,Studio,Semi Furnished,Shared,2:00 am,8000,12 02 2026,12 08 2026,Occupied
+8,D' NorthWay,NW103,,,,12,0,3,30,1-Bedroom,Fully Furnished,Private,None,15000,,,Available
+9,D' NorthGate,NG102,,,,6,0,2,25,Studio,Unfurnished,Shared,2:00 am,6000,,,Available
+10,D' NorthGate,NG302,Isabella,Fernandez,9734567890,12,2,2,25,Studio,Fully Furnished,Private,2:00 am,10000,30 01 2026,30 01 2027,Occupied
+11,D' NorthGate,NG303,,,,12,0,2,25,Studio,Fully Furnished,Private,2:00 am,10000,,,Available
+12,D' NorthWay,NW202,Luisito,Mendoza,9423456789,6,3,3,30,1-Bedroom,Unfurnished,Shared,None,9000,30 12 2025,30 06 2026,Occupied
+13,D' NorthGate,NG103,Diego,Gonzaga,9234567890,6,2,2,25,Studio,Unfurnished,Shared,2:00 am,6000,23 01 2026,23 07 2026,Occupied
+14,NorthPoint Atrium,NP202,,,,12,0,4,45,2-Bedroom,Semi Furnished,Private,12:00 am,12000,,,Available
+15,D' NorthWay,NW101,Philipp,Desquitado,9995584335,12,3,3,30,1-Bedroom,Fully Furnished,Private,None,15000,5 10 2025,5 10 2026,Occupied
+16,NorthPoint Atrium,NP102,Sofia,Rivera,9723456789,12,4,4,45,2-Bedroom,Semi Furnished,Private,12:00 am,12000,20 10 2025,20 10 2026,Occupied
+17,D' NorthGate,NG201,,,,6,0,2,25,Studio,Semi Furnished,Shared,2:00 am,8000,,,Available
+18,D' NorthWay,NW203,,,,6,0,3,30,1-Bedroom,Unfurnished,Shared,None,9000,,,Available
