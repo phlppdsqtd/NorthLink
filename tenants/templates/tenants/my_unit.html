@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-6 py-8">
+
+
+    <h1 class="text-2xl font-bold mb-4">My Unit</h1>
+
+
+    {% if tenant.unit %}
+        <div class="bg-white p-6 rounded-xl shadow-sm space-y-4">
+
+
+            <!-- Header -->
+            <h2 class="font-semibold text-lg">
+                {{ tenant.unit.unit_code }}
+            </h2>
+
+
+            <!-- Summary line -->
+            <p class="text-sm font-medium leading-snug">
+                {{ tenant.unit.unit_type }} • {{ tenant.unit.furnish }} • {{ tenant.unit.room_size }}
+            </p>
+
+
+            <p class="text-sm font-medium leading-snug">
+                {{ tenant.unit.building.name }}
+            </p>
+
+
+            <!-- 💰 Price -->
+            <p class="mt-2 font-bold text-lg">
+                ₱{{ tenant.unit.monthly_rent }}
+            </p>
+
+
+            <!-- 🔽 NEW: Detailed Info -->
+            <div class="border-t pt-4 grid grid-cols-2 gap-3 text-sm">
+
+
+                <div><strong>Capacity:</strong> {{ tenant.unit.capacity }}</div>
+                <div><strong>Occupancy:</strong> {{ tenant.unit.occupancy }}</div>
+
+
+                <div><strong>Room Size:</strong> {{ tenant.unit.room_size }}</div>
+                <div><strong>Furnish:</strong> {{ tenant.unit.furnish }}</div>
+
+
+                <div><strong>Restroom:</strong> {{ tenant.unit.restroom }}</div>
+                <div><strong>Curfew:</strong> {{ tenant.unit.curfew }}</div>
+
+
+            </div>
+
+
+        </div>
+    {% else %}
+        <p>No unit assigned.</p>
+    {% endif %}
+
+
+</div>
+{% endblock %}
+

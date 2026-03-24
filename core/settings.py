@@ -136,3 +136,6 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
+
+LOGIN_URL = '/tenant/login/'
+LOGIN_REDIRECT_URL = '/tenant/dashboard/'

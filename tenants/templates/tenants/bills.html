@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-6 py-8">
+
+
+    <h1 class="text-2xl font-bold mb-6">My Bills</h1>
+
+
+    {% if tenant.unit %}
+        <div class="bg-white p-6 rounded-xl shadow-sm space-y-4">
+
+
+            <!-- Unit Info -->
+            <div>
+                <h2 class="font-semibold">{{ tenant.unit.unit_code }}</h2>
+                <p class="text-sm font-medium leading-snug">
+                    {{ tenant.unit.unit_type }} • {{ tenant.unit.furnish }} • {{ tenant.unit.room_size }}
+                </p>
+                <p class="text-sm font-medium leading-snug">
+                    {{ tenant.unit.building.name }}
+                </p>
+            </div>
+
+
+            <div class="border-t border-gray-200"></div>
+
+
+            <!-- Monthly Rent -->
+            <div class="flex justify-between items-center">
+                <span class="text-sm font-medium">Monthly Rent</span>
+                <span class="font-semibold text-lg">
+                    ₱{{ tenant.unit.monthly_rent }}
+                </span>
+            </div>
+
+
+            <!-- 🔥 BILL LIST -->
+            {% if bills|length > 0 %}
+                <div class="space-y-4">
+
+
+                    {% for bill in bills %}
+                        <div class="border-t border-gray-100 pt-3">
+
+
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm font-medium">
+                                    {{ bill.bill_type|title }}
+                                </span>
+                                <span class="font-semibold">
+                                    ₱{{ bill.amount }}
+                                </span>
+                            </div>
+
+
+                            <div class="flex justify-between text-sm text-gray-500">
+                                <span>Status: {{ bill.status }}</span>
+                                <span>Due: {{ bill.due_date }}</span>
+                            </div>
+
+
+                        </div>
+                    {% endfor %}
+
+
+                </div>
+            {% else %}
+                <p class="text-sm text-gray-500">No additional bills</p>
+            {% endif %}
+
+
+        </div>
+    {% else %}
+        <p>No unit assigned.</p>
+    {% endif %}
+
+
+</div>
+{% endblock %}
+
