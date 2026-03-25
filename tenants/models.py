@@ -34,7 +34,6 @@ class TenantProfile(models.Model):
 # =========================
 @receiver(post_save, sender=User)
 def create_tenant_profile(sender, instance, created, **kwargs):
-    # ✅ ONLY create tenant profile for NON-staff users
     if created and not instance.is_staff and not instance.is_superuser:
         TenantProfile.objects.create(user=instance)
 

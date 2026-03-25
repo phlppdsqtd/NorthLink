@@ -1,9 +1,10 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib import messages  # Required for error alerts
+from django.contrib import messages
 from django.shortcuts import render, redirect
 from .models import Inquiry
 from billing.models import Bill
+
 
 def tenant_login(request):
     if request.method == "POST":
@@ -20,17 +21,20 @@ def tenant_login(request):
             else:
                 return redirect('/admin')
         else:
-            # This handles both wrong passwords and non-existent accounts
             messages.error(request, "Invalid username or password. Please try again.")
 
     return render(request, 'tenants/login.html')
 
+
 @login_required
 def dashboard(request):
-    if not hasattr(request.user, 'tenant_profile'):
-        return redirect('/')
+    tenant = getattr(request.user, 'tenant_profile', None)
 
-    tenant = request.user.tenant_profile
+    # 🔥 FIX: validate tenant properly
+    if not tenant or not tenant.unit:
+        logout(request)
+        return redirect('tenant_login')
+
     unit = tenant.unit
 
     # Recent inquiries and bills for the dashboard
@@ -44,12 +48,15 @@ def dashboard(request):
         'bills': bills,
     })
 
+
 @login_required
 def submit_request(request):
-    if not hasattr(request.user, 'tenant_profile'):
-        return redirect('/')
+    tenant = getattr(request.user, 'tenant_profile', None)
 
-    tenant = request.user.tenant_profile
+    # 🔥 FIX: validate tenant
+    if not tenant or not tenant.unit:
+        logout(request)
+        return redirect('tenant_login')
 
     if request.method == "POST":
         message = request.POST.get("message")
@@ -62,9 +69,16 @@ def submit_request(request):
 
     return render(request, 'tenants/submit_request.html')
 
+
 @login_required
 def view_bills(request):
-    tenant = request.user.tenant_profile
+    tenant = getattr(request.user, 'tenant_profile', None)
+
+    # 🔥 FIX: validate tenant
+    if not tenant or not tenant.unit:
+        logout(request)
+        return redirect('tenant_login')
+
     bills = Bill.objects.filter(tenant_id=tenant.id).order_by('-created_at')
 
     return render(request, 'tenants/bills.html', {
@@ -72,10 +86,17 @@ def view_bills(request):
         'bills': bills
     })
 
+
 @login_required
 def my_unit(request):
-    tenant = request.user.tenant_profile
-    unit = tenant.unit if tenant else None
+    tenant = getattr(request.user, 'tenant_profile', None)
+
+    # 🔥 FIX: validate tenant
+    if not tenant or not tenant.unit:
+        logout(request)
+        return redirect('tenant_login')
+
+    unit = tenant.unit
 
     return render(request, 'tenants/my_unit.html', {
         'tenant': tenant,
