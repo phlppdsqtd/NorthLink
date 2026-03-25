@@ -7,11 +7,13 @@
     <title>Northlink Properties</title>
     {% tailwind_css %}
 </head>
+
 <body class="bg-[#F9F8F6] min-h-screen font-sans text-stone-800">
     
     <nav class="bg-white border-b border-stone-200 sticky top-0 z-50">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
             
+            <!-- LOGO -->
             <div class="flex items-center gap-2">
                 <div class="w-8 h-8 bg-stone-800 rounded flex items-center justify-center">
                     <span class="text-stone-100 font-bold text-lg">N</span>
@@ -19,15 +21,48 @@
                 <h1 class="text-xl font-bold tracking-wide text-stone-800">NorthLink.</h1>
             </div>
 
+            <!-- NAV LINKS -->
             <div class="flex items-center space-x-6 text-sm font-medium">
-                <a href="/" class="text-stone-600 hover:text-stone-900 transition">Available Units</a>
                 
-                <div class="flex items-center space-x-3 border-l border-stone-200 pl-6">
-                    <a href="#" class="text-stone-600 hover:text-stone-900 transition font-semibold">Tenant Login</a>
-                    
-                    <a href="/admin" class="bg-stone-800 hover:bg-stone-700 text-stone-50 px-5 py-2.5 rounded-md transition shadow-sm">
+                <a href="/" class="text-stone-600 hover:text-stone-900 transition">
+                    Available Units
+                </a>
+
+                <div class="flex items-center space-x-6 border-l border-stone-200 pl-6">
+
+                    {% if user.is_authenticated %}
+
+                        <!-- DASHBOARD -->
+                        <a href="{% url 'tenant_dashboard' %}"
+                           class="text-stone-600 hover:text-stone-900 transition font-semibold">
+                            Dashboard
+                        </a>
+
+                        <!-- LOGOUT -->
+                        <form method="post" action="{% url 'logout' %}" class="inline">
+                            {% csrf_token %}
+                            <button type="submit"
+                                class="text-stone-600 hover:text-stone-900 transition font-semibold">
+                                Logout
+                            </button>
+                        </form>
+
+                    {% else %}
+
+                        <!-- LOGIN -->
+                        <a href="{% url 'tenant_login' %}"
+                           class="text-stone-600 hover:text-stone-900 transition font-semibold">
+                            Tenant Login
+                        </a>
+
+                    {% endif %}
+
+                    <!-- STAFF LOGIN -->
+                    <a href="/admin"
+                       class="bg-stone-800 hover:bg-stone-700 text-stone-50 px-5 py-2.5 rounded-md transition shadow-sm">
                         Staff Login
                     </a>
+
                 </div>
             </div>
         </div>

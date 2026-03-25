@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tenant Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center p-6">
+
+    <div class="bg-white shadow-xl rounded-2xl p-8 w-full max-w-md border border-stone-100">
+
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-stone-900 mb-2">Tenant Login</h1>
+            <p class="text-stone-500 text-sm">Access your unit and billing information</p>
+        </div>
+
+        {% if messages %}
+            <div class="mb-6 space-y-2">
+                {% for message in messages %}
+                    <div class="bg-red-50 border-l-4 border-red-500 text-red-700 px-4 py-3 rounded-r-lg text-sm flex items-center gap-3">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                        </svg>
+                        <p class="font-medium">{{ message }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="post" class="space-y-5">
+            {% csrf_token %}
+
+            <div>
+                <label class="block text-xs font-bold uppercase text-stone-400 mb-1.5 ml-1">Username</label>
+                <input type="text" name="username" placeholder="Enter your username" required
+                    class="w-full border border-stone-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-stone-400 transition-all bg-stone-50/50">
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold uppercase text-stone-400 mb-1.5 ml-1">Password</label>
+                <input type="password" name="password" placeholder="••••••••" required
+                    class="w-full border border-stone-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-stone-400 transition-all bg-stone-50/50">
+            </div>
+
+            <div class="pt-2">
+                <button type="submit"
+                    class="w-full bg-stone-900 hover:bg-stone-800 text-white py-3.5 rounded-xl transition shadow-lg shadow-stone-200 font-bold text-lg active:scale-[0.98]">
+                    Sign In
+                </button>
+            </div>
+        </form>
+
+        <p class="text-center text-xs text-stone-400 mt-8">
+            Having trouble? Please contact your building administrator.
+        </p>
+
+    </div>
+
+</body>
+</html>

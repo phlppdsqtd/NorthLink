@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto px-8 py-16">
+
+    <!-- Title -->
+    <div class="mb-8">
+        <h1 class="text-2xl font-semibold text-stone-900">
+            Maintenance Request
+        </h1>
+        <p class="text-sm text-gray-500 mt-1">
+            Report an issue in your unit. Our team will respond as soon as possible.
+        </p>
+    </div>
+
+    <!-- Form -->
+    <form method="post" class="space-y-6">
+        {% csrf_token %}
+
+        <!-- Issue Field -->
+        <div>
+            <label class="block text-sm font-medium text-stone-700 mb-2">
+                What issue are you experiencing?
+            </label>
+
+            <textarea 
+                name="message"
+                placeholder="e.g. Aircon not cooling, leaking sink, broken light..."
+                class="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm 
+                       focus:ring-2 focus:ring-stone-800 focus:border-stone-800 
+                       outline-none transition resize-none h-40"
+            ></textarea>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex items-center justify-between pt-4 border-t border-gray-200">
+            <p class="text-xs text-gray-500">
+                Please provide clear details to help us resolve this faster.
+            </p>
+
+            <button type="submit"
+                class="bg-stone-800 hover:bg-black text-white px-6 py-2.5 
+                       rounded-lg text-sm font-medium transition">
+                Submit Request
+            </button>
+        </div>
+    </form>
+
+</div>
+{% endblock %}
