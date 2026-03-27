@@ -30,22 +30,25 @@ def tenant_login(request):
 def dashboard(request):
     tenant = getattr(request.user, 'tenant_profile', None)
 
-    # 🔥 FIX: validate tenant properly
     if not tenant or not tenant.unit:
         logout(request)
         return redirect('tenant_login')
 
     unit = tenant.unit
 
-    # Recent inquiries and bills for the dashboard
-    inquiries = Inquiry.objects.filter(tenant=tenant).order_by('-id')[:5]
     bills = Bill.objects.filter(tenant=tenant).order_by('-created_at')[:3]
+
+    unpaid_bills = Bill.objects.filter(tenant=tenant, status__iexact="unpaid")
+
+    total_unpaid = sum(bill.amount for bill in unpaid_bills)
+
+    total_balance = unit.monthly_rent + total_unpaid
 
     return render(request, 'tenants/dashboard.html', {
         'tenant': tenant,
         'unit': unit,
-        'inquiries': inquiries,
         'bills': bills,
+        'total_balance': total_balance,
     })
 
 
@@ -53,28 +56,31 @@ def dashboard(request):
 def submit_request(request):
     tenant = getattr(request.user, 'tenant_profile', None)
 
-    # 🔥 FIX: validate tenant
     if not tenant or not tenant.unit:
         logout(request)
         return redirect('tenant_login')
 
     if request.method == "POST":
         message = request.POST.get("message")
-        if message and message.strip():
+        
+        if message:
             Inquiry.objects.create(
                 tenant=tenant,
-                message=message.strip()
+                message=message
             )
-        return redirect('tenant_dashboard')
 
-    return render(request, 'tenants/submit_request.html')
+            messages.success(request, "Your Maintenance request was submitted successfully!")
+            return redirect('submit_request')
+
+    return render(request, 'tenants/submit_request.html', {
+        'submitted': True
+    })
 
 
 @login_required
 def view_bills(request):
     tenant = getattr(request.user, 'tenant_profile', None)
 
-    # 🔥 FIX: validate tenant
     if not tenant or not tenant.unit:
         logout(request)
         return redirect('tenant_login')
@@ -91,7 +97,6 @@ def view_bills(request):
 def my_unit(request):
     tenant = getattr(request.user, 'tenant_profile', None)
 
-    # 🔥 FIX: validate tenant
     if not tenant or not tenant.unit:
         logout(request)
         return redirect('tenant_login')

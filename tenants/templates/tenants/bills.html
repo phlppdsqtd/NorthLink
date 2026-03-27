@@ -4,9 +4,15 @@
 {% block content %}
 <div class="max-w-4xl mx-auto px-6 py-8">
 
+    <div class="mb-4 md:hidden">
+        <a href="{% url 'tenant_dashboard' %}" class="text-stone-600 hover:text-black transition-colors inline-block">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
+            </svg>
+        </a>
+    </div>
 
     <h1 class="text-2xl font-bold mb-6">My Bills</h1>
-
 
     {% if tenant.unit %}
         <div class="bg-white p-6 rounded-xl shadow-sm space-y-4">

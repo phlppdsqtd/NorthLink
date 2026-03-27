@@ -6,11 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Northlink Properties</title>
     {% tailwind_css %}
+    <script src="https://unpkg.com/heroicons@2.0.18/dist/heroicons.min.js"></script>
 </head>
 
 <body class="bg-[#F9F8F6] min-h-screen font-sans text-stone-800">
     
-    <nav class="bg-white border-b border-stone-200 sticky top-0 z-50">
+    <nav class="bg-white border-b border-stone-200 sticky top-0 z-50 relative">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
             
             <!-- LOGO -->
@@ -21,8 +22,18 @@
                 <h1 class="text-xl font-bold tracking-wide text-stone-800">NorthLink.</h1>
             </div>
 
+            <!--Icon-->
+
+            <button onclick="toggleMenu()" class="md:hidden text-stone-800">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+
+            <!--Icon-->
+
             <!-- NAV LINKS -->
-            <div class="flex items-center space-x-6 text-sm font-medium">
+            <div class="hidden md:flex items-center space-x-6 text-sm font-medium">
                 
                 <a href="/" class="text-stone-600 hover:text-stone-900 transition">
                     Available Units
@@ -42,7 +53,7 @@
                         <form method="post" action="{% url 'logout' %}" class="inline">
                             {% csrf_token %}
                             <button type="submit"
-                                class="text-stone-600 hover:text-stone-900 transition font-semibold">
+                                class="text-stone-600 hover:text-stone-900 transition font-semibold cursor-pointer">
                                 Logout
                             </button>
                         </form>
@@ -66,12 +77,70 @@
                 </div>
             </div>
         </div>
+
+        <!--Mobile Nav-->
+        <div id="mobileMenu"
+            class="hidden md:hidden absolute right-0 top-full w-56 bg-white border border-stone-200 border-t-0 shadow-lg rounded-b-xl overflow-hidden z-[60]">
+            
+            <div class="flex flex-col p-4 space-y-1 text-sm font-medium">
+
+                <a href="/" class="flex items-center justify-center gap-3 px-4 py-3 text-stone-700 hover:bg-stone-50 rounded-lg transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                    </svg>
+                    Available Units
+                </a>
+
+                {% if user.is_authenticated %}
+                    <a href="{% url 'tenant_dashboard' %}" class="flex items-center justify-center gap-3 px-4 py-3 text-stone-700 hover:bg-stone-50 rounded-lg transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25a2.25 2.25 0 01-2.25 2.25h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25h-2.25a2.25 2.25 0 01-2.25-2.25v-2.25z" />
+                        </svg>
+                        Dashboard
+                    </a>
+
+                    <form method="post" action="{% url 'logout' %}" class="m-0">
+                        {% csrf_token %}
+                        <button type="submit" class="flex items-center justify-center gap-3 w-full px-4 py-3 text-stone-700 hover:bg-stone-50 rounded-lg transition text-sm font-medium">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
+                            </svg>
+                            Logout
+                        </button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'tenant_login' %}" class="flex items-center justify-center gap-3 px-4 py-3 text-stone-700 hover:bg-stone-50 rounded-lg transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z" />
+                        </svg>
+                        Tenant Login
+                    </a>
+                {% endif %}
+
+                <a href="/admin" class="flex items-center justify-center gap-3 px-4 py-3 text-stone-800 bg-stone-100/50 hover:bg-stone-100 rounded-lg transition mt-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.744c0 3.89 2.367 7.229 5.765 8.599a12.08 12.08 0 003.235.407 12.073 12.073 0 003.235-.407c3.398-1.37 5.765-4.709 5.765-8.599 0-1.29-.205-2.529-.598-3.692A11.962 11.962 0 0112 2.714z" />
+                    </svg>
+                    Staff Login
+                </a>
+
+            </div>
+        </div>
+        <!--Mobile Nav-->
+
     </nav>
 
     <main class="container mx-auto px-6 py-10">
         {% block content %}
         {% endblock %}
     </main>
+
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('mobileMenu');
+            if (menu) menu.classList.toggle('hidden');
+        }
+    </script>
 
 </body>
 </html>
