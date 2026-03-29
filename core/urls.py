@@ -3,6 +3,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.contrib.auth import views as auth_views
 from tenants import views as tenant_views  
+from admin_dashboard.views import dashboard
 
 
 
@@ -23,6 +24,10 @@ urlpatterns = [
     path('', include('properties.urls')),
 
     path('billing/', include('billing.urls')),
+
+    path("admin-dashboard/", dashboard, name="admin_dashboard"),
+    
+    
 ]
 
 
