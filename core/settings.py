@@ -38,11 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
+    
     # Your Apps
     'properties',
     'tenants',
     'maintenance',
     'billing',
+    'admin_dashboard',
     
     # Tailwind Apps
     'tailwind',
