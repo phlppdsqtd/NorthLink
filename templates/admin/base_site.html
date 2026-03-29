@@ -1,0 +1,10 @@
+{% extends "admin/base.html" %}
+
+{% block userlinks %}
+    {% if user.is_staff %}
+        <a href="/admin-dashboard/" style="margin-right: 20px; color: #fff; text-decoration: none; font-weight: 600; padding: 8px 16px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 8px; transition: all 0.3s ease;">
+            📊 Dashboard
+        </a>
+    {% endif %}
+    {{ block.super }}
+{% endblock %}
