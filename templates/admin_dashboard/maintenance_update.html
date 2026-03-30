@@ -7,25 +7,35 @@
 
     * {
         font-family: 'Manrope', sans-serif;
+        box-sizing: border-box; /* Crucial for preventing input overflow */
     }
 
     .admin-container {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         min-height: 100vh;
         padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
+    /* Standardized Header */
     .admin-header {
         background: rgba(255, 255, 255, 0.95);
         backdrop-filter: blur(10px);
         border-radius: 20px;
-        padding: 2rem;
+        padding: 1.5rem 2rem;
         margin-bottom: 2rem;
         box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        max-width: 800px; 
     }
 
     .admin-title {
-        font-size: 2.5rem;
+        font-size: 2rem;
         font-weight: 800;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         -webkit-background-clip: text;
@@ -33,55 +43,94 @@
         margin: 0;
     }
 
+    .btn-dashboard {
+        background: #374151;
+        color: white;
+        padding: 0.6rem 1.5rem;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-dashboard:hover {
+        background: #1f2937;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Content Card */
     .content-card {
         background: rgba(255, 255, 255, 0.95);
         border-radius: 16px;
-        padding: 2rem;
+        padding: 2.5rem;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 800px;
     }
 
+    .section-title {
+        margin-top: 0;
+        margin-bottom: 1.5rem;
+        color: #1f2937;
+        font-weight: 700;
+        font-size: 1.5rem;
+    }
+
+    /* Request Details Display */
     .request-details {
         background: #f9fafb;
         padding: 1.5rem;
         border-radius: 12px;
-        margin-bottom: 2rem;
+        margin-bottom: 2.5rem;
+        border: 1px solid #e5e7eb;
     }
 
     .request-detail {
-        margin-bottom: 1rem;
-        font-size: 0.875rem;
+        margin-bottom: 0.75rem;
+        font-size: 0.95rem;
+        display: flex;
+        border-bottom: 1px dashed #d1d5db;
+        padding-bottom: 0.75rem;
+    }
+
+    .request-detail:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
     }
 
     .request-label {
         font-weight: 600;
         color: #6b7280;
-        display: inline-block;
-        min-width: 120px;
+        min-width: 140px;
+        flex-shrink: 0;
     }
 
+    .request-value {
+        color: #111827;
+        font-weight: 500;
+    }
+
+    /* Badges */
     .status-badge {
         display: inline-block;
-        padding: 0.25rem 0.75rem;
+        padding: 0.3rem 0.75rem;
         border-radius: 12px;
         font-size: 0.75rem;
-        font-weight: 600;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
 
-    .status-pending {
-        background: #fef3c7;
-        color: #92400e;
-    }
+    .status-pending { background: #fef3c7; color: #92400e; }
+    .status-in_progress { background: #dbeafe; color: #1e40af; }
+    .status-completed { background: #d1fae5; color: #065f46; }
 
-    .status-in_progress {
-        background: #dbeafe;
-        color: #1e40af;
-    }
-
-    .status-completed {
-        background: #d1fae5;
-        color: #065f46;
-    }
-
+    /* Form Styles */
     .form-group {
         margin-bottom: 1.5rem;
     }
@@ -93,19 +142,46 @@
         margin-bottom: 0.5rem;
     }
 
+    /* Standardized Select Input */
     .form-control {
         width: 100%;
-        padding: 0.75rem;
+        padding: 0.75rem 1rem;
+        background-color: #ffffff !important;
         border: 2px solid #e5e7eb;
         border-radius: 8px;
         font-size: 1rem;
+        font-family: 'Manrope', sans-serif;
+        color: #1f2937 !important;
         transition: all 0.3s ease;
+        min-height: 3rem;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 1rem center;
+        background-size: 1.2em;
+        padding-right: 2.5rem;
+        cursor: pointer;
     }
 
     .form-control:focus {
         outline: none;
         border-color: #667eea;
         box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .form-control option {
+        color: #1f2937;
+        background-color: #ffffff;
+        padding: 0.5rem;
+    }
+
+    /* Button Group */
+    .button-group {
+        margin-top: 2rem;
+        display: flex;
+        gap: 1rem;
     }
 
     .btn-submit {
@@ -119,6 +195,7 @@
         cursor: pointer;
         transition: all 0.3s ease;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        text-align: center;
     }
 
     .btn-submit:hover {
@@ -135,8 +212,9 @@
         font-weight: 600;
         font-size: 1rem;
         text-decoration: none;
-        display: inline-block;
-        margin-left: 1rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         transition: all 0.3s ease;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
@@ -146,42 +224,80 @@
         transform: translateY(-2px);
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
     }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 640px) {
+        .admin-container {
+            padding: 1rem;
+        }
+        
+        .admin-header {
+            flex-direction: column;
+            gap: 1rem;
+            text-align: center;
+        }
+
+        .request-detail {
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .button-group {
+            flex-direction: column;
+        }
+
+        .btn-submit, .btn-cancel {
+            width: 100%;
+        }
+    }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="admin-container">
-    <!-- Request Details -->
+    
+    <div class="admin-header">
+        <h1 class="admin-title">Update Request</h1>
+        <a href="/admin-dashboard/" class="btn-dashboard">🏠 Back to Dashboard</a>
+    </div>
+
     <div class="content-card">
-        <h2 style="margin-bottom: 1.5rem; color: #1f2937; font-weight: 700;">Request Details</h2>
+        <h2 class="section-title">Request Details</h2>
 
         <div class="request-details">
             <div class="request-detail">
-                <span class="request-label">Tenant:</span> {{ maintenance_request.tenant.user.get_full_name }}
+                <span class="request-label">Tenant:</span> 
+                <span class="request-value">{{ maintenance_request.tenant.user.get_full_name }}</span>
             </div>
             <div class="request-detail">
-                <span class="request-label">Unit:</span> {{ maintenance_request.unit.unit_code }}
+                <span class="request-label">Unit:</span> 
+                <span class="request-value">{{ maintenance_request.unit.unit_code }}</span>
             </div>
             <div class="request-detail">
-                <span class="request-label">Description:</span> {{ maintenance_request.description }}
+                <span class="request-label">Description:</span> 
+                <span class="request-value">{{ maintenance_request.description }}</span>
             </div>
             <div class="request-detail">
                 <span class="request-label">Current Status:</span>
-                {% if maintenance_request.status == 'pending' %}
-                    <span class="status-badge status-pending">Pending</span>
-                {% elif maintenance_request.status == 'in_progress' %}
-                    <span class="status-badge status-in_progress">In Progress</span>
-                {% else %}
-                    <span class="status-badge status-completed">Completed</span>
-                {% endif %}
+                <span class="request-value">
+                    {% if maintenance_request.status == 'pending' %}
+                        <span class="status-badge status-pending">Pending</span>
+                    {% elif maintenance_request.status == 'in_progress' %}
+                        <span class="status-badge status-in_progress">In Progress</span>
+                    {% else %}
+                        <span class="status-badge status-completed">Completed</span>
+                    {% endif %}
+                </span>
             </div>
             <div class="request-detail">
-                <span class="request-label">Date Submitted:</span> {{ maintenance_request.created_at|date:"M d, Y H:i" }}
+                <span class="request-label">Date Submitted:</span> 
+                <span class="request-value">{{ maintenance_request.created_at|date:"M d, Y H:i" }}</span>
             </div>
         </div>
 
-        <!-- Update Form -->
-        <h2 style="margin-bottom: 1.5rem; color: #1f2937; font-weight: 700;">Update Status</h2>
+        <hr style="border: 0; border-top: 1px solid #e5e7eb; margin: 2rem 0;">
+
+        <h2 class="section-title">Update Status</h2>
 
         <form method="post">
             {% csrf_token %}
@@ -195,7 +311,7 @@
                 </select>
             </div>
 
-            <div style="margin-top: 2rem;">
+            <div class="button-group">
                 <button type="submit" class="btn-submit">Update Status</button>
                 <a href="{% url 'admin_dashboard:maintenance_list' %}" class="btn-cancel">Cancel</a>
             </div>
