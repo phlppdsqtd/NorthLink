@@ -7,12 +7,16 @@
 
     * {
         font-family: 'Manrope', sans-serif;
+        box-sizing: border-box; /* Crucial for preventing input overflow */
     }
 
     .admin-container {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         min-height: 100vh;
         padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     .admin-header {
@@ -25,6 +29,8 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        width: 100%;
+        max-width: 900px; /* Constrain max width for ultra-wide screens */
     }
 
     .admin-title {
@@ -39,56 +45,85 @@
     .content-card {
         background: rgba(255, 255, 255, 0.95);
         border-radius: 16px;
-        padding: 2rem;
+        padding: 2.5rem;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        overflow-x: auto;
+        width: 100%;
+        max-width: 900px;
     }
 
     /* --- Form Styles --- */
-    .form-group {
+    .form-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
         margin-bottom: 1.5rem;
     }
 
+    .form-group {
+        display: flex;
+        flex-direction: column;
+    }
+
     .form-label {
-        display: block;
         font-weight: 600;
         color: #374151;
         margin-bottom: 0.5rem;
     }
 
-    /* Forced white background to override browser dark mode */
-    .form-control, input[type="text"], input[type="number"], input[type="email"], input[type="date"], select, textarea {
+    /* Unified input styling with min-height and line-height */
+    input[type="text"], 
+    input[type="number"], 
+    input[type="email"], 
+    input[type="date"], 
+    select, 
+    textarea {
         width: 100%;
-        padding: 0.75rem;
-        background-color: #ffffff; 
+        padding: 0.75rem 1rem;
+        background-color: #ffffff !important; /* Defeats dark mode extension glitches */
         border: 2px solid #e5e7eb;
         border-radius: 8px;
         font-size: 1rem;
         font-family: 'Manrope', sans-serif;
-        color: #1f2937; 
+        color: #1f2937 !important; /* Ensures text is always visible */
         transition: all 0.3s ease;
         box-sizing: border-box;
+        min-height: 3rem; /* Prevents text squishing */
+        line-height: 1.5;
     }
 
-    /* Specifically targets the dropdown list items */
-    select option {
-        background-color: #ffffff;
-        color: #1f2937;
-    }
-
-    .form-control:focus, input:focus, select:focus, textarea:focus {
+    input:focus, select:focus, textarea:focus {
         outline: none;
         border-color: #667eea;
         box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
     }
 
-    .form-row {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 1.5rem;
+    /* --- THE FIX FOR SELECT DROPDOWNS --- */
+    select {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        /* Adds a custom SVG arrow since we removed the native one */
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 1rem center;
+        background-size: 1.2em;
+        padding-right: 2.5rem; /* Prevents text from hiding under the arrow */
+        cursor: pointer;
+    }
+
+    select option {
+        color: #1f2937;
+        background-color: #ffffff;
+        padding: 0.5rem;
     }
 
     /* --- Button Styles --- */
+    .button-group {
+        margin-top: 2rem;
+        display: flex;
+        gap: 1rem;
+    }
+
     .btn-submit {
         background: linear-gradient(135deg, #10b981 0%, #059669 100%);
         color: white;
@@ -107,8 +142,7 @@
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
     }
 
-    .btn-cancel {
-        background: #6b7280;
+    .btn-cancel, .btn-dashboard {
         color: white;
         padding: 0.75rem 2rem;
         border: none;
@@ -122,38 +156,50 @@
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
+    .btn-cancel {
+        background: #6b7280;
+    }
+
     .btn-cancel:hover {
         background: #4b5563;
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
     }
 
-    /* --- Universal Table Styles (Ready for list subpages) --- */
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 1rem;
+    .btn-dashboard {
+        background: #374151;
+        padding: 0.6rem 1.5rem; /* Slightly smaller for header */
     }
 
-    th {
-        background-color: #f3f4f6;
-        color: #374151; 
-        font-weight: 700;
-        padding: 1rem;
-        text-align: left;
-        border-bottom: 2px solid #e5e7eb;
+    .btn-dashboard:hover {
+        background: #1f2937;
+        transform: translateY(-2px);
     }
 
-    td {
-        padding: 1rem;
-        border-bottom: 1px solid #e5e7eb;
-        color: #4b5563; 
-        transition: all 0.2s ease;
+    .error-text {
+        color: #ef4444;
+        font-size: 0.875rem;
+        margin-top: 0.35rem;
+        font-weight: 500;
     }
 
-    tr:hover td {
-        background-color: #f9fafb; 
-        color: #111827; 
+    /* Mobile Responsiveness */
+    @media (max-width: 640px) {
+        .admin-container {
+            padding: 1rem;
+        }
+        .admin-header {
+            flex-direction: column;
+            gap: 1rem;
+            text-align: center;
+        }
+        .button-group {
+            flex-direction: column;
+        }
+        .btn-submit, .btn-cancel {
+            width: 100%;
+            text-align: center;
+            justify-content: center;
+        }
     }
 </style>
 {% endblock %}
@@ -163,7 +209,7 @@
     
     <div class="admin-header">
         <h1 class="admin-title">Bills Management</h1>
-        <a href="/admin-dashboard/" class="btn-cancel" style="background: #374151; margin: 0;">🏠 Back to Dashboard</a>
+        <a href="/admin-dashboard/" class="btn-dashboard">🏠 Back to Dashboard</a>
     </div>
 
     <div class="content-card">
@@ -175,15 +221,16 @@
                     <label class="form-label" for="{{ form.tenant.id_for_label }}">Tenant</label>
                     {{ form.tenant }}
                     {% if form.tenant.errors %}
-                        <div style="color: #ef4444; font-size: 0.875rem; margin-top: 0.25rem;">
-                            {{ form.tenant.errors.0 }}
-                        </div>
+                        <div class="error-text">{{ form.tenant.errors.0 }}</div>
                     {% endif %}
                 </div>
 
                 <div class="form-group">
                     <label class="form-label" for="{{ form.bill_type.id_for_label }}">Bill Type</label>
                     {{ form.bill_type }}
+                    {% if form.bill_type.errors %}
+                        <div class="error-text">{{ form.bill_type.errors.0 }}</div>
+                    {% endif %}
                 </div>
             </div>
 
@@ -192,15 +239,16 @@
                     <label class="form-label" for="{{ form.amount.id_for_label }}">Amount (₱)</label>
                     {{ form.amount }}
                     {% if form.amount.errors %}
-                        <div style="color: #ef4444; font-size: 0.875rem; margin-top: 0.25rem;">
-                            {{ form.amount.errors.0 }}
-                        </div>
+                        <div class="error-text">{{ form.amount.errors.0 }}</div>
                     {% endif %}
                 </div>
 
                 <div class="form-group">
                     <label class="form-label" for="{{ form.due_date.id_for_label }}">Due Date</label>
                     {{ form.due_date }}
+                    {% if form.due_date.errors %}
+                        <div class="error-text">{{ form.due_date.errors.0 }}</div>
+                    {% endif %}
                 </div>
             </div>
 
@@ -208,12 +256,15 @@
                 <div class="form-group">
                     <label class="form-label" for="{{ form.status.id_for_label }}">Status</label>
                     {{ form.status }}
+                    {% if form.status.errors %}
+                        <div class="error-text">{{ form.status.errors.0 }}</div>
+                    {% endif %}
                 </div>
             </div>
 
-            <div style="margin-top: 2rem;">
-                <button type="submit" class="btn-submit">{{ title }}</button>
-                <a href="{% url 'admin_dashboard:bill_list' %}" class="btn-cancel" style="margin-left: 1rem;">Cancel</a>
+            <div class="button-group">
+                <button type="submit" class="btn-submit">{{ title|default:"Create Bill" }}</button>
+                <a href="{% url 'admin_dashboard:bill_list' %}" class="btn-cancel">Cancel</a>
             </div>
         </form>
     </div>
