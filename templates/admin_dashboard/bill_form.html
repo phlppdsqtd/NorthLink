@@ -19,13 +19,16 @@
         background: rgba(255, 255, 255, 0.95);
         backdrop-filter: blur(10px);
         border-radius: 20px;
-        padding: 2rem;
+        padding: 1.5rem 2rem;
         margin-bottom: 2rem;
         box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
     .admin-title {
-        font-size: 2.5rem;
+        font-size: 2rem;
         font-weight: 800;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         -webkit-background-clip: text;
@@ -38,8 +41,10 @@
         border-radius: 16px;
         padding: 2rem;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        overflow-x: auto;
     }
 
+    /* --- Form Styles --- */
     .form-group {
         margin-bottom: 1.5rem;
     }
@@ -51,21 +56,39 @@
         margin-bottom: 0.5rem;
     }
 
-    .form-control {
+    /* Forced white background to override browser dark mode */
+    .form-control, input[type="text"], input[type="number"], input[type="email"], input[type="date"], select, textarea {
         width: 100%;
         padding: 0.75rem;
+        background-color: #ffffff; 
         border: 2px solid #e5e7eb;
         border-radius: 8px;
         font-size: 1rem;
+        font-family: 'Manrope', sans-serif;
+        color: #1f2937; 
         transition: all 0.3s ease;
+        box-sizing: border-box;
     }
 
-    .form-control:focus {
+    /* Specifically targets the dropdown list items */
+    select option {
+        background-color: #ffffff;
+        color: #1f2937;
+    }
+
+    .form-control:focus, input:focus, select:focus, textarea:focus {
         outline: none;
         border-color: #667eea;
         box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
     }
 
+    .form-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+    }
+
+    /* --- Button Styles --- */
     .btn-submit {
         background: linear-gradient(135deg, #10b981 0%, #059669 100%);
         color: white;
@@ -93,8 +116,8 @@
         font-weight: 600;
         font-size: 1rem;
         text-decoration: none;
-        display: inline-block;
-        margin-left: 1rem;
+        display: inline-flex;
+        align-items: center;
         transition: all 0.3s ease;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
@@ -105,17 +128,44 @@
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
     }
 
-    .form-row {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 1rem;
+    /* --- Universal Table Styles (Ready for list subpages) --- */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+    }
+
+    th {
+        background-color: #f3f4f6;
+        color: #374151; 
+        font-weight: 700;
+        padding: 1rem;
+        text-align: left;
+        border-bottom: 2px solid #e5e7eb;
+    }
+
+    td {
+        padding: 1rem;
+        border-bottom: 1px solid #e5e7eb;
+        color: #4b5563; 
+        transition: all 0.2s ease;
+    }
+
+    tr:hover td {
+        background-color: #f9fafb; 
+        color: #111827; 
     }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="admin-container">
-    <!-- Form -->
+    
+    <div class="admin-header">
+        <h1 class="admin-title">Bills Management</h1>
+        <a href="/admin-dashboard/" class="btn-cancel" style="background: #374151; margin: 0;">🏠 Back to Dashboard</a>
+    </div>
+
     <div class="content-card">
         <form method="post">
             {% csrf_token %}
@@ -163,7 +213,7 @@
 
             <div style="margin-top: 2rem;">
                 <button type="submit" class="btn-submit">{{ title }}</button>
-                <a href="{% url 'admin_dashboard:bill_list' %}" class="btn-cancel">Cancel</a>
+                <a href="{% url 'admin_dashboard:bill_list' %}" class="btn-cancel" style="margin-left: 1rem;">Cancel</a>
             </div>
         </form>
     </div>
