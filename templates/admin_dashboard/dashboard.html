@@ -714,36 +714,22 @@
 
     <!-- Quick Actions -->
     <div class="table-section">
-        <h2 class="section-title">🚀 Quick Access</h2>
-        <p style="color: #6b7280; margin-bottom: 1.5rem; font-size: 0.9rem;">Direct access to all management sections</p>
+        <h2 class="section-title">🌐 Additional Access</h2>
         
-        <div class="quick-actions" style="margin-bottom: 2rem;">
-            <a href="{% url 'admin_dashboard:unit_list' %}" class="action-btn btn-purple" title="Access Units Management">
-                🏢 Units<br><small style="font-size: 0.8rem; opacity: 0.9;">/admin-dashboard/units/</small>
+        <div class="quick-actions" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-bottom: 1rem;">
+            
+            <a href="/" class="action-btn" style="background: linear-gradient(135deg, #059669 0%, #047857 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem 1.5rem; text-decoration: none; border-radius: 16px; text-align: center; color: white;">
+                <div style="font-size: 2.5rem; margin-bottom: 0.75rem; line-height: 1;">🏠</div>
+                <div style="font-weight: 700; font-size: 1.1rem; margin-bottom: 0.5rem;">Main Website</div>
+                <div style="font-size: 0.85rem; opacity: 0.9;">View public property listings</div>
             </a>
-            <a href="{% url 'admin_dashboard:tenant_list' %}" class="action-btn btn-blue" title="Access Tenants Management">
-                👥 Tenants<br><small style="font-size: 0.8rem; opacity: 0.9;">/admin-dashboard/tenants/</small>
+
+            <a href="/admin/" class="action-btn" style="background: linear-gradient(135deg, #374151 0%, #1f2937 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem 1.5rem; text-decoration: none; border-radius: 16px; text-align: center; color: white;">
+                <div style="font-size: 2.5rem; margin-bottom: 0.75rem; line-height: 1;">🔧</div>
+                <div style="font-weight: 700; font-size: 1.1rem; margin-bottom: 0.5rem;">Django Admin Panel</div>
+                <div style="font-size: 0.85rem; opacity: 0.9;">Advanced system controls</div>
             </a>
-            <a href="{% url 'admin_dashboard:bill_list' %}" class="action-btn btn-green" title="Access Bills Management">
-                💰 Bills<br><small style="font-size: 0.8rem; opacity: 0.9;">/admin-dashboard/bills/</small>
-            </a>
-            <a href="{% url 'admin_dashboard:maintenance_list' %}" class="action-btn btn-yellow" title="Access Maintenance Management">
-                🔧 Maintenance<br><small style="font-size: 0.8rem; opacity: 0.9;">/admin-dashboard/maintenance/</small>
-            </a>
-        </div>
-        
-        <h3 style="margin-top: 2rem; margin-bottom: 1rem; color: #1f2937; font-weight: 600; font-size: 1.1rem;">🏠 Public Access</h3>
-        <div class="quick-actions">
-            <a href="/" class="action-btn" style="background: linear-gradient(135deg, #059669 0%, #047857 100%); color: white; font-size: 0.9rem;">
-                🏠 Main Website<br><small style="font-size: 0.8rem; opacity: 0.9;">View public property listings</small>
-            </a>
-        </div>
-        
-        <h3 style="margin-top: 2rem; margin-bottom: 1rem; color: #1f2937; font-weight: 600; font-size: 1.1rem;">⚙️ System Administration</h3>
-        <div class="quick-actions">
-            <a href="/admin/" class="action-btn" style="background: linear-gradient(135deg, #374151 0%, #1f2937 100%); color: white; font-size: 0.9rem;">
-                🔧 Django Admin Panel<br><small style="font-size: 0.8rem; opacity: 0.9;">Advanced system controls</small>
-            </a>
+            
         </div>
     </div>
 
