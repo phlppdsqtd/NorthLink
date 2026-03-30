@@ -7,25 +7,40 @@
 
     * {
         font-family: 'Manrope', sans-serif;
+        box-sizing: border-box; /* Prevents inputs from overflowing their containers */
     }
 
     .admin-container {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         min-height: 100vh;
         padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
+    /* Standardized Header Layout */
     .admin-header {
         background: rgba(255, 255, 255, 0.95);
         backdrop-filter: blur(10px);
         border-radius: 20px;
-        padding: 2rem;
+        padding: 1.5rem 2rem;
         margin-bottom: 2rem;
         box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        max-width: 1000px; /* Matched to form width */
+    }
+
+    .header-text {
+        display: flex;
+        flex-direction: column;
     }
 
     .admin-title {
-        font-size: 2.5rem;
+        font-size: 2rem;
         font-weight: 800;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         -webkit-background-clip: text;
@@ -33,15 +48,67 @@
         margin: 0;
     }
 
+    .admin-subtitle {
+        color: #6b7280;
+        font-size: 0.95rem;
+        margin-top: 0.25rem;
+        font-weight: 500;
+    }
+
+    .btn-dashboard {
+        background: #374151;
+        color: white;
+        padding: 0.6rem 1.5rem;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .btn-dashboard:hover {
+        background: #1f2937;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Content Card */
     .content-card {
         background: rgba(255, 255, 255, 0.95);
         border-radius: 16px;
-        padding: 2rem;
+        padding: 2.5rem;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 1000px;
+    }
+
+    /* Form Layout Grid */
+    .form-section {
+        margin-bottom: 2.5rem;
+    }
+
+    .section-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #1f2937;
+        margin-top: 0;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #e5e7eb;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
     }
 
     .form-group {
-        margin-bottom: 1.5rem;
+        margin-bottom: 0; /* Margin handled by grid gap now */
     }
 
     .form-label {
@@ -49,27 +116,75 @@
         font-weight: 600;
         color: #374151;
         margin-bottom: 0.5rem;
+        font-size: 0.95rem;
     }
 
-    .form-control {
+    /* Standardized Input Styling (Targets standard Django outputs too) */
+    .form-control,
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="number"],
+    input[type="date"],
+    select {
         width: 100%;
-        padding: 0.75rem;
+        padding: 0.75rem 1rem;
         border: 2px solid #e5e7eb;
         border-radius: 8px;
         font-size: 1rem;
+        font-family: 'Manrope', sans-serif;
+        color: #1f2937;
         transition: all 0.3s ease;
+        background-color: #ffffff;
+        min-height: 3rem;
     }
 
-    .form-control:focus {
+    .form-control:focus,
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="password"]:focus,
+    input[type="number"]:focus,
+    input[type="date"]:focus,
+    select:focus {
         outline: none;
         border-color: #667eea;
         box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
     }
 
+    /* Select Dropdown Fixes */
+    select.form-control, select {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 1rem center;
+        background-size: 1.2em;
+        padding-right: 2.5rem;
+        cursor: pointer;
+    }
+
+    /* Form Errors */
+    .error-text {
+        color: #ef4444;
+        font-size: 0.85rem;
+        margin-top: 0.4rem;
+        font-weight: 500;
+    }
+
+    /* Button Group */
+    .button-group {
+        margin-top: 3rem;
+        display: flex;
+        gap: 1rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid #e5e7eb;
+    }
+
     .btn-submit {
         background: linear-gradient(135deg, #10b981 0%, #059669 100%);
         color: white;
-        padding: 0.75rem 2rem;
+        padding: 0.75rem 2.5rem;
         border: none;
         border-radius: 12px;
         font-weight: 600;
@@ -77,6 +192,7 @@
         cursor: pointer;
         transition: all 0.3s ease;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        text-align: center;
     }
 
     .btn-submit:hover {
@@ -93,8 +209,9 @@
         font-weight: 600;
         font-size: 1rem;
         text-decoration: none;
-        display: inline-block;
-        margin-left: 1rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         transition: all 0.3s ease;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
@@ -105,42 +222,62 @@
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
     }
 
-    .form-row {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 1rem;
-    }
+    /* Mobile Responsiveness */
+    @media (max-width: 640px) {
+        .admin-container {
+            padding: 1rem;
+        }
+        
+        .admin-header {
+            flex-direction: column;
+            gap: 1rem;
+            text-align: center;
+        }
 
-    .form-section {
-        margin-bottom: 2rem;
-    }
+        .content-card {
+            padding: 1.5rem;
+        }
 
-    .section-title {
-        font-size: 1.25rem;
-        font-weight: 700;
-        color: #1f2937;
-        margin-bottom: 1rem;
-        padding-bottom: 0.5rem;
-        border-bottom: 2px solid #e5e7eb;
+        .form-row {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .button-group {
+            flex-direction: column;
+        }
+
+        .btn-submit, .btn-cancel {
+            width: 100%;
+        }
     }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="admin-container">
-    <!-- Form -->
+    
+    <div class="admin-header">
+        <div class="header-text">
+            <h1 class="admin-title">{{ title }}</h1>
+            <div class="admin-subtitle">Fill in the details below to {% if title == 'Create Tenant' %}add a new{% else %}update the{% endif %} tenant.</div>
+        </div>
+        <a href="{% url 'admin_dashboard:tenant_list' %}" class="btn-dashboard">👥 Back to Tenants</a>
+    </div>
+
     <div class="content-card">
         <form method="post">
             {% csrf_token %}
 
             <div class="form-section">
                 <h3 class="section-title">User Information</h3>
+                
                 <div class="form-row">
                     <div class="form-group">
                         <label class="form-label" for="{{ form.username.id_for_label }}">Username</label>
                         {{ form.username }}
                         {% if form.username.errors %}
-                            <div style="color: #ef4444; font-size: 0.875rem; margin-top: 0.25rem;">
+                            <div class="error-text">
                                 {{ form.username.errors.0 }}
                             </div>
                         {% endif %}
@@ -176,6 +313,7 @@
 
             <div class="form-section">
                 <h3 class="section-title">Tenant Information</h3>
+                
                 <div class="form-row">
                     <div class="form-group">
                         <label class="form-label" for="{{ form.unit.id_for_label }}">Unit</label>
@@ -208,7 +346,7 @@
                 </div>
             </div>
 
-            <div style="margin-top: 2rem;">
+            <div class="button-group">
                 <button type="submit" class="btn-submit">{{ title }}</button>
                 <a href="{% url 'admin_dashboard:tenant_list' %}" class="btn-cancel">Cancel</a>
             </div>
