@@ -1,0 +1,265 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block extrastyle %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+    * {
+        font-family: 'Manrope', sans-serif;
+    }
+
+    .admin-nav {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 16px;
+        padding: 1rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+
+    .nav-item {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 1rem;
+        border-radius: 12px;
+        text-decoration: none;
+        text-align: center;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .nav-item:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .nav-item.active {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    }
+
+    .nav-icon {
+        font-size: 1.5rem;
+    }
+
+    .nav-text {
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .breadcrumbs {
+        font-size: 0.875rem;
+        color: #6b7280;
+    }
+
+    .breadcrumb-link {
+        color: #667eea;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .breadcrumb-link:hover {
+        text-decoration: underline;
+    }
+
+    .breadcrumb-link.active {
+        color: #1f2937;
+        font-weight: 600;
+    }
+
+    .breadcrumb-separator {
+        margin: 0 0.5rem;
+        color: #9ca3af;
+    }
+
+    .breadcrumb-current {
+        color: #1f2937;
+        font-weight: 600;
+    }
+
+    .admin-container {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 2rem;
+    }
+
+    .admin-header {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    }
+
+    .admin-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin: 0;
+    }
+
+    .admin-subtitle {
+        color: #6b7280;
+        font-size: 1rem;
+        margin-top: 0.5rem;
+    }
+
+    .content-card {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+    <!-- Navigation -->
+    <div class="admin-nav">
+        <div class="nav-grid">
+            <a href="/" class="nav-item">
+                <div class="nav-icon">🏠</div>
+                <div class="nav-text">Home</div>
+            </a>
+            <a href="{% url 'admin_dashboard:dashboard' %}" class="nav-item{% if request.resolver_match.url_name == 'dashboard' %} active{% endif %}">
+                <div class="nav-icon">📊</div>
+                <div class="nav-text">Dashboard</div>
+            </a>
+            <a href="{% url 'admin_dashboard:unit_list' %}" class="nav-item{% if 'unit' in request.resolver_match.url_name %} active{% endif %}" title="Custom Units Management">
+                <div class="nav-icon">🏢</div>
+                <div class="nav-text">Units</div>
+            </a>
+            <a href="{% url 'admin_dashboard:tenant_list' %}" class="nav-item{% if 'tenant' in request.resolver_match.url_name %} active{% endif %}" title="Custom Tenants Management">
+                <div class="nav-icon">👥</div>
+                <div class="nav-text">Tenants</div>
+            </a>
+            <a href="{% url 'admin_dashboard:bill_list' %}" class="nav-item{% if 'bill' in request.resolver_match.url_name %} active{% endif %}" title="Custom Bills Management">
+                <div class="nav-icon">💰</div>
+                <div class="nav-text">Bills</div>
+            </a>
+            <a href="{% url 'admin_dashboard:maintenance_list' %}" class="nav-item{% if 'maintenance' in request.resolver_match.url_name %} active{% endif %}" title="Custom Maintenance Management">
+                <div class="nav-icon">🔧</div>
+                <div class="nav-text">Maintenance</div>
+            </a>
+            <a href="/admin/" class="nav-item" title="Access Django's built-in admin interface">
+                <div class="nav-icon">⚙️</div>
+                <div class="nav-text">Django Admin</div>
+            </a>
+        </div>
+    </div>
+
+    <!-- Page Header -->
+    <div class="admin-header">
+        <!-- Breadcrumbs -->
+        <div class="breadcrumbs" style="margin-bottom: 1rem;">
+            <a href="{% url 'admin_dashboard:dashboard' %}" class="breadcrumb-link">Dashboard</a>
+            {% if 'unit' in request.resolver_match.url_name %}
+                <span class="breadcrumb-separator">></span>
+                <a href="{% url 'admin_dashboard:unit_list' %}" class="breadcrumb-link{% if request.resolver_match.url_name == 'unit_list' %} active{% endif %}">Units</a>
+                {% if request.resolver_match.url_name == 'unit_create' %}
+                    <span class="breadcrumb-separator">></span>
+                    <span class="breadcrumb-current">Create Unit</span>
+                {% elif request.resolver_match.url_name == 'unit_edit' %}
+                    <span class="breadcrumb-separator">></span>
+                    <span class="breadcrumb-current">Edit Unit</span>
+                {% elif request.resolver_match.url_name == 'unit_delete' %}
+                    <span class="breadcrumb-separator">></span>
+                    <span class="breadcrumb-current">Delete Unit</span>
+                {% endif %}
+            {% elif 'tenant' in request.resolver_match.url_name %}
+                <span class="breadcrumb-separator">></span>
+                <a href="{% url 'admin_dashboard:tenant_list' %}" class="breadcrumb-link{% if request.resolver_match.url_name == 'tenant_list' %} active{% endif %}">Tenants</a>
+                {% if request.resolver_match.url_name == 'tenant_create' %}
+                    <span class="breadcrumb-separator">></span>
+                    <span class="breadcrumb-current">Create Tenant</span>
+                {% elif request.resolver_match.url_name == 'tenant_edit' %}
+                    <span class="breadcrumb-separator">></span>
+                    <span class="breadcrumb-current">Edit Tenant</span>
+                {% elif request.resolver_match.url_name == 'tenant_delete' %}
+                    <span class="breadcrumb-separator">></span>
+                    <span class="breadcrumb-current">Delete Tenant</span>
+                {% endif %}
+            {% elif 'bill' in request.resolver_match.url_name %}
+                <span class="breadcrumb-separator">></span>
+                <a href="{% url 'admin_dashboard:bill_list' %}" class="breadcrumb-link{% if request.resolver_match.url_name == 'bill_list' %} active{% endif %}">Bills</a>
+                {% if request.resolver_match.url_name == 'bill_create' %}
+                    <span class="breadcrumb-separator">></span>
+                    <span class="breadcrumb-current">Create Bill</span>
+                {% elif request.resolver_match.url_name == 'bill_edit' %}
+                    <span class="breadcrumb-separator">></span>
+                    <span class="breadcrumb-current">Edit Bill</span>
+                {% elif request.resolver_match.url_name == 'bill_delete' %}
+                    <span class="breadcrumb-separator">></span>
+                    <span class="breadcrumb-current">Delete Bill</span>
+                {% endif %}
+            {% elif 'maintenance' in request.resolver_match.url_name %}
+                <span class="breadcrumb-separator">></span>
+                <a href="{% url 'admin_dashboard:maintenance_list' %}" class="breadcrumb-link{% if request.resolver_match.url_name == 'maintenance_list' %} active{% endif %}">Maintenance</a>
+                {% if request.resolver_match.url_name == 'maintenance_update' %}
+                    <span class="breadcrumb-separator">></span>
+                    <span class="breadcrumb-current">Update Request</span>
+                {% endif %}
+            {% endif %}
+        </div>
+        
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <h1 class="admin-title">{{ page_title|default:"Admin Dashboard" }}</h1>
+                <p class="admin-subtitle">{{ page_subtitle|default:"Manage your property system" }}</p>
+            </div>
+            <div style="display: flex; gap: 1rem;">
+                {% if show_create_button %}
+                <a href="{{ create_url }}" class="btn-create">
+                    ➕ {{ create_button_text|default:"Create" }}
+                </a>
+                {% endif %}
+                {% if 'unit' in request.resolver_match.url_name and request.resolver_match.url_name != 'unit_list' %}
+                    <a href="{% url 'admin_dashboard:unit_list' %}" class="btn-back">
+                        📋 Units List
+                    </a>
+                {% elif 'tenant' in request.resolver_match.url_name and request.resolver_match.url_name != 'tenant_list' %}
+                    <a href="{% url 'admin_dashboard:tenant_list' %}" class="btn-back">
+                        👥 Tenants List
+                    </a>
+                {% elif 'bill' in request.resolver_match.url_name and request.resolver_match.url_name != 'bill_list' %}
+                    <a href="{% url 'admin_dashboard:bill_list' %}" class="btn-back">
+                        💰 Bills List
+                    </a>
+                {% elif 'maintenance' in request.resolver_match.url_name and request.resolver_match.url_name != 'maintenance_list' %}
+                    <a href="{% url 'admin_dashboard:maintenance_list' %}" class="btn-back">
+                        🔧 Maintenance List
+                    </a>
+                {% endif %}
+                <a href="/" class="btn-back">
+                    🏠 Home
+                </a>
+                <a href="{% url 'admin_dashboard:dashboard' %}" class="btn-back">
+                    📊 Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page Content -->
+    <div class="content-card">
+        {% block page_content %}{% endblock %}
+    </div>
+</div>
+{% endblock %}

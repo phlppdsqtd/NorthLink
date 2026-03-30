@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.shortcuts import render, redirect
-from .models import Inquiry
+from maintenance.models import MaintenanceRequest
 from billing.models import Bill
 
 
@@ -15,8 +15,11 @@ def tenant_login(request):
 
         if user is not None:
             login(request, user)
-            # Check if user is a tenant or an admin
-            if hasattr(user, 'tenant_profile'):
+            # Check if user is a superuser (admin)
+            if user.is_superuser:
+                return redirect('admin_dashboard:dashboard')
+            # Check if user is a tenant
+            elif hasattr(user, 'tenant_profile'):
                 return redirect('tenant_dashboard')
             else:
                 return redirect('/admin')
@@ -64,9 +67,11 @@ def submit_request(request):
         message = request.POST.get("message")
         
         if message:
-            Inquiry.objects.create(
+            MaintenanceRequest.objects.create(
                 tenant=tenant,
-                message=message
+                unit=tenant.unit,
+                description=message,
+                status='pending'
             )
 
             messages.success(request, "Your Maintenance request was submitted successfully!")

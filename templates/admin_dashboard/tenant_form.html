@@ -1,0 +1,218 @@
+{% extends "admin_dashboard/base.html" %}
+{% load static %}
+
+{% block extrastyle %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+    * {
+        font-family: 'Manrope', sans-serif;
+    }
+
+    .admin-container {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 2rem;
+    }
+
+    .admin-header {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    }
+
+    .admin-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin: 0;
+    }
+
+    .content-card {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+        display: block;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 0.5rem;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.75rem;
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .btn-submit {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: white;
+        padding: 0.75rem 2rem;
+        border: none;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-cancel {
+        background: #6b7280;
+        color: white;
+        padding: 0.75rem 2rem;
+        border: none;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 1rem;
+        text-decoration: none;
+        display: inline-block;
+        margin-left: 1rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-cancel:hover {
+        background: #4b5563;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+    }
+
+    .form-section {
+        margin-bottom: 2rem;
+    }
+
+    .section-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #1f2937;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #e5e7eb;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+    <!-- Form -->
+    <div class="content-card">
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="form-section">
+                <h3 class="section-title">User Information</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="{{ form.username.id_for_label }}">Username</label>
+                        {{ form.username }}
+                        {% if form.username.errors %}
+                            <div style="color: #ef4444; font-size: 0.875rem; margin-top: 0.25rem;">
+                                {{ form.username.errors.0 }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="{{ form.first_name.id_for_label }}">First Name</label>
+                        {{ form.first_name }}
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="{{ form.last_name.id_for_label }}">Last Name</label>
+                        {{ form.last_name }}
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="{{ form.email.id_for_label }}">Email</label>
+                        {{ form.email }}
+                    </div>
+                </div>
+
+                {% if title == 'Create Tenant' %}
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="{{ form.password.id_for_label }}">Password</label>
+                        {{ form.password }}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="form-section">
+                <h3 class="section-title">Tenant Information</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="{{ form.unit.id_for_label }}">Unit</label>
+                        {{ form.unit }}
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="{{ form.contact_number.id_for_label }}">Contact Number</label>
+                        {{ form.contact_number }}
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="{{ form.lease_start.id_for_label }}">Lease Start Date</label>
+                        {{ form.lease_start }}
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="{{ form.lease_end.id_for_label }}">Lease End Date</label>
+                        {{ form.lease_end }}
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="{{ form.term_lease.id_for_label }}">Lease Term (Months)</label>
+                        {{ form.term_lease }}
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 2rem;">
+                <button type="submit" class="btn-submit">{{ title }}</button>
+                <a href="{% url 'admin_dashboard:tenant_list' %}" class="btn-cancel">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

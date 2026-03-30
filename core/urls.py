@@ -25,7 +25,7 @@ urlpatterns = [
 
     path('billing/', include('billing.urls')),
 
-    path("admin-dashboard/", dashboard, name="admin_dashboard"),
+    path("admin-dashboard/", include('admin_dashboard.urls')),
     
     
 ]

@@ -1,0 +1,151 @@
+{% extends "admin_dashboard/base.html" %}
+{% load static %}
+
+{% block extrastyle %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+    * {
+        font-family: 'Manrope', sans-serif;
+    }
+
+    .admin-container {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 2rem;
+    }
+
+    .admin-header {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    }
+
+    .admin-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin: 0;
+    }
+
+    .content-card {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .warning-icon {
+        font-size: 4rem;
+        color: #f59e0b;
+        margin-bottom: 1rem;
+    }
+
+    .delete-message {
+        font-size: 1.125rem;
+        color: #374151;
+        margin-bottom: 2rem;
+    }
+
+    .tenant-details {
+        background: #f9fafb;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 2rem;
+        text-align: left;
+    }
+
+    .tenant-detail {
+        margin-bottom: 0.5rem;
+        font-size: 0.875rem;
+    }
+
+    .tenant-label {
+        font-weight: 600;
+        color: #6b7280;
+    }
+
+    .btn-delete {
+        background: #ef4444;
+        color: white;
+        padding: 0.75rem 2rem;
+        border: none;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        margin-right: 1rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-delete:hover {
+        background: #dc2626;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-cancel {
+        background: #6b7280;
+        color: white;
+        padding: 0.75rem 2rem;
+        border: none;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 1rem;
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-cancel:hover {
+        background: #4b5563;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+    <!-- Confirmation -->
+    <div class="content-card">
+        <div class="warning-icon">⚠️</div>
+        <p class="delete-message">Are you sure you want to delete this tenant? This will also delete their user account. This action cannot be undone.</p>
+
+        <div class="tenant-details">
+            <div class="tenant-detail">
+                <span class="tenant-label">Name:</span> {{ tenant.user.get_full_name }}
+            </div>
+            <div class="tenant-detail">
+                <span class="tenant-label">Username:</span> {{ tenant.user.username }}
+            </div>
+            <div class="tenant-detail">
+                <span class="tenant-label">Email:</span> {{ tenant.user.email|default:"-" }}
+            </div>
+            <div class="tenant-detail">
+                <span class="tenant-label">Unit:</span> {{ tenant.unit.unit_code|default:"No Unit" }}
+            </div>
+            <div class="tenant-detail">
+                <span class="tenant-label">Contact:</span> {{ tenant.contact_number|default:"-" }}
+            </div>
+            <div class="tenant-detail">
+                <span class="tenant-label">Lease End:</span> {{ tenant.lease_end|date:"M d, Y"|default:"-" }}
+            </div>
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn-delete">Yes, Delete Tenant</button>
+            <a href="{% url 'admin_dashboard:tenant_list' %}" class="btn-cancel">Cancel</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

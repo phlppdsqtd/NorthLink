@@ -5,7 +5,12 @@ from datetime import timedelta
 from properties.models import Unit, Building
 from billing.models import Bill
 from maintenance.models import MaintenanceRequest
-from tenants.models import TenantProfile, Inquiry
+from tenants.models import TenantProfile
+from django.shortcuts import get_object_or_404, redirect
+from django.contrib import messages
+from django.contrib.auth.models import User
+from django.db import transaction
+from .forms import UnitForm, TenantForm, BillForm
 
 
 def dashboard(request):
@@ -59,8 +64,8 @@ def dashboard(request):
     ).count()
     
     # ===== INQUIRY METRICS =====
-    total_inquiries = Inquiry.objects.count()
-    recent_inquiries = Inquiry.objects.order_by('-created_at')[:5]
+    # Note: Tenant maintenance requests now use MaintenanceRequest model
+    # Prospect inquiries use properties.Inquiry model
     
     # ===== BUILDING BREAKDOWN =====
     buildings_data = []
@@ -135,8 +140,8 @@ def dashboard(request):
         'recent_maintenance': recent_maintenance,
         
         # Inquiries
-        'total_inquiries': total_inquiries,
-        'recent_inquiries': recent_inquiries,
+        # 'total_inquiries': total_inquiries,
+        # 'recent_inquiries': recent_inquiries,
         
         # Breakdowns
         'buildings_data': buildings_data,
@@ -147,6 +152,204 @@ def dashboard(request):
         'maintenance_chart_data': maintenance_chart_data,
         'building_labels': building_labels,
         'building_occupancy': building_occupancy,
+
+        # Page context
+        'page_title': 'Admin Dashboard',
+        'page_subtitle': 'Real-time analytics and property management overview',
+        'show_create_button': False
     }
     
     return render(request, "admin_dashboard/dashboard.html", context)
+
+
+# ===== CUSTOM ADMIN VIEWS =====
+
+# Units Management
+def unit_list(request):
+    units = Unit.objects.select_related('building').all()
+    return render(request, 'admin_dashboard/unit_list.html', {
+        'units': units,
+        'page_title': 'Unit Management',
+        'page_subtitle': 'Manage all units in your properties',
+        'show_create_button': True,
+        'create_url': 'admin_dashboard:unit_create',
+        'create_button_text': 'Create Unit'
+    })
+
+def unit_create(request):
+    if request.method == 'POST':
+        form = UnitForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Unit created successfully!')
+            return redirect('admin_dashboard:unit_list')
+    else:
+        form = UnitForm()
+    return render(request, 'admin_dashboard/unit_form.html', {
+        'form': form, 
+        'title': 'Create Unit',
+        'page_title': 'Create Unit',
+        'page_subtitle': 'Add a new unit to your property',
+        'show_create_button': False
+    })
+
+def unit_edit(request, pk):
+    unit = get_object_or_404(Unit, pk=pk)
+    if request.method == 'POST':
+        form = UnitForm(request.POST, instance=unit)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Unit updated successfully!')
+            return redirect('admin_dashboard:unit_list')
+    else:
+        form = UnitForm(instance=unit)
+    return render(request, 'admin_dashboard/unit_form.html', {
+        'form': form, 
+        'title': 'Edit Unit',
+        'page_title': 'Edit Unit',
+        'page_subtitle': f'Update details for {unit.unit_code}',
+        'show_create_button': False
+    })
+
+def unit_delete(request, pk):
+    unit = get_object_or_404(Unit, pk=pk)
+    if request.method == 'POST':
+        unit.delete()
+        messages.success(request, 'Unit deleted successfully!')
+        return redirect('admin_dashboard:unit_list')
+    return render(request, 'admin_dashboard/unit_confirm_delete.html', {'unit': unit})
+
+# Tenants Management
+def tenant_list(request):
+    tenants = TenantProfile.objects.select_related('user', 'unit').all()
+    return render(request, 'admin_dashboard/tenant_list.html', {
+        'tenants': tenants,
+        'page_title': 'Tenant Management',
+        'page_subtitle': 'Manage all tenants in your properties',
+        'show_create_button': True,
+        'create_url': 'admin_dashboard:tenant_create',
+        'create_button_text': 'Create Tenant'
+    })
+
+def tenant_create(request):
+    if request.method == 'POST':
+        form = TenantForm(request.POST)
+        if form.is_valid():
+            with transaction.atomic():
+                # Create user first
+                user = User.objects.create_user(
+                    username=form.cleaned_data['username'],
+                    first_name=form.cleaned_data['first_name'],
+                    last_name=form.cleaned_data['last_name'],
+                    email=form.cleaned_data['email'],
+                    password=form.cleaned_data.get('password') or 'defaultpassword123'
+                )
+                # Create tenant profile
+                tenant = form.save(commit=False)
+                tenant.user = user
+                tenant.save()
+            messages.success(request, 'Tenant created successfully!')
+            return redirect('admin_dashboard:tenant_list')
+    else:
+        form = TenantForm()
+    return render(request, 'admin_dashboard/tenant_form.html', {'form': form, 'title': 'Create Tenant'})
+
+def tenant_edit(request, pk):
+    tenant = get_object_or_404(TenantProfile, pk=pk)
+    if request.method == 'POST':
+        form = TenantForm(request.POST, instance=tenant)
+        if form.is_valid():
+            form.save()
+            # Update user fields
+            user = tenant.user
+            user.first_name = form.cleaned_data['first_name']
+            user.last_name = form.cleaned_data['last_name']
+            user.email = form.cleaned_data['email']
+            if form.cleaned_data.get('password'):
+                user.set_password(form.cleaned_data['password'])
+            user.save()
+            messages.success(request, 'Tenant updated successfully!')
+            return redirect('admin_dashboard:tenant_list')
+    else:
+        initial_data = {
+            'username': tenant.user.username,
+            'first_name': tenant.user.first_name,
+            'last_name': tenant.user.last_name,
+            'email': tenant.user.email,
+        }
+        form = TenantForm(instance=tenant, initial=initial_data)
+    return render(request, 'admin_dashboard/tenant_form.html', {'form': form, 'title': 'Edit Tenant'})
+
+def tenant_delete(request, pk):
+    tenant = get_object_or_404(TenantProfile, pk=pk)
+    if request.method == 'POST':
+        user = tenant.user
+        tenant.delete()
+        user.delete()
+        messages.success(request, 'Tenant deleted successfully!')
+        return redirect('admin_dashboard:tenant_list')
+    return render(request, 'admin_dashboard/tenant_confirm_delete.html', {'tenant': tenant})
+
+# Bills Management
+def bill_list(request):
+    bills = Bill.objects.select_related('tenant__user').all()
+    return render(request, 'admin_dashboard/bill_list.html', {
+        'bills': bills,
+        'page_title': 'Bill Management',
+        'page_subtitle': 'Manage all bills and payments',
+        'show_create_button': True,
+        'create_url': 'admin_dashboard:bill_create',
+        'create_button_text': 'Create Bill'
+    })
+
+def bill_create(request):
+    if request.method == 'POST':
+        form = BillForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Bill created successfully!')
+            return redirect('admin_dashboard:bill_list')
+    else:
+        form = BillForm()
+    return render(request, 'admin_dashboard/bill_form.html', {'form': form, 'title': 'Create Bill'})
+
+def bill_edit(request, pk):
+    bill = get_object_or_404(Bill, pk=pk)
+    if request.method == 'POST':
+        form = BillForm(request.POST, instance=bill)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Bill updated successfully!')
+            return redirect('admin_dashboard:bill_list')
+    else:
+        form = BillForm(instance=bill)
+    return render(request, 'admin_dashboard/bill_form.html', {'form': form, 'title': 'Edit Bill'})
+
+def bill_delete(request, pk):
+    bill = get_object_or_404(Bill, pk=pk)
+    if request.method == 'POST':
+        bill.delete()
+        messages.success(request, 'Bill deleted successfully!')
+        return redirect('admin_dashboard:bill_list')
+    return render(request, 'admin_dashboard/bill_confirm_delete.html', {'bill': bill})
+
+# Maintenance Management
+def maintenance_list(request):
+    maintenance_requests = MaintenanceRequest.objects.select_related('tenant__user', 'unit').all()
+    return render(request, 'admin_dashboard/maintenance_list.html', {
+        'maintenance_requests': maintenance_requests,
+        'page_title': 'Maintenance Requests',
+        'page_subtitle': 'Manage and update maintenance request statuses',
+        'show_create_button': False
+    })
+
+def maintenance_update(request, pk):
+    maintenance_request = get_object_or_404(MaintenanceRequest, pk=pk)
+    if request.method == 'POST':
+        status = request.POST.get('status')
+        if status in ['pending', 'in_progress', 'completed']:
+            maintenance_request.status = status
+            maintenance_request.save()
+            messages.success(request, f'Maintenance request status updated to {status.replace("_", " ").title()}!')
+        return redirect('admin_dashboard:maintenance_list')
+    return render(request, 'admin_dashboard/maintenance_update.html', {'maintenance_request': maintenance_request})

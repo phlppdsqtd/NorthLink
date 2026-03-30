@@ -1,0 +1,206 @@
+{% extends "admin_dashboard/base.html" %}
+{% load static %}
+
+{% block extrastyle %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+    * {
+        font-family: 'Manrope', sans-serif;
+    }
+
+    .admin-container {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 2rem;
+    }
+
+    .admin-header {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    }
+
+    .admin-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin: 0;
+    }
+
+    .admin-subtitle {
+        color: #6b7280;
+        font-size: 1rem;
+        margin-top: 0.5rem;
+    }
+
+    .content-card {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+    }
+
+    .data-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+    .data-table thead {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+
+    .data-table th {
+        padding: 1rem;
+        text-align: left;
+        font-weight: 600;
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .data-table th:first-child {
+        border-radius: 12px 0 0 0;
+    }
+
+    .data-table th:last-child {
+        border-radius: 0 12px 0 0;
+    }
+
+    .data-table tbody tr {
+        transition: all 0.2s ease;
+    }
+
+    .data-table tbody tr:hover {
+        background: #f9fafb;
+    }
+
+    .data-table td {
+        padding: 1rem;
+        border-bottom: 1px solid #e5e7eb;
+        font-size: 0.875rem;
+    }
+
+    .action-btn {
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        font-size: 0.875rem;
+        margin-right: 0.5rem;
+        display: inline-block;
+        transition: all 0.3s ease;
+    }
+
+    .btn-edit {
+        background: #3b82f6;
+        color: white;
+    }
+
+    .btn-edit:hover {
+        background: #2563eb;
+        transform: translateY(-1px);
+    }
+
+    .btn-delete {
+        background: #ef4444;
+        color: white;
+    }
+
+    .btn-delete:hover {
+        background: #dc2626;
+        transform: translateY(-1px);
+    }
+
+    .btn-create {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .btn-create:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-back {
+        background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .btn-back:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+    <!-- Tenants Table -->
+    <div class="content-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <h2 style="margin: 0; color: #1f2937; font-weight: 700;">All Tenants ({{ tenants|length }})</h2>
+            <a href="{% url 'admin_dashboard:tenant_create' %}" class="action-btn btn-blue" style="padding: 0.75rem 1.5rem; font-size: 0.9rem;">
+                ➕ Create New Tenant
+            </a>
+        </div>
+        {% if tenants %}
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Unit</th>
+                    <th>Contact</th>
+                    <th>Lease Start</th>
+                    <th>Lease End</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for tenant in tenants %}
+                <tr>
+                    <td>{{ tenant.user.get_full_name }}</td>
+                    <td>{{ tenant.unit.unit_code|default:"No Unit" }}</td>
+                    <td>{{ tenant.contact_number|default:"-" }}</td>
+                    <td>{{ tenant.lease_start|date:"M d, Y"|default:"-" }}</td>
+                    <td>{{ tenant.lease_end|date:"M d, Y"|default:"-" }}</td>
+                    <td>
+                        <a href="{% url 'admin_dashboard:tenant_edit' tenant.pk %}" class="action-btn btn-edit">Edit</a>
+                        <a href="{% url 'admin_dashboard:tenant_delete' tenant.pk %}" class="action-btn btn-delete">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p style="color: #6b7280; text-align: center; padding: 2rem;">No tenants found. <a href="{% url 'admin_dashboard:tenant_create' %}">Create your first tenant</a>.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
