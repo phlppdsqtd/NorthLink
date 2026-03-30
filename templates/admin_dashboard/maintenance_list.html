@@ -7,25 +7,40 @@
 
     * {
         font-family: 'Manrope', sans-serif;
+        box-sizing: border-box; /* Crucial for preventing layout overflow */
     }
 
     .admin-container {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         min-height: 100vh;
         padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
+    /* Fixed Header layout to match previous templates */
     .admin-header {
         background: rgba(255, 255, 255, 0.95);
         backdrop-filter: blur(10px);
         border-radius: 20px;
-        padding: 2rem;
+        padding: 1.5rem 2rem;
         margin-bottom: 2rem;
         box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        max-width: 1200px; /* Wider max-width for table views */
+    }
+
+    .header-text {
+        display: flex;
+        flex-direction: column;
     }
 
     .admin-title {
-        font-size: 2.5rem;
+        font-size: 2rem;
         font-weight: 800;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         -webkit-background-clip: text;
@@ -35,8 +50,9 @@
 
     .admin-subtitle {
         color: #6b7280;
-        font-size: 1rem;
-        margin-top: 0.5rem;
+        font-size: 0.95rem;
+        margin-top: 0.25rem;
+        font-weight: 500;
     }
 
     .content-card {
@@ -45,12 +61,46 @@
         padding: 2rem;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         margin-bottom: 2rem;
+        width: 100%;
+        max-width: 1200px;
+    }
+
+    /* Cleaned up inline styles into a reusable class */
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .card-title {
+        margin: 0;
+        color: #1f2937;
+        font-weight: 700;
+        font-size: 1.25rem;
+    }
+
+    .card-subtitle {
+        color: #6b7280;
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+
+    /* Responsive Table Wrapper */
+    .table-responsive {
+        overflow-x: auto;
+        width: 100%;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
     }
 
     .data-table {
         width: 100%;
         border-collapse: separate;
         border-spacing: 0;
+        min-width: 800px; /* Forces scrolling on mobile instead of squishing */
     }
 
     .data-table thead {
@@ -65,75 +115,68 @@
         font-size: 0.875rem;
         text-transform: uppercase;
         letter-spacing: 0.5px;
+        white-space: nowrap;
     }
 
-    .data-table th:first-child {
-        border-radius: 12px 0 0 0;
-    }
-
-    .data-table th:last-child {
-        border-radius: 0 12px 0 0;
-    }
+    .data-table th:first-child { border-radius: 12px 0 0 0; }
+    .data-table th:last-child { border-radius: 0 12px 0 0; }
 
     .data-table tbody tr {
-        transition: all 0.2s ease;
+        transition: background-color 0.2s ease;
     }
 
     .data-table tbody tr:hover {
-        background: #f9fafb;
+        background: #f3f4f6; /* Slightly darker hover for better visibility */
     }
 
     .data-table td {
         padding: 1rem;
         border-bottom: 1px solid #e5e7eb;
-        font-size: 0.875rem;
+        font-size: 0.9rem;
+        color: #374151;
+        vertical-align: middle;
     }
 
+    /* Badge Styles */
     .status-badge {
         display: inline-block;
-        padding: 0.25rem 0.75rem;
+        padding: 0.35rem 0.75rem;
         border-radius: 12px;
         font-size: 0.75rem;
-        font-weight: 600;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        white-space: nowrap;
     }
 
-    .status-pending {
-        background: #fef3c7;
-        color: #92400e;
-    }
+    .status-pending { background: #fef3c7; color: #92400e; }
+    .status-in_progress { background: #dbeafe; color: #1e40af; }
+    .status-completed { background: #d1fae5; color: #065f46; }
 
-    .status-in_progress {
-        background: #dbeafe;
-        color: #1e40af;
-    }
-
-    .status-completed {
-        background: #d1fae5;
-        color: #065f46;
-    }
-
+    /* Button Styles */
     .btn-update {
         padding: 0.5rem 1rem;
         border-radius: 8px;
         font-weight: 600;
         text-decoration: none;
         font-size: 0.875rem;
-        margin-right: 0.5rem;
         display: inline-block;
         transition: all 0.3s ease;
         background: #3b82f6;
         color: white;
+        white-space: nowrap;
     }
 
     .btn-update:hover {
         background: #2563eb;
-        transform: translateY(-1px);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
     }
 
     .btn-back {
-        background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+        background: #374151;
         color: white;
-        padding: 0.75rem 1.5rem;
+        padding: 0.6rem 1.5rem;
         border-radius: 12px;
         text-decoration: none;
         font-weight: 600;
@@ -145,58 +188,101 @@
     }
 
     .btn-back:hover {
+        background: #1f2937;
         transform: translateY(-2px);
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Empty State Styling */
+    .empty-state {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: #6b7280;
+    }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 768px) {
+        .admin-container {
+            padding: 1rem;
+        }
+        
+        .admin-header {
+            flex-direction: column;
+            gap: 1rem;
+            text-align: center;
+        }
+
+        .card-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
     }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="admin-container">
-    <!-- Maintenance Requests Table -->
-    <div class="content-card">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-            <h2 style="margin: 0; color: #1f2937; font-weight: 700;">All Maintenance Requests ({{ maintenance_requests|length }})</h2>
-            <span style="color: #6b7280; font-size: 0.9rem;">Requests are submitted by tenants</span>
+    
+    <div class="admin-header">
+        <div class="header-text">
+            <h1 class="admin-title">Maintenance</h1>
+            <div class="admin-subtitle">Manage and track tenant maintenance requests</div>
         </div>
+        <a href="/admin-dashboard/" class="btn-back">🏠 Back to Dashboard</a>
+    </div>
+
+    <div class="content-card">
+        
+        <div class="card-header">
+            <h2 class="card-title">All Requests ({{ maintenance_requests|length }})</h2>
+            <span class="card-subtitle">Submitted by tenants</span>
+        </div>
+
         {% if maintenance_requests %}
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th>Tenant</th>
-                    <th>Unit</th>
-                    <th>Description</th>
-                    <th>Status</th>
-                    <th>Date Submitted</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for request in maintenance_requests %}
-                <tr>
-                    <td>{{ request.tenant.user.get_full_name }}</td>
-                    <td>{{ request.unit.unit_code }}</td>
-                    <td>{{ request.description|truncatewords:8 }}</td>
-                    <td>
-                        {% if request.status == 'pending' %}
-                            <span class="status-badge status-pending">Pending</span>
-                        {% elif request.status == 'in_progress' %}
-                            <span class="status-badge status-in_progress">In Progress</span>
-                        {% else %}
-                            <span class="status-badge status-completed">Completed</span>
-                        {% endif %}
-                    </td>
-                    <td>{{ request.created_at|date:"M d, Y H:i" }}</td>
-                    <td>
-                        <a href="{% url 'admin_dashboard:maintenance_update' request.pk %}" class="btn-update">Update Status</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Tenant</th>
+                        <th>Unit</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th>Date Submitted</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for request in maintenance_requests %}
+                    <tr>
+                        <td><strong>{{ request.tenant.user.get_full_name }}</strong></td>
+                        <td>{{ request.unit.unit_code }}</td>
+                        <td>{{ request.description|truncatewords:8 }}</td>
+                        <td>
+                            {% if request.status == 'pending' %}
+                                <span class="status-badge status-pending">Pending</span>
+                            {% elif request.status == 'in_progress' %}
+                                <span class="status-badge status-in_progress">In Progress</span>
+                            {% else %}
+                                <span class="status-badge status-completed">Completed</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ request.created_at|date:"M d, Y" }} <br> <span style="color: #9ca3af; font-size: 0.8rem;">{{ request.created_at|time:"H:i A" }}</span></td>
+                        <td>
+                            <a href="{% url 'admin_dashboard:maintenance_update' request.pk %}" class="btn-update">Update Status</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
         {% else %}
-        <p style="color: #6b7280; text-align: center; padding: 2rem;">No maintenance requests found.</p>
+        <div class="empty-state">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">🛠️</div>
+            <p>No maintenance requests found at this time.</p>
+        </div>
         {% endif %}
+        
     </div>
 </div>
 {% endblock %}
