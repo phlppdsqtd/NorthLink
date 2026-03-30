@@ -7,25 +7,40 @@
 
     * {
         font-family: 'Manrope', sans-serif;
+        box-sizing: border-box;
     }
 
     .admin-container {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         min-height: 100vh;
         padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
+    /* Standardized Header Layout */
     .admin-header {
         background: rgba(255, 255, 255, 0.95);
         backdrop-filter: blur(10px);
         border-radius: 20px;
-        padding: 2rem;
+        padding: 1.5rem 2rem;
         margin-bottom: 2rem;
         box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        max-width: 1000px;
+    }
+
+    .header-text {
+        display: flex;
+        flex-direction: column;
     }
 
     .admin-title {
-        font-size: 2.5rem;
+        font-size: 2rem;
         font-weight: 800;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         -webkit-background-clip: text;
@@ -33,15 +48,67 @@
         margin: 0;
     }
 
+    .admin-subtitle {
+        color: #6b7280;
+        font-size: 0.95rem;
+        margin-top: 0.25rem;
+        font-weight: 500;
+    }
+
+    .btn-dashboard {
+        background: #374151;
+        color: white;
+        padding: 0.6rem 1.5rem;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .btn-dashboard:hover {
+        background: #1f2937;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Content Card */
     .content-card {
         background: rgba(255, 255, 255, 0.95);
         border-radius: 16px;
-        padding: 2rem;
+        padding: 2.5rem;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 1000px;
+    }
+
+    /* Form Layout Grid */
+    .form-section {
+        margin-bottom: 2.5rem;
+    }
+
+    .section-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #1f2937;
+        margin-top: 0;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #e5e7eb;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
     }
 
     .form-group {
-        margin-bottom: 1.5rem;
+        margin-bottom: 0; 
     }
 
     .form-label {
@@ -49,27 +116,69 @@
         font-weight: 600;
         color: #374151;
         margin-bottom: 0.5rem;
+        font-size: 0.95rem;
     }
 
-    .form-control {
+    /* Standardized Input Styling */
+    .form-control,
+    input[type="text"],
+    input[type="number"],
+    select {
         width: 100%;
-        padding: 0.75rem;
+        padding: 0.75rem 1rem;
         border: 2px solid #e5e7eb;
         border-radius: 8px;
         font-size: 1rem;
+        font-family: 'Manrope', sans-serif;
+        color: #1f2937;
         transition: all 0.3s ease;
+        background-color: #ffffff;
+        min-height: 3rem;
     }
 
-    .form-control:focus {
+    .form-control:focus,
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    select:focus {
         outline: none;
         border-color: #667eea;
         box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
     }
 
+    /* Select Dropdown Fixes */
+    select.form-control, select {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 1rem center;
+        background-size: 1.2em;
+        padding-right: 2.5rem;
+        cursor: pointer;
+    }
+
+    /* Form Errors */
+    .error-text {
+        color: #ef4444;
+        font-size: 0.85rem;
+        margin-top: 0.4rem;
+        font-weight: 500;
+    }
+
+    /* Button Group */
+    .button-group {
+        margin-top: 3rem;
+        display: flex;
+        gap: 1rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid #e5e7eb;
+    }
+
     .btn-submit {
         background: linear-gradient(135deg, #10b981 0%, #059669 100%);
         color: white;
-        padding: 0.75rem 2rem;
+        padding: 0.75rem 2.5rem;
         border: none;
         border-radius: 12px;
         font-weight: 600;
@@ -77,6 +186,7 @@
         cursor: pointer;
         transition: all 0.3s ease;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        text-align: center;
     }
 
     .btn-submit:hover {
@@ -93,8 +203,9 @@
         font-weight: 600;
         font-size: 1rem;
         text-decoration: none;
-        display: inline-block;
-        margin-left: 1rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         transition: all 0.3s ease;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
@@ -105,99 +216,139 @@
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
     }
 
-    .form-row {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 1rem;
+    /* Mobile Responsiveness */
+    @media (max-width: 640px) {
+        .admin-container {
+            padding: 1rem;
+        }
+        
+        .admin-header {
+            flex-direction: column;
+            gap: 1rem;
+            text-align: center;
+        }
+
+        .content-card {
+            padding: 1.5rem;
+        }
+
+        .form-row {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .button-group {
+            flex-direction: column;
+        }
+
+        .btn-submit, .btn-cancel {
+            width: 100%;
+        }
     }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="admin-container">
-    <!-- Form -->
+    
+    <div class="admin-header">
+        <div class="header-text">
+            <h1 class="admin-title">{{ title }}</h1>
+            <div class="admin-subtitle">Fill in the details below to {% if title == 'Create Unit' %}add a new{% else %}update the{% endif %} unit.</div>
+        </div>
+        <a href="{% url 'admin_dashboard:unit_list' %}" class="btn-dashboard">🏢 Back to Units</a>
+    </div>
+
     <div class="content-card">
         <form method="post">
             {% csrf_token %}
 
-            <div class="form-row">
-                <div class="form-group">
-                    <label class="form-label" for="{{ form.building.id_for_label }}">Building</label>
-                    {{ form.building }}
-                    {% if form.building.errors %}
-                        <div style="color: #ef4444; font-size: 0.875rem; margin-top: 0.25rem;">
-                            {{ form.building.errors.0 }}
-                        </div>
-                    {% endif %}
+            <div class="form-section">
+                <h3 class="section-title">Basic Information</h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="{{ form.building.id_for_label }}">Building</label>
+                        {{ form.building }}
+                        {% if form.building.errors %}
+                            <div class="error-text">
+                                {{ form.building.errors.0 }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="{{ form.unit_code.id_for_label }}">Unit Code</label>
+                        {{ form.unit_code }}
+                        {% if form.unit_code.errors %}
+                            <div class="error-text">
+                                {{ form.unit_code.errors.0 }}
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label" for="{{ form.unit_code.id_for_label }}">Unit Code</label>
-                    {{ form.unit_code }}
-                    {% if form.unit_code.errors %}
-                        <div style="color: #ef4444; font-size: 0.875rem; margin-top: 0.25rem;">
-                            {{ form.unit_code.errors.0 }}
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="{{ form.unit_type.id_for_label }}">Unit Type</label>
+                        {{ form.unit_type }}
+                    </div>
 
-            <div class="form-row">
-                <div class="form-group">
-                    <label class="form-label" for="{{ form.unit_type.id_for_label }}">Unit Type</label>
-                    {{ form.unit_type }}
+                    <div class="form-group">
+                        <label class="form-label" for="{{ form.status.id_for_label }}">Status</label>
+                        {{ form.status }}
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label" for="{{ form.capacity.id_for_label }}">Capacity</label>
-                    {{ form.capacity }}
-                </div>
-            </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="{{ form.capacity.id_for_label }}">Capacity</label>
+                        {{ form.capacity }}
+                    </div>
 
-            <div class="form-row">
-                <div class="form-group">
-                    <label class="form-label" for="{{ form.occupancy.id_for_label }}">Current Occupancy</label>
-                    {{ form.occupancy }}
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label" for="{{ form.monthly_rent.id_for_label }}">Monthly Rent (₱)</label>
-                    {{ form.monthly_rent }}
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label class="form-label" for="{{ form.status.id_for_label }}">Status</label>
-                    {{ form.status }}
+                    <div class="form-group">
+                        <label class="form-label" for="{{ form.occupancy.id_for_label }}">Current Occupancy</label>
+                        {{ form.occupancy }}
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label" for="{{ form.room_size.id_for_label }}">Room Size</label>
-                    {{ form.room_size }}
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label class="form-label" for="{{ form.furnish.id_for_label }}">Furnishing</label>
-                    {{ form.furnish }}
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label" for="{{ form.restroom.id_for_label }}">Restroom</label>
-                    {{ form.restroom }}
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="{{ form.monthly_rent.id_for_label }}">Monthly Rent (₱)</label>
+                        {{ form.monthly_rent }}
+                    </div>
                 </div>
             </div>
 
-            <div class="form-row">
-                <div class="form-group">
-                    <label class="form-label" for="{{ form.curfew.id_for_label }}">Curfew</label>
-                    {{ form.curfew }}
+            <div class="form-section">
+                <h3 class="section-title">Unit Features</h3>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="{{ form.room_size.id_for_label }}">Room Size</label>
+                        {{ form.room_size }}
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="{{ form.furnish.id_for_label }}">Furnishing</label>
+                        {{ form.furnish }}
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="{{ form.restroom.id_for_label }}">Restroom</label>
+                        {{ form.restroom }}
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="{{ form.curfew.id_for_label }}">Curfew</label>
+                        {{ form.curfew }}
+                    </div>
                 </div>
             </div>
 
-            <div style="margin-top: 2rem;">
+            <div class="button-group">
                 <button type="submit" class="btn-submit">{{ title }}</button>
                 <a href="{% url 'admin_dashboard:unit_list' %}" class="btn-cancel">Cancel</a>
             </div>
