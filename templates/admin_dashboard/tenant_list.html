@@ -7,25 +7,40 @@
 
     * {
         font-family: 'Manrope', sans-serif;
+        box-sizing: border-box; 
     }
 
     .admin-container {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         min-height: 100vh;
         padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
+    /* Fixed Header layout */
     .admin-header {
         background: rgba(255, 255, 255, 0.95);
         backdrop-filter: blur(10px);
         border-radius: 20px;
-        padding: 2rem;
+        padding: 1.5rem 2rem;
         margin-bottom: 2rem;
         box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        max-width: 1200px;
+    }
+
+    .header-text {
+        display: flex;
+        flex-direction: column;
     }
 
     .admin-title {
-        font-size: 2.5rem;
+        font-size: 2rem;
         font-weight: 800;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         -webkit-background-clip: text;
@@ -35,22 +50,73 @@
 
     .admin-subtitle {
         color: #6b7280;
-        font-size: 1rem;
-        margin-top: 0.5rem;
+        font-size: 0.95rem;
+        margin-top: 0.25rem;
+        font-weight: 500;
     }
 
+    /* Dashboard Button (formerly .btn-back) */
+    .btn-dashboard {
+        background: #374151;
+        color: white;
+        padding: 0.6rem 1.5rem;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .btn-dashboard:hover {
+        background: #1f2937;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Content Card */
     .content-card {
         background: rgba(255, 255, 255, 0.95);
         border-radius: 16px;
         padding: 2rem;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         margin-bottom: 2rem;
+        width: 100%;
+        max-width: 1200px;
+    }
+
+    /* Reusable Card Header */
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .card-title {
+        margin: 0;
+        color: #1f2937;
+        font-weight: 700;
+        font-size: 1.25rem;
+    }
+
+    /* Responsive Table Wrapper */
+    .table-responsive {
+        overflow-x: auto;
+        width: 100%;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
     }
 
     .data-table {
         width: 100%;
         border-collapse: separate;
         border-spacing: 0;
+        min-width: 800px; /* Forces scrolling on mobile */
     }
 
     .data-table thead {
@@ -65,49 +131,51 @@
         font-size: 0.875rem;
         text-transform: uppercase;
         letter-spacing: 0.5px;
+        white-space: nowrap;
     }
 
-    .data-table th:first-child {
-        border-radius: 12px 0 0 0;
-    }
-
-    .data-table th:last-child {
-        border-radius: 0 12px 0 0;
-    }
+    .data-table th:first-child { border-radius: 12px 0 0 0; }
+    .data-table th:last-child { border-radius: 0 12px 0 0; }
 
     .data-table tbody tr {
-        transition: all 0.2s ease;
+        transition: background-color 0.2s ease;
     }
 
     .data-table tbody tr:hover {
-        background: #f9fafb;
+        background: #f3f4f6; 
     }
 
     .data-table td {
         padding: 1rem;
         border-bottom: 1px solid #e5e7eb;
-        font-size: 0.875rem;
+        font-size: 0.9rem;
+        color: #374151;
+        vertical-align: middle;
     }
 
+    /* Action Buttons */
     .action-btn {
-        padding: 0.5rem 1rem;
+        padding: 0.45rem 1rem;
         border-radius: 8px;
         font-weight: 600;
         text-decoration: none;
         font-size: 0.875rem;
-        margin-right: 0.5rem;
-        display: inline-block;
+        display: inline-flex;
+        align-items: center;
         transition: all 0.3s ease;
+        white-space: nowrap;
     }
 
     .btn-edit {
         background: #3b82f6;
         color: white;
+        margin-right: 0.5rem;
     }
 
     .btn-edit:hover {
         background: #2563eb;
-        transform: translateY(-1px);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
     }
 
     .btn-delete {
@@ -117,7 +185,8 @@
 
     .btn-delete:hover {
         background: #dc2626;
-        transform: translateY(-1px);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
     }
 
     .btn-create {
@@ -125,8 +194,9 @@
         color: white;
         padding: 0.75rem 1.5rem;
         border-radius: 12px;
-        text-decoration: none;
         font-weight: 600;
+        font-size: 0.95rem;
+        text-decoration: none;
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
@@ -139,68 +209,106 @@
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
     }
 
-    .btn-back {
-        background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
-        color: white;
-        padding: 0.75rem 1.5rem;
-        border-radius: 12px;
-        text-decoration: none;
-        font-weight: 600;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;
+    /* Empty State Styling */
+    .empty-state {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: #6b7280;
     }
 
-    .btn-back:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    .empty-state a {
+        color: #3b82f6;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    .empty-state a:hover {
+        text-decoration: underline;
+    }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 768px) {
+        .admin-container {
+            padding: 1rem;
+        }
+        
+        .admin-header {
+            flex-direction: column;
+            gap: 1rem;
+            text-align: center;
+        }
+
+        .card-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .btn-create {
+            width: 100%;
+            justify-content: center;
+        }
     }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="admin-container">
-    <!-- Tenants Table -->
+    
+    <div class="admin-header">
+        <div class="header-text">
+            <h1 class="admin-title">Tenant Management</h1>
+            <div class="admin-subtitle">View and manage your property's tenants</div>
+        </div>
+        <a href="/admin-dashboard/" class="btn-dashboard">🏠 Back to Dashboard</a>
+    </div>
+
     <div class="content-card">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-            <h2 style="margin: 0; color: #1f2937; font-weight: 700;">All Tenants ({{ tenants|length }})</h2>
-            <a href="{% url 'admin_dashboard:tenant_create' %}" class="action-btn btn-blue" style="padding: 0.75rem 1.5rem; font-size: 0.9rem;">
+        
+        <div class="card-header">
+            <h2 class="card-title">All Tenants ({{ tenants|length }})</h2>
+            <a href="{% url 'admin_dashboard:tenant_create' %}" class="btn-create">
                 ➕ Create New Tenant
             </a>
         </div>
+
         {% if tenants %}
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Unit</th>
-                    <th>Contact</th>
-                    <th>Lease Start</th>
-                    <th>Lease End</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for tenant in tenants %}
-                <tr>
-                    <td>{{ tenant.user.get_full_name }}</td>
-                    <td>{{ tenant.unit.unit_code|default:"No Unit" }}</td>
-                    <td>{{ tenant.contact_number|default:"-" }}</td>
-                    <td>{{ tenant.lease_start|date:"M d, Y"|default:"-" }}</td>
-                    <td>{{ tenant.lease_end|date:"M d, Y"|default:"-" }}</td>
-                    <td>
-                        <a href="{% url 'admin_dashboard:tenant_edit' tenant.pk %}" class="action-btn btn-edit">Edit</a>
-                        <a href="{% url 'admin_dashboard:tenant_delete' tenant.pk %}" class="action-btn btn-delete">Delete</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Unit</th>
+                        <th>Contact</th>
+                        <th>Lease Start</th>
+                        <th>Lease End</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for tenant in tenants %}
+                    <tr>
+                        <td><strong>{{ tenant.user.get_full_name }}</strong></td>
+                        <td>{{ tenant.unit.unit_code|default:"No Unit" }}</td>
+                        <td>{{ tenant.contact_number|default:"-" }}</td>
+                        <td>{{ tenant.lease_start|date:"M d, Y"|default:"-" }}</td>
+                        <td>{{ tenant.lease_end|date:"M d, Y"|default:"-" }}</td>
+                        <td>
+                            <a href="{% url 'admin_dashboard:tenant_edit' tenant.pk %}" class="action-btn btn-edit">Edit</a>
+                            <a href="{% url 'admin_dashboard:tenant_delete' tenant.pk %}" class="action-btn btn-delete">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
         {% else %}
-        <p style="color: #6b7280; text-align: center; padding: 2rem;">No tenants found. <a href="{% url 'admin_dashboard:tenant_create' %}">Create your first tenant</a>.</p>
+        <div class="empty-state">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">👥</div>
+            <p>No tenants found. <a href="{% url 'admin_dashboard:tenant_create' %}">Create your first tenant</a>.</p>
+        </div>
         {% endif %}
+        
     </div>
 </div>
 {% endblock %}
