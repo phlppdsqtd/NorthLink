@@ -45,7 +45,9 @@ def dashboard(request):
 
     total_unpaid = sum(bill.amount for bill in unpaid_bills)
 
-    total_balance = unit.monthly_rent + total_unpaid
+    # total_balance = unit.monthly_rent + total_unpaid
+    
+    total_balance = total_unpaid
 
     return render(request, 'tenants/dashboard.html', {
         'tenant': tenant,
