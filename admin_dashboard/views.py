@@ -2,15 +2,22 @@ from django.shortcuts import render
 from django.db.models import Count, Sum, Q
 from django.utils import timezone
 from datetime import timedelta
-from properties.models import Unit, Building
+from properties.models import Unit, Building, Inquiry
 from billing.models import Bill
 from maintenance.models import MaintenanceRequest
 from tenants.models import TenantProfile
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db import transaction
 from .forms import UnitForm, TenantForm, BillForm
+
+
+# Admin requirement check function
+def admin_required(user):
+    """Check if user is admin/staff"""
+    return user.is_superuser or user.is_staff
 
 
 def dashboard(request):
@@ -64,8 +71,10 @@ def dashboard(request):
     ).count()
     
     # ===== INQUIRY METRICS =====
-    # Note: Tenant maintenance requests now use MaintenanceRequest model
-    # Prospect inquiries use properties.Inquiry model
+    # Note: Prospect inquiries from unit listings
+    total_inquiries = Inquiry.objects.count()
+    unresolved_inquiries = Inquiry.objects.filter(is_resolved=False).count()
+    recent_inquiries = Inquiry.objects.select_related('unit').order_by('-created_at')[:5]
     
     # ===== BUILDING BREAKDOWN =====
     buildings_data = []
@@ -140,8 +149,9 @@ def dashboard(request):
         'recent_maintenance': recent_maintenance,
         
         # Inquiries
-        # 'total_inquiries': total_inquiries,
-        # 'recent_inquiries': recent_inquiries,
+        'total_inquiries': total_inquiries,
+        'unresolved_inquiries': unresolved_inquiries,
+        'recent_inquiries': recent_inquiries,
         
         # Breakdowns
         'buildings_data': buildings_data,
@@ -165,8 +175,10 @@ def dashboard(request):
 # ===== CUSTOM ADMIN VIEWS =====
 
 # Units Management
+@login_required
+@user_passes_test(admin_required)
 def unit_list(request):
-    units = Unit.objects.select_related('building').all()
+    units = Unit.objects.select_related('building').all().order_by('unit_code')
     return render(request, 'admin_dashboard/unit_list.html', {
         'units': units,
         'page_title': 'Unit Management',
@@ -220,8 +232,10 @@ def unit_delete(request, pk):
     return render(request, 'admin_dashboard/unit_confirm_delete.html', {'unit': unit})
 
 # Tenants Management
+@login_required
+@user_passes_test(admin_required)
 def tenant_list(request):
-    tenants = TenantProfile.objects.select_related('user', 'unit').all()
+    tenants = TenantProfile.objects.select_related('user', 'unit').all().order_by('unit__unit_code')
     return render(request, 'admin_dashboard/tenant_list.html', {
         'tenants': tenants,
         'page_title': 'Tenant Management',
@@ -291,8 +305,10 @@ def tenant_delete(request, pk):
     return render(request, 'admin_dashboard/tenant_confirm_delete.html', {'tenant': tenant})
 
 # Bills Management
+@login_required
+@user_passes_test(admin_required)
 def bill_list(request):
-    bills = Bill.objects.select_related('tenant__user').all()
+    bills = Bill.objects.select_related('tenant__user', 'tenant__unit').all().order_by('tenant__unit__unit_code')
     return render(request, 'admin_dashboard/bill_list.html', {
         'bills': bills,
         'page_title': 'Bill Management',
@@ -302,6 +318,8 @@ def bill_list(request):
         'create_button_text': 'Create Bill'
     })
 
+@login_required
+@user_passes_test(admin_required)
 def bill_create(request):
     if request.method == 'POST':
         form = BillForm(request.POST)
@@ -313,6 +331,8 @@ def bill_create(request):
         form = BillForm()
     return render(request, 'admin_dashboard/bill_form.html', {'form': form, 'title': 'Create Bill'})
 
+@login_required
+@user_passes_test(admin_required)
 def bill_edit(request, pk):
     bill = get_object_or_404(Bill, pk=pk)
     if request.method == 'POST':
@@ -325,6 +345,8 @@ def bill_edit(request, pk):
         form = BillForm(instance=bill)
     return render(request, 'admin_dashboard/bill_form.html', {'form': form, 'title': 'Edit Bill'})
 
+@login_required
+@user_passes_test(admin_required)
 def bill_delete(request, pk):
     bill = get_object_or_404(Bill, pk=pk)
     if request.method == 'POST':
@@ -334,6 +356,8 @@ def bill_delete(request, pk):
     return render(request, 'admin_dashboard/bill_confirm_delete.html', {'bill': bill})
 
 # Maintenance Management
+@login_required
+@user_passes_test(admin_required)
 def maintenance_list(request):
     maintenance_requests = MaintenanceRequest.objects.select_related('tenant__user', 'unit').all()
     return render(request, 'admin_dashboard/maintenance_list.html', {
@@ -343,6 +367,8 @@ def maintenance_list(request):
         'show_create_button': False
     })
 
+@login_required
+@user_passes_test(admin_required)
 def maintenance_update(request, pk):
     maintenance_request = get_object_or_404(MaintenanceRequest, pk=pk)
     if request.method == 'POST':
@@ -353,3 +379,37 @@ def maintenance_update(request, pk):
             messages.success(request, f'Maintenance request status updated to {status.replace("_", " ").title()}!')
         return redirect('admin_dashboard:maintenance_list')
     return render(request, 'admin_dashboard/maintenance_update.html', {'maintenance_request': maintenance_request})
+
+# Unit Inquiries Management
+@login_required
+@user_passes_test(admin_required)
+def inquiry_list(request):
+    inquiries = Inquiry.objects.select_related('unit__building').all().order_by('unit__unit_code', '-created_at')
+    return render(request, 'admin_dashboard/inquiry_list.html', {
+        'inquiries': inquiries,
+        'page_title': 'Unit Inquiries',
+        'page_subtitle': 'Manage prospect inquiries for units',
+        'show_create_button': False
+    })
+
+@login_required
+@user_passes_test(admin_required)
+def inquiry_resolve(request, pk):
+    inquiry = get_object_or_404(Inquiry, pk=pk)
+    if request.method == 'POST':
+        inquiry.is_resolved = not inquiry.is_resolved
+        inquiry.save()
+        status = 'resolved' if inquiry.is_resolved else 'unresolved'
+        messages.success(request, f'Inquiry marked as {status}!')
+        return redirect('admin_dashboard:inquiry_list')
+    return render(request, 'admin_dashboard/inquiry_confirm_delete.html', {'inquiry': inquiry})
+
+@login_required
+@user_passes_test(admin_required)
+def inquiry_delete(request, pk):
+    inquiry = get_object_or_404(Inquiry, pk=pk)
+    if request.method == 'POST':
+        inquiry.delete()
+        messages.success(request, 'Inquiry deleted successfully!')
+        return redirect('admin_dashboard:inquiry_list')
+    return render(request, 'admin_dashboard/inquiry_confirm_delete.html', {'inquiry': inquiry})

@@ -19,4 +19,7 @@ urlpatterns = [
     path('bills/<int:pk>/delete/', views.bill_delete, name='bill_delete'),
     path('maintenance/', views.maintenance_list, name='maintenance_list'),
     path('maintenance/<int:pk>/update/', views.maintenance_update, name='maintenance_update'),
+    path('inquiries/', views.inquiry_list, name='inquiry_list'),
+    path('inquiries/<int:pk>/resolve/', views.inquiry_resolve, name='inquiry_resolve'),
+    path('inquiries/<int:pk>/delete/', views.inquiry_delete, name='inquiry_delete'),
 ]
