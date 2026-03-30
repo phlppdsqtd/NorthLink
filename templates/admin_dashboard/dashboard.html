@@ -596,30 +596,30 @@
             🎯 Management Hub
             <span style="font-size: 0.8rem; font-weight: 400; color: #6b7280;">Direct Access to All Sections</span>
         </h2>
-        <div class="quick-actions" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
-            <a href="{% url 'admin_dashboard:unit_list' %}" class="action-btn btn-purple" style="padding: 1.5rem; text-align: center;">
-                <div style="font-size: 2rem; margin-bottom: 0.5rem;">🏢</div>
-                <div style="font-weight: 700; margin-bottom: 0.25rem;">Units Management</div>
-                <div style="font-size: 0.8rem; opacity: 0.8;">View, create, edit units</div>
-                <div style="font-size: 0.7rem; opacity: 0.6; margin-top: 0.5rem;">/admin-dashboard/units/</div>
+        <div class="quick-actions" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem;">
+            <a href="{% url 'admin_dashboard:unit_list' %}" class="action-btn btn-purple" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem 1.5rem; text-decoration: none; border-radius: 16px; text-align: center;">
+                <div style="font-size: 2.5rem; margin-bottom: 0.75rem; line-height: 1;">🏢</div>
+                <div style="font-weight: 700; font-size: 1.1rem; margin-bottom: 0.25rem; color: white;">Units Management</div>
+                <div style="font-size: 0.85rem; opacity: 0.9; margin-bottom: 1rem; color: white;">View, create, edit units</div>
+                <div style="font-size: 0.7rem; color: white; opacity: 0.8; background: rgba(0,0,0,0.15); padding: 0.3rem 0.75rem; border-radius: 8px;">/admin-dashboard/units/</div>
             </a>
-            <a href="{% url 'admin_dashboard:tenant_list' %}" class="action-btn btn-blue" style="padding: 1.5rem; text-align: center;">
-                <div style="font-size: 2rem; margin-bottom: 0.5rem;">👥</div>
-                <div style="font-weight: 700; margin-bottom: 0.25rem;">Tenants Management</div>
-                <div style="font-size: 0.8rem; opacity: 0.8;">Manage tenant profiles</div>
-                <div style="font-size: 0.7rem; opacity: 0.6; margin-top: 0.5rem;">/admin-dashboard/tenants/</div>
+            <a href="{% url 'admin_dashboard:tenant_list' %}" class="action-btn btn-blue" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem 1.5rem; text-decoration: none; border-radius: 16px; text-align: center;">
+                <div style="font-size: 2.5rem; margin-bottom: 0.75rem; line-height: 1;">👥</div>
+                <div style="font-weight: 700; font-size: 1.1rem; margin-bottom: 0.25rem; color: white;">Tenants Management</div>
+                <div style="font-size: 0.85rem; opacity: 0.9; margin-bottom: 1rem; color: white;">Manage tenant profiles</div>
+                <div style="font-size: 0.7rem; color: white; opacity: 0.8; background: rgba(0,0,0,0.15); padding: 0.3rem 0.75rem; border-radius: 8px;">/admin-dashboard/tenants/</div>
             </a>
-            <a href="{% url 'admin_dashboard:bill_list' %}" class="action-btn btn-green" style="padding: 1.5rem; text-align: center;">
-                <div style="font-size: 2rem; margin-bottom: 0.5rem;">💰</div>
-                <div style="font-weight: 700; margin-bottom: 0.25rem;">Bills Management</div>
-                <div style="font-size: 0.8rem; opacity: 0.8;">Create and track payments</div>
-                <div style="font-size: 0.7rem; opacity: 0.6; margin-top: 0.5rem;">/admin-dashboard/bills/</div>
+            <a href="{% url 'admin_dashboard:bill_list' %}" class="action-btn btn-green" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem 1.5rem; text-decoration: none; border-radius: 16px; text-align: center;">
+                <div style="font-size: 2.5rem; margin-bottom: 0.75rem; line-height: 1;">💰</div>
+                <div style="font-weight: 700; font-size: 1.1rem; margin-bottom: 0.25rem; color: white;">Bills Management</div>
+                <div style="font-size: 0.85rem; opacity: 0.9; margin-bottom: 1rem; color: white;">Create and track payments</div>
+                <div style="font-size: 0.7rem; color: white; opacity: 0.8; background: rgba(0,0,0,0.15); padding: 0.3rem 0.75rem; border-radius: 8px;">/admin-dashboard/bills/</div>
             </a>
-            <a href="{% url 'admin_dashboard:maintenance_list' %}" class="action-btn btn-yellow" style="padding: 1.5rem; text-align: center;">
-                <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔧</div>
-                <div style="font-weight: 700; margin-bottom: 0.25rem;">Maintenance Hub</div>
-                <div style="font-size: 0.8rem; opacity: 0.8;">Handle service requests</div>
-                <div style="font-size: 0.7rem; opacity: 0.6; margin-top: 0.5rem;">/admin-dashboard/maintenance/</div>
+            <a href="{% url 'admin_dashboard:maintenance_list' %}" class="action-btn btn-yellow" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem 1.5rem; text-decoration: none; border-radius: 16px; text-align: center;">
+                <div style="font-size: 2.5rem; margin-bottom: 0.75rem; line-height: 1;">🔧</div>
+                <div style="font-weight: 700; font-size: 1.1rem; margin-bottom: 0.25rem; color: white;">Maintenance Hub</div>
+                <div style="font-size: 0.85rem; opacity: 0.9; margin-bottom: 1rem; color: white;">Handle service requests</div>
+                <div style="font-size: 0.7rem; color: white; opacity: 0.8; background: rgba(0,0,0,0.15); padding: 0.3rem 0.75rem; border-radius: 8px;">/admin-dashboard/maintenance/</div>
             </a>
         </div>
     </div>
