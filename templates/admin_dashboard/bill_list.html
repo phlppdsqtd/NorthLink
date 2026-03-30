@@ -15,17 +15,21 @@
         padding: 2rem;
     }
 
+    /* Updated to match the flexbox layout from the form page */
     .admin-header {
         background: rgba(255, 255, 255, 0.95);
         backdrop-filter: blur(10px);
         border-radius: 20px;
-        padding: 2rem;
+        padding: 1.5rem 2rem;
         margin-bottom: 2rem;
         box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
     .admin-title {
-        font-size: 2.5rem;
+        font-size: 2rem;
         font-weight: 800;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         -webkit-background-clip: text;
@@ -45,8 +49,10 @@
         padding: 2rem;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         margin-bottom: 2rem;
+        overflow-x: auto;
     }
 
+    /* --- Table Styles with Hover Fixes --- */
     .data-table {
         width: 100%;
         border-collapse: separate;
@@ -79,16 +85,20 @@
         transition: all 0.2s ease;
     }
 
-    .data-table tbody tr:hover {
-        background: #f9fafb;
-    }
-
     .data-table td {
         padding: 1rem;
         border-bottom: 1px solid #e5e7eb;
         font-size: 0.875rem;
+        color: #4b5563; /* Standard dark gray text */
+        transition: all 0.2s ease;
     }
 
+    .data-table tbody tr:hover td {
+        background-color: #f9fafb; /* Very light gray background on hover */
+        color: #111827; /* Near black text on hover for maximum visibility */
+    }
+
+    /* --- Badges --- */
     .status-badge {
         display: inline-block;
         padding: 0.25rem 0.75rem;
@@ -97,21 +107,11 @@
         font-weight: 600;
     }
 
-    .status-paid {
-        background: #d1fae5;
-        color: #065f46;
-    }
+    .status-paid { background: #d1fae5; color: #065f46; }
+    .status-unpaid { background: #fef3c7; color: #92400e; }
+    .status-overdue { background: #fee2e2; color: #991b1b; }
 
-    .status-unpaid {
-        background: #fef3c7;
-        color: #92400e;
-    }
-
-    .status-overdue {
-        background: #fee2e2;
-        color: #991b1b;
-    }
-
+    /* --- Button Styles --- */
     .action-btn {
         padding: 0.5rem 1rem;
         border-radius: 8px;
@@ -123,25 +123,11 @@
         transition: all 0.3s ease;
     }
 
-    .btn-edit {
-        background: #3b82f6;
-        color: white;
-    }
+    .btn-edit { background: #3b82f6; color: white; }
+    .btn-edit:hover { background: #2563eb; transform: translateY(-1px); }
 
-    .btn-edit:hover {
-        background: #2563eb;
-        transform: translateY(-1px);
-    }
-
-    .btn-delete {
-        background: #ef4444;
-        color: white;
-    }
-
-    .btn-delete:hover {
-        background: #dc2626;
-        transform: translateY(-1px);
-    }
+    .btn-delete { background: #ef4444; color: white; }
+    .btn-delete:hover { background: #dc2626; transform: translateY(-1px); }
 
     .btn-create {
         background: linear-gradient(135deg, #10b981 0%, #059669 100%);
@@ -155,28 +141,34 @@
         gap: 0.5rem;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
     }
 
     .btn-create:hover {
         transform: translateY(-2px);
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        color: white;
     }
 
-    .btn-back {
-        background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+    /* Dashboard Button style from previous prompt */
+    .btn-cancel {
+        background: #6b7280;
         color: white;
-        padding: 0.75rem 1.5rem;
+        padding: 0.75rem 2rem;
+        border: none;
         border-radius: 12px;
-        text-decoration: none;
         font-weight: 600;
+        font-size: 1rem;
+        text-decoration: none;
         display: inline-flex;
         align-items: center;
-        gap: 0.5rem;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
-    .btn-back:hover {
+    .btn-cancel:hover {
+        background: #4b5563;
         transform: translateY(-2px);
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
     }
@@ -185,14 +177,20 @@
 
 {% block content %}
 <div class="admin-container">
-    <!-- Bills Table -->
+    
+    <div class="admin-header">
+        <h1 class="admin-title">Bills Management</h1>
+        <a href="/admin-dashboard/" class="btn-cancel" style="background: #374151; margin: 0;">🏠 Back to Dashboard</a>
+    </div>
+
     <div class="content-card">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
             <h2 style="margin: 0; color: #1f2937; font-weight: 700;">All Bills ({{ bills|length }})</h2>
-            <a href="{% url 'admin_dashboard:bill_create' %}" class="action-btn btn-green" style="padding: 0.75rem 1.5rem; font-size: 0.9rem;">
+            <a href="{% url 'admin_dashboard:bill_create' %}" class="btn-create" style="font-size: 0.9rem;">
                 ➕ Create New Bill
             </a>
         </div>
+        
         {% if bills %}
         <table class="data-table">
             <thead>
