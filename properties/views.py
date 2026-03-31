@@ -51,29 +51,3 @@ def public_unit_list(request):
         'current_sort': sort_by,
     }
     return render(request, 'properties/unit_list.html', context)
-
-def inquiry_list_view(request):
-    inquiries = Inquiry.objects.all().order_by('-created_at')
-    recent_maintenance = MaintenanceRequest.objects.all().order_by('-created_at')[:5]
-
-    # Calculate Metrics
-    total_inquiries = inquiries.count()
-    resolved_inquiries = inquiries.filter(is_resolved=True).count()
-    unresolved_inquiries = inquiries.filter(is_resolved=False).count()
-
-    # Chart Data (Example: Inquiries per month or status. Adjust to your needs)
-    chart_data = {
-        'labels': ['Resolved', 'Unresolved'],
-        'data': [resolved_inquiries, unresolved_inquiries]
-    }
-
-    context = {
-        'inquiries': inquiries,
-        'recent_maintenance': recent_maintenance,
-        'total_inquiries': total_inquiries,
-        'resolved_inquiries': resolved_inquiries,
-        'unresolved_inquiries': unresolved_inquiries,
-        'inquiry_chart_data': json.dumps(chart_data), # Safely pass to JS
-    }
-    
-    return render(request, 'admin_dashboard/inquiry_list.html', context)
