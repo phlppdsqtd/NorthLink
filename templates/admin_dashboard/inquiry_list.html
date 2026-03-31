@@ -5,27 +5,67 @@
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
+    /* Color Variables for Light/Dark Mode auto-switching */
+    :root {
+        --card-bg: rgba(255, 255, 255, 0.95);
+        --text-primary: #1f2937;
+        --text-secondary: #6b7280;
+        --border-color: #e5e7eb;
+        --hover-bg: #f3f4f6;
+        --table-text: #4b5563;
+    }
+
+    /* Automatically switch to dark theme if system is dark */
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --card-bg: rgba(15, 23, 42, 0.95); /* Deep dark blue/black */
+            --text-primary: #ffffff; /* White font on black background */
+            --text-secondary: #94a3b8;
+            --border-color: #334155;
+            --hover-bg: #1e293b;
+            --table-text: #e2e8f0;
+        }
+    }
+
     * {
         font-family: 'Manrope', sans-serif;
+        box-sizing: border-box;
     }
 
     .admin-container {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         min-height: 100vh;
         padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
+    /* Standardized Header */
     .admin-header {
-        background: rgba(255, 255, 255, 0.95);
+        background: var(--card-bg);
         backdrop-filter: blur(10px);
         border-radius: 20px;
-        padding: 2rem;
+        padding: 1.5rem 2rem;
         margin-bottom: 2rem;
         box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        max-width: 1200px;
+        flex-wrap: wrap;
+        gap: 1rem;
+        transition: background-color 0.3s ease;
+    }
+
+    .header-text {
+        display: flex;
+        flex-direction: column;
     }
 
     .admin-title {
-        font-size: 2.5rem;
+        font-size: 2rem;
         font-weight: 800;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         -webkit-background-clip: text;
@@ -34,23 +74,72 @@
     }
 
     .admin-subtitle {
-        color: #6b7280;
-        font-size: 1rem;
-        margin-top: 0.5rem;
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+        margin-top: 0.25rem;
+        font-weight: 500;
     }
 
+    .btn-dashboard {
+        background: #374151;
+        color: white !important;
+        padding: 0.6rem 1.5rem;
+        border-radius: 12px;
+        text-decoration: none !important;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        white-space: nowrap;
+    }
+
+    .btn-dashboard:hover {
+        background: #1f2937;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Content Card */
     .content-card {
-        background: rgba(255, 255, 255, 0.95);
+        background: var(--card-bg);
         border-radius: 16px;
         padding: 2rem;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         margin-bottom: 2rem;
+        width: 100%;
+        max-width: 1200px;
+        transition: background-color 0.3s ease;
+    }
+
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .card-title {
+        margin: 0; 
+        color: var(--text-primary); 
+        font-weight: 700;
+    }
+
+    /* Responsive Table Wrapper */
+    .table-responsive {
+        overflow-x: auto;
+        width: 100%;
+        border-radius: 12px;
     }
 
     .data-table {
         width: 100%;
         border-collapse: separate;
         border-spacing: 0;
+        min-width: 800px;
     }
 
     .data-table thead {
@@ -67,125 +156,131 @@
         letter-spacing: 0.5px;
     }
 
-    .data-table th:first-child {
-        border-radius: 12px 0 0 0;
-    }
-
-    .data-table th:last-child {
-        border-radius: 0 12px 0 0;
-    }
-
-    .data-table tbody tr {
-        transition: all 0.2s ease;
-    }
-
-    .data-table tbody tr:hover {
-        background: #f9fafb;
-    }
+    .data-table th:first-child { border-radius: 12px 0 0 0; }
+    .data-table th:last-child { border-radius: 0 12px 0 0; }
 
     .data-table td {
         padding: 1rem;
-        border-bottom: 1px solid #e5e7eb;
+        border-bottom: 1px solid var(--border-color);
         font-size: 0.875rem;
+        color: var(--table-text);
+        transition: all 0.2s ease;
     }
 
+    .data-table tbody tr:hover td {
+        background-color: var(--hover-bg);
+        color: var(--text-primary);
+    }
+
+    /* Badges */
     .status-badge {
-        display: inline-block;
-        padding: 0.25rem 0.75rem;
-        border-radius: 12px;
+        display: inline-flex;
+        padding: 0.35rem 0.75rem;
+        border-radius: 9999px;
         font-size: 0.75rem;
-        font-weight: 600;
+        font-weight: 700;
+        text-transform: uppercase;
     }
 
-    .status-unresolved {
-        background: #fef3c7;
-        color: #92400e;
-    }
+    .status-resolved { background: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
+    .status-unresolved { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
 
-    .status-resolved {
-        background: #d1fae5;
-        color: #065f46;
-    }
-
+    /* Buttons */
     .action-btn {
-        padding: 0.5rem 1rem;
+        padding: 0.45rem 1rem;
         border-radius: 8px;
-        text-decoration: none;
         font-weight: 600;
-        font-size: 0.85rem;
+        text-decoration: none !important;
+        font-size: 0.875rem;
+        display: inline-flex;
         transition: all 0.3s ease;
-        display: inline-block;
-        margin-right: 0.5rem;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        border: none;
+        cursor: pointer;
     }
 
-    .action-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    .btn-resolve { background: #3b82f6; color: white !important; margin-right: 0.5rem; }
+    .btn-resolve:hover { background: #2563eb; transform: translateY(-2px); }
+
+    .btn-delete { background: #ef4444; color: white !important; }
+    .btn-delete:hover { background: #dc2626; transform: translateY(-2px); }
+
+    .empty-state {
+        color: var(--text-secondary); 
+        text-align: center; 
+        padding: 2rem;
     }
 
-    .btn-resolve {
-        background: #3b82f6;
-        color: white;
-    }
-
-    .btn-delete {
-        background: #ef4444;
-        color: white;
+    /* Mobile Queries */
+    @media (max-width: 768px) {
+        .admin-container { padding: 1rem; }
+        .admin-header { flex-direction: column; text-align: center; }
+        .btn-dashboard { width: 100%; justify-content: center; }
+        .card-header { flex-direction: column; align-items: flex-start; }
     }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="admin-container">
-    <!-- Inquiries Table -->
-    <div class="content-card">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-            <h2 style="margin: 0; color: #1f2937; font-weight: 700;">All Inquiries ({{ inquiries|length }})</h2>
+    
+    <div class="admin-header">
+        <div class="header-text">
+            <h1 class="admin-title">Inquiries Management</h1>
+            <div class="admin-subtitle">Track and respond to prospective tenant inquiries</div>
         </div>
+        <a href="/admin-dashboard/" class="btn-dashboard">🏠 Back to Dashboard</a>
+    </div>
+
+    <div class="content-card">
+        <div class="card-header">
+            <h2 class="card-title">All Inquiries ({{ inquiries|length }})</h2>
+        </div>
+        
         {% if inquiries %}
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th>Unit</th>
-                    <th>Prospect Name</th>
-                    <th>Contact</th>
-                    <th>Message</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for inquiry in inquiries %}
-                <tr>
-                    <td><strong>{{ inquiry.unit.unit_code }}</strong></td>
-                    <td>{{ inquiry.prospect_name }}</td>
-                    <td>{{ inquiry.contact_number }}</td>
-                    <td>{{ inquiry.message|truncatewords:10 }}</td>
-                    <td>{{ inquiry.created_at|date:"M d, Y" }}</td>
-                    <td>
-                        {% if inquiry.is_resolved %}
-                            <span class="status-badge status-resolved">Resolved</span>
-                        {% else %}
-                            <span class="status-badge status-unresolved">Unresolved</span>
-                        {% endif %}
-                    </td>
-                    <td>
-                        <form method="POST" action="{% url 'admin_dashboard:inquiry_resolve' inquiry.pk %}" style="display: inline;">
-                            {% csrf_token %}
-                            <button type="submit" class="action-btn btn-resolve">
-                                {% if inquiry.is_resolved %}Mark Unresolved{% else %}Mark Resolved{% endif %}
-                            </button>
-                        </form>
-                        <a href="{% url 'admin_dashboard:inquiry_delete' inquiry.pk %}" class="action-btn btn-delete">Delete</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Unit</th>
+                        <th>Prospect Name</th>
+                        <th>Contact</th>
+                        <th>Message</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for inquiry in inquiries %}
+                    <tr>
+                        <td><strong>{{ inquiry.unit.unit_code }}</strong></td>
+                        <td>{{ inquiry.prospect_name }}</td>
+                        <td>{{ inquiry.contact_number }}</td>
+                        <td>{{ inquiry.message|truncatewords:10 }}</td>
+                        <td>{{ inquiry.created_at|date:"M d, Y" }}</td>
+                        <td>
+                            {% if inquiry.is_resolved %}
+                                <span class="status-badge status-resolved">Resolved</span>
+                            {% else %}
+                                <span class="status-badge status-unresolved">Unresolved</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <form method="POST" action="{% url 'admin_dashboard:inquiry_resolve' inquiry.pk %}" style="display: inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="action-btn btn-resolve">
+                                    {% if inquiry.is_resolved %}Mark Unresolved{% else %}Mark Resolved{% endif %}
+                                </button>
+                            </form>
+                            <a href="{% url 'admin_dashboard:inquiry_delete' inquiry.pk %}" class="action-btn btn-delete">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
         {% else %}
-        <p style="color: #6b7280; text-align: center; padding: 2rem;">No inquiries found.</p>
+        <p class="empty-state">No inquiries found.</p>
         {% endif %}
     </div>
 </div>
