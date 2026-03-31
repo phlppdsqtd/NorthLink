@@ -5,6 +5,30 @@
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
+    /* Color Variables for Light/Dark Mode auto-switching */
+    :root {
+        --card-bg: rgba(255, 255, 255, 0.95);
+        --text-primary: #1f2937;
+        --text-secondary: #6b7280;
+        --details-bg: #f9fafb;
+        --btn-cancel-bg: #e5e7eb;
+        --btn-cancel-text: #374151;
+        --note-text: #9ca3af;
+    }
+
+    /* Automatically switch to dark theme if system is dark */
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --card-bg: rgba(15, 23, 42, 0.95); /* Deep dark blue/black */
+            --text-primary: #ffffff; /* White font on black background */
+            --text-secondary: #9ca3af;
+            --details-bg: #1e293b;
+            --btn-cancel-bg: #374151;
+            --btn-cancel-text: #ffffff;
+            --note-text: #6b7280;
+        }
+    }
+
     * {
         font-family: 'Manrope', sans-serif;
         box-sizing: border-box;
@@ -21,13 +45,14 @@
     }
 
     .content-card {
-        background: rgba(255, 255, 255, 0.95);
+        background: var(--card-bg);
         border-radius: 16px;
         padding: 3rem 2.5rem;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         text-align: center;
         max-width: 500px;
         width: 100%;
+        transition: background-color 0.3s ease;
     }
 
     .warning-icon {
@@ -37,17 +62,19 @@
 
     .delete-message {
         font-size: 1.1rem;
-        color: #374151;
+        color: var(--text-primary);
         margin-bottom: 2rem;
         line-height: 1.6;
+        transition: color 0.3s ease;
     }
 
     .inquiry-details {
-        background: #f9fafb;
+        background: var(--details-bg);
         border-radius: 12px;
         padding: 1.5rem;
         margin-bottom: 2rem;
         text-align: left;
+        transition: background-color 0.3s ease;
     }
 
     .detail-row {
@@ -59,12 +86,14 @@
 
     .detail-label {
         font-weight: 600;
-        color: #6b7280;
+        color: var(--text-secondary);
+        transition: color 0.3s ease;
     }
 
     .detail-value {
-        color: #1f2937;
+        color: var(--text-primary);
         font-weight: 500;
+        transition: color 0.3s ease;
     }
 
     .button-group {
@@ -75,13 +104,14 @@
 
     .btn-delete {
         background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-        color: white;
+        color: white !important;
         padding: 0.75rem 2rem;
         border: none;
         border-radius: 12px;
         font-size: 0.95rem;
         font-weight: 600;
         cursor: pointer;
+        text-decoration: none !important;
         transition: all 0.3s ease;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
@@ -92,14 +122,14 @@
     }
 
     .btn-cancel {
-        background: #e5e7eb;
-        color: #374151;
+        background: var(--btn-cancel-bg);
+        color: var(--btn-cancel-text) !important;
         padding: 0.75rem 2rem;
         border: none;
         border-radius: 12px;
         font-size: 0.95rem;
         font-weight: 600;
-        text-decoration: none;
+        text-decoration: none !important;
         cursor: pointer;
         transition: all 0.3s ease;
         display: inline-block;
@@ -107,7 +137,22 @@
 
     .btn-cancel:hover {
         background: #d1d5db;
+        color: #1f2937 !important;
         transform: translateY(-2px);
+    }
+    
+    @media (prefers-color-scheme: dark) {
+        .btn-cancel:hover {
+            background: #4b5563;
+            color: #ffffff !important;
+        }
+    }
+
+    .footer-note {
+        font-size: 0.85rem;
+        color: var(--note-text);
+        margin: 0;
+        transition: color 0.3s ease;
     }
 </style>
 {% endblock %}
@@ -116,11 +161,7 @@
 <div class="admin-container">
     <div class="content-card">
         <div class="warning-icon">⚠️</div>
-        {% if inquiry.is_resolved %}
-            <h2 class="delete-message">Mark Inquiry as Unresolved?</h2>
-        {% else %}
-            <h2 class="delete-message">Mark Inquiry as Resolved?</h2>
-        {% endif %}
+        <h2 class="delete-message">Are you sure you want to delete this inquiry?</h2>
 
         <div class="inquiry-details">
             <div class="detail-row">
@@ -143,9 +184,9 @@
                 <span class="detail-label">Current Status:</span>
                 <span class="detail-value">
                     {% if inquiry.is_resolved %}
-                        <span style="color: #065f46;">Resolved</span>
+                        <span style="color: #10b981; font-weight: 700;">Resolved</span>
                     {% else %}
-                        <span style="color: #92400e;">Unresolved</span>
+                        <span style="color: #f59e0b; font-weight: 700;">Unresolved</span>
                     {% endif %}
                 </span>
             </div>
@@ -154,15 +195,13 @@
         <form method="POST" style="margin-bottom: 2rem;">
             {% csrf_token %}
             <div class="button-group">
-                <button type="submit" class="btn-delete">
-                    {% if inquiry.is_resolved %}Mark Unresolved{% else %}Mark Resolved{% endif %}
-                </button>
+                <button type="submit" class="btn-delete">Yes, Delete Inquiry</button>
                 <a href="{% url 'admin_dashboard:inquiry_list' %}" class="btn-cancel">Cancel</a>
             </div>
         </form>
 
-        <p style="font-size: 0.85rem; color: #9ca3af; margin: 0;">
-            To permanently delete this inquiry, use the delete button from the inquiry list.
+        <p class="footer-note">
+            This action is permanent and cannot be undone.
         </p>
     </div>
 </div>

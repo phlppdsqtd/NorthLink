@@ -5,6 +5,30 @@
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
+    /* Color Variables for Light/Dark Mode auto-switching */
+    :root {
+        --card-bg: rgba(255, 255, 255, 0.95);
+        --text-primary: #374151;
+        --text-strong: #111827;
+        --text-secondary: #6b7280;
+        --details-bg: #f9fafb;
+        --border-solid: #e5e7eb;
+        --border-dashed: #d1d5db;
+    }
+
+    /* Automatically switch to dark theme if system is dark */
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --card-bg: rgba(15, 23, 42, 0.95); /* Deep dark blue/black */
+            --text-primary: #e5e7eb;
+            --text-strong: #ffffff; /* White font on black background */
+            --text-secondary: #9ca3af;
+            --details-bg: #1e293b;
+            --border-solid: #374151;
+            --border-dashed: #4b5563;
+        }
+    }
+
     * {
         font-family: 'Manrope', sans-serif;
         box-sizing: border-box; /* Ensures padding doesn't break widths */
@@ -21,7 +45,7 @@
 
     /* Added missing header usage to match your CSS */
     .admin-header {
-        background: rgba(255, 255, 255, 0.95);
+        background: var(--card-bg);
         backdrop-filter: blur(10px);
         border-radius: 20px;
         padding: 1.5rem 2rem;
@@ -30,6 +54,7 @@
         width: 100%;
         max-width: 600px;
         text-align: center;
+        transition: background-color 0.3s ease;
     }
 
     .admin-title {
@@ -42,13 +67,14 @@
     }
 
     .content-card {
-        background: rgba(255, 255, 255, 0.95);
+        background: var(--card-bg);
         border-radius: 16px;
         padding: 2.5rem 2rem;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         text-align: center;
         width: 100%;
         max-width: 600px; /* Constrains card width for better readability */
+        transition: background-color 0.3s ease;
     }
 
     .warning-icon {
@@ -60,18 +86,20 @@
 
     .delete-message {
         font-size: 1.125rem;
-        color: #374151;
+        color: var(--text-primary);
         margin-bottom: 2rem;
         font-weight: 500;
+        transition: color 0.3s ease;
     }
 
     .bill-details {
-        background: #f9fafb;
+        background: var(--details-bg);
         padding: 1.5rem;
         border-radius: 12px;
-        border: 1px solid #e5e7eb;
+        border: 1px solid var(--border-solid);
         margin-bottom: 2rem;
         text-align: left;
+        transition: all 0.3s ease;
     }
 
     .bill-detail {
@@ -79,8 +107,9 @@
         font-size: 0.95rem;
         display: flex;
         justify-content: space-between; /* Creates a clean key-value layout */
-        border-bottom: 1px dashed #d1d5db;
+        border-bottom: 1px dashed var(--border-dashed);
         padding-bottom: 0.5rem;
+        transition: border-color 0.3s ease;
     }
 
     .bill-detail:last-child {
@@ -91,12 +120,14 @@
 
     .bill-label {
         font-weight: 600;
-        color: #6b7280;
+        color: var(--text-secondary);
+        transition: color 0.3s ease;
     }
 
     .bill-value {
         font-weight: 700;
-        color: #111827;
+        color: var(--text-strong);
+        transition: color 0.3s ease;
     }
 
     /* Grouped buttons using Flexbox */
@@ -115,11 +146,12 @@
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         text-align: center;
         flex: 1; /* Makes buttons equal width */
+        text-decoration: none !important;
     }
 
     .btn-delete {
         background: #ef4444;
-        color: white;
+        color: white !important;
         border: none;
         cursor: pointer;
     }
@@ -132,8 +164,7 @@
 
     .btn-cancel {
         background: #6b7280;
-        color: white;
-        text-decoration: none;
+        color: white !important;
         display: inline-block;
     }
 

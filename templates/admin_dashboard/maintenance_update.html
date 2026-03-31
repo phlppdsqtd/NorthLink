@@ -5,6 +5,28 @@
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
+    /* Color Variables for Light/Dark Mode auto-switching */
+    :root {
+        --card-bg: rgba(255, 255, 255, 0.95);
+        --text-primary: #1f2937;
+        --text-secondary: #6b7280;
+        --border-color: #e5e7eb;
+        --input-bg: #ffffff;
+        --details-bg: #f9fafb;
+    }
+
+    /* Automatically switch to dark theme if system is dark */
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --card-bg: rgba(15, 23, 42, 0.95); /* Deep dark blue/black */
+            --text-primary: #ffffff; /* White font on black background */
+            --text-secondary: #9ca3af;
+            --border-color: #374151;
+            --input-bg: #1e293b;
+            --details-bg: #0f172a;
+        }
+    }
+
     * {
         font-family: 'Manrope', sans-serif;
         box-sizing: border-box; /* Crucial for preventing input overflow */
@@ -21,7 +43,7 @@
 
     /* Standardized Header */
     .admin-header {
-        background: rgba(255, 255, 255, 0.95);
+        background: var(--card-bg);
         backdrop-filter: blur(10px);
         border-radius: 20px;
         padding: 1.5rem 2rem;
@@ -32,6 +54,7 @@
         align-items: center;
         width: 100%;
         max-width: 800px; 
+        transition: background-color 0.3s ease;
     }
 
     .admin-title {
@@ -45,10 +68,10 @@
 
     .btn-dashboard {
         background: #374151;
-        color: white;
+        color: white !important;
         padding: 0.6rem 1.5rem;
         border-radius: 12px;
-        text-decoration: none;
+        text-decoration: none !important;
         font-weight: 600;
         display: inline-flex;
         align-items: center;
@@ -64,37 +87,41 @@
 
     /* Content Card */
     .content-card {
-        background: rgba(255, 255, 255, 0.95);
+        background: var(--card-bg);
         border-radius: 16px;
         padding: 2.5rem;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         width: 100%;
         max-width: 800px;
+        transition: background-color 0.3s ease;
     }
 
     .section-title {
         margin-top: 0;
         margin-bottom: 1.5rem;
-        color: #1f2937;
+        color: var(--text-primary);
         font-weight: 700;
         font-size: 1.5rem;
+        transition: color 0.3s ease;
     }
 
     /* Request Details Display */
     .request-details {
-        background: #f9fafb;
+        background: var(--details-bg);
         padding: 1.5rem;
         border-radius: 12px;
         margin-bottom: 2.5rem;
-        border: 1px solid #e5e7eb;
+        border: 1px solid var(--border-color);
+        transition: background-color 0.3s ease, border-color 0.3s ease;
     }
 
     .request-detail {
         margin-bottom: 0.75rem;
         font-size: 0.95rem;
         display: flex;
-        border-bottom: 1px dashed #d1d5db;
+        border-bottom: 1px dashed var(--border-color);
         padding-bottom: 0.75rem;
+        transition: border-color 0.3s ease;
     }
 
     .request-detail:last-child {
@@ -105,14 +132,16 @@
 
     .request-label {
         font-weight: 600;
-        color: #6b7280;
+        color: var(--text-secondary);
         min-width: 140px;
         flex-shrink: 0;
+        transition: color 0.3s ease;
     }
 
     .request-value {
-        color: #111827;
+        color: var(--text-primary);
         font-weight: 500;
+        transition: color 0.3s ease;
     }
 
     /* Badges */
@@ -138,20 +167,21 @@
     .form-label {
         display: block;
         font-weight: 600;
-        color: #374151;
+        color: var(--text-primary);
         margin-bottom: 0.5rem;
+        transition: color 0.3s ease;
     }
 
     /* Standardized Select Input */
     .form-control {
         width: 100%;
         padding: 0.75rem 1rem;
-        background-color: #ffffff !important;
-        border: 2px solid #e5e7eb;
+        background-color: var(--input-bg) !important;
+        border: 2px solid var(--border-color);
         border-radius: 8px;
         font-size: 1rem;
         font-family: 'Manrope', sans-serif;
-        color: #1f2937 !important;
+        color: var(--text-primary) !important;
         transition: all 0.3s ease;
         min-height: 3rem;
         appearance: none;
@@ -172,8 +202,8 @@
     }
 
     .form-control option {
-        color: #1f2937;
-        background-color: #ffffff;
+        color: var(--text-primary);
+        background-color: var(--input-bg);
         padding: 0.5rem;
     }
 
@@ -186,7 +216,7 @@
 
     .btn-submit {
         background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-        color: white;
+        color: white !important;
         padding: 0.75rem 2rem;
         border: none;
         border-radius: 12px;
@@ -196,6 +226,7 @@
         transition: all 0.3s ease;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         text-align: center;
+        text-decoration: none !important;
     }
 
     .btn-submit:hover {
@@ -205,13 +236,13 @@
 
     .btn-cancel {
         background: #6b7280;
-        color: white;
+        color: white !important;
         padding: 0.75rem 2rem;
         border: none;
         border-radius: 12px;
         font-weight: 600;
         font-size: 1rem;
-        text-decoration: none;
+        text-decoration: none !important;
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -223,6 +254,13 @@
         background: #4b5563;
         transform: translateY(-2px);
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .separator {
+        border: 0; 
+        border-top: 1px solid var(--border-color); 
+        margin: 2rem 0;
+        transition: border-color 0.3s ease;
     }
 
     /* Mobile Responsiveness */
@@ -295,7 +333,7 @@
             </div>
         </div>
 
-        <hr style="border: 0; border-top: 1px solid #e5e7eb; margin: 2rem 0;">
+        <hr class="separator">
 
         <h2 class="section-title">Update Status</h2>
 

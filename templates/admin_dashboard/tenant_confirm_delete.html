@@ -5,6 +5,30 @@
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
+    /* Color Variables for Light/Dark Mode auto-switching */
+    :root {
+        --card-bg: rgba(255, 255, 255, 0.95);
+        --text-primary: #111827;
+        --text-secondary: #6b7280;
+        --details-bg: #f9fafb;
+        --details-border: #fca5a5;
+        --border-color: #d1d5db;
+        --message-text: #374151;
+    }
+
+    /* Automatically switch to dark theme if system is dark */
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --card-bg: rgba(15, 23, 42, 0.95); /* Deep dark blue/black */
+            --text-primary: #ffffff; /* White font on black background */
+            --text-secondary: #9ca3af;
+            --details-bg: #1e293b; /* Dark slate for details box */
+            --details-border: #991b1b;
+            --border-color: #374151;
+            --message-text: #e5e7eb;
+        }
+    }
+
     * {
         font-family: 'Manrope', sans-serif;
         box-sizing: border-box;
@@ -21,7 +45,7 @@
 
     /* Standardized Header */
     .admin-header {
-        background: rgba(255, 255, 255, 0.95);
+        background: var(--card-bg);
         backdrop-filter: blur(10px);
         border-radius: 20px;
         padding: 1.5rem 2rem;
@@ -32,6 +56,7 @@
         align-items: center;
         width: 100%;
         max-width: 800px;
+        transition: background-color 0.3s ease;
     }
 
     .admin-title {
@@ -45,10 +70,10 @@
 
     .btn-dashboard {
         background: #374151;
-        color: white;
+        color: white !important;
         padding: 0.6rem 1.5rem;
         border-radius: 12px;
-        text-decoration: none;
+        text-decoration: none !important;
         font-weight: 600;
         display: inline-flex;
         align-items: center;
@@ -64,13 +89,14 @@
 
     /* Content Card */
     .content-card {
-        background: rgba(255, 255, 255, 0.95);
+        background: var(--card-bg);
         border-radius: 16px;
         padding: 3rem 2.5rem;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         text-align: center;
         width: 100%;
         max-width: 800px;
+        transition: background-color 0.3s ease;
     }
 
     .warning-icon {
@@ -88,29 +114,32 @@
 
     .delete-message {
         font-size: 1.15rem;
-        color: #374151;
+        color: var(--message-text);
         margin-bottom: 2.5rem;
         line-height: 1.6;
         font-weight: 500;
         padding: 0 1rem;
+        transition: color 0.3s ease;
     }
 
     /* Standardized Key-Value Details Display */
     .tenant-details {
-        background: #f9fafb;
+        background: var(--details-bg);
         padding: 1.5rem;
         border-radius: 12px;
         margin-bottom: 2.5rem;
         text-align: left;
-        border: 1px solid #fca5a5; /* Subtle red border for context */
+        border: 1px solid var(--details-border);
+        transition: background-color 0.3s ease, border-color 0.3s ease;
     }
 
     .tenant-detail {
         margin-bottom: 0.75rem;
         font-size: 0.95rem;
         display: flex;
-        border-bottom: 1px dashed #d1d5db;
+        border-bottom: 1px dashed var(--border-color);
         padding-bottom: 0.75rem;
+        transition: border-color 0.3s ease;
     }
 
     .tenant-detail:last-child {
@@ -121,14 +150,16 @@
 
     .tenant-label {
         font-weight: 600;
-        color: #6b7280;
+        color: var(--text-secondary);
         min-width: 120px;
         flex-shrink: 0;
+        transition: color 0.3s ease;
     }
 
     .tenant-value {
-        color: #111827;
+        color: var(--text-primary);
         font-weight: 600;
+        transition: color 0.3s ease;
     }
 
     /* Standardized Flexbox Button Group */
@@ -140,13 +171,14 @@
 
     .btn-delete {
         background: #ef4444;
-        color: white;
+        color: white !important;
         padding: 0.75rem 2rem;
         border: none;
         border-radius: 12px;
         font-weight: 600;
         font-size: 1rem;
         cursor: pointer;
+        text-decoration: none !important;
         transition: all 0.3s ease;
         box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
         display: inline-flex;
@@ -162,13 +194,13 @@
 
     .btn-cancel {
         background: #6b7280;
-        color: white;
+        color: white !important;
         padding: 0.75rem 2rem;
         border: none;
         border-radius: 12px;
         font-weight: 600;
         font-size: 1rem;
-        text-decoration: none;
+        text-decoration: none !important;
         display: inline-flex;
         align-items: center;
         justify-content: center;

@@ -5,6 +5,28 @@
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
+    /* Color Variables for Light/Dark Mode auto-switching */
+    :root {
+        --card-bg: rgba(255, 255, 255, 0.95);
+        --text-primary: #1f2937;
+        --text-secondary: #6b7280;
+        --border-color: #e5e7eb;
+        --input-bg: #ffffff;
+        --input-text: #1f2937;
+    }
+
+    /* Automatically switch to dark theme if system is dark */
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --card-bg: rgba(15, 23, 42, 0.95); /* Deep dark blue/black */
+            --text-primary: #ffffff; /* White font on black background */
+            --text-secondary: #94a3b8;
+            --border-color: #334155;
+            --input-bg: #1e293b;
+            --input-text: #f8fafc;
+        }
+    }
+
     * {
         font-family: 'Manrope', sans-serif;
         box-sizing: border-box; /* Prevents inputs from overflowing their containers */
@@ -21,7 +43,7 @@
 
     /* Standardized Header Layout */
     .admin-header {
-        background: rgba(255, 255, 255, 0.95);
+        background: var(--card-bg);
         backdrop-filter: blur(10px);
         border-radius: 20px;
         padding: 1.5rem 2rem;
@@ -32,6 +54,7 @@
         align-items: center;
         width: 100%;
         max-width: 1000px; /* Matched to form width */
+        transition: background-color 0.3s ease;
     }
 
     .header-text {
@@ -49,18 +72,19 @@
     }
 
     .admin-subtitle {
-        color: #6b7280;
+        color: var(--text-secondary);
         font-size: 0.95rem;
         margin-top: 0.25rem;
         font-weight: 500;
+        transition: color 0.3s ease;
     }
 
     .btn-dashboard {
         background: #374151;
-        color: white;
+        color: white !important;
         padding: 0.6rem 1.5rem;
         border-radius: 12px;
-        text-decoration: none;
+        text-decoration: none !important;
         font-weight: 600;
         display: inline-flex;
         align-items: center;
@@ -77,12 +101,13 @@
 
     /* Content Card */
     .content-card {
-        background: rgba(255, 255, 255, 0.95);
+        background: var(--card-bg);
         border-radius: 16px;
         padding: 2.5rem;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         width: 100%;
         max-width: 1000px;
+        transition: background-color 0.3s ease;
     }
 
     /* Form Layout Grid */
@@ -93,11 +118,12 @@
     .section-title {
         font-size: 1.25rem;
         font-weight: 700;
-        color: #1f2937;
+        color: var(--text-primary);
         margin-top: 0;
         margin-bottom: 1.5rem;
         padding-bottom: 0.5rem;
-        border-bottom: 2px solid #e5e7eb;
+        border-bottom: 2px solid var(--border-color);
+        transition: color 0.3s ease, border-color 0.3s ease;
     }
 
     .form-row {
@@ -114,9 +140,10 @@
     .form-label {
         display: block;
         font-weight: 600;
-        color: #374151;
+        color: var(--text-primary);
         margin-bottom: 0.5rem;
         font-size: 0.95rem;
+        transition: color 0.3s ease;
     }
 
     /* Standardized Input Styling (Targets standard Django outputs too) */
@@ -129,13 +156,13 @@
     select {
         width: 100%;
         padding: 0.75rem 1rem;
-        border: 2px solid #e5e7eb;
+        border: 2px solid var(--border-color);
         border-radius: 8px;
         font-size: 1rem;
         font-family: 'Manrope', sans-serif;
-        color: #1f2937;
+        color: var(--input-text);
         transition: all 0.3s ease;
-        background-color: #ffffff;
+        background-color: var(--input-bg);
         min-height: 3rem;
     }
 
@@ -178,18 +205,20 @@
         display: flex;
         gap: 1rem;
         padding-top: 1.5rem;
-        border-top: 1px solid #e5e7eb;
+        border-top: 1px solid var(--border-color);
+        transition: border-color 0.3s ease;
     }
 
     .btn-submit {
         background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-        color: white;
+        color: white !important;
         padding: 0.75rem 2.5rem;
         border: none;
         border-radius: 12px;
         font-weight: 600;
         font-size: 1rem;
         cursor: pointer;
+        text-decoration: none !important;
         transition: all 0.3s ease;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         text-align: center;
@@ -202,13 +231,13 @@
 
     .btn-cancel {
         background: #6b7280;
-        color: white;
+        color: white !important;
         padding: 0.75rem 2rem;
         border: none;
         border-radius: 12px;
         font-weight: 600;
         font-size: 1rem;
-        text-decoration: none;
+        text-decoration: none !important;
         display: inline-flex;
         align-items: center;
         justify-content: center;

@@ -5,6 +5,28 @@
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
+    /* Color Variables for Light/Dark Mode auto-switching */
+    :root {
+        --card-bg: rgba(255, 255, 255, 0.95);
+        --text-primary: #1f2937;
+        --text-secondary: #6b7280;
+        --border-color: #e5e7eb;
+        --hover-bg: #f3f4f6;
+        --table-text: #4b5563;
+    }
+
+    /* Automatically switch to dark theme if system is dark */
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --card-bg: rgba(15, 23, 42, 0.95); /* Deep dark blue/black */
+            --text-primary: #ffffff; /* White font on black background */
+            --text-secondary: #94a3b8;
+            --border-color: #334155;
+            --hover-bg: #1e293b;
+            --table-text: #e2e8f0;
+        }
+    }
+
     * {
         font-family: 'Manrope', sans-serif;
         box-sizing: border-box;
@@ -21,7 +43,7 @@
 
     /* Standardized Header - Fixed for stacking */
     .admin-header {
-        background: rgba(255, 255, 255, 0.95);
+        background: var(--card-bg);
         backdrop-filter: blur(10px);
         border-radius: 20px;
         padding: 1.5rem 2rem;
@@ -34,6 +56,7 @@
         max-width: 1200px;
         flex-wrap: wrap; /* Allows stacking on small screens */
         gap: 1rem;
+        transition: background-color 0.3s ease;
     }
 
     .header-text {
@@ -51,7 +74,7 @@
     }
 
     .admin-subtitle {
-        color: #6b7280;
+        color: var(--text-secondary);
         font-size: 0.95rem;
         margin-top: 0.25rem;
         font-weight: 500;
@@ -59,10 +82,10 @@
 
     .btn-dashboard {
         background: #374151;
-        color: white;
+        color: white !important;
         padding: 0.6rem 1.5rem;
         border-radius: 12px;
-        text-decoration: none;
+        text-decoration: none !important;
         font-weight: 600;
         display: inline-flex;
         align-items: center;
@@ -80,13 +103,14 @@
 
     /* Content Card */
     .content-card {
-        background: rgba(255, 255, 255, 0.95);
+        background: var(--card-bg);
         border-radius: 16px;
         padding: 2rem;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         margin-bottom: 2rem;
         width: 100%;
         max-width: 1200px;
+        transition: background-color 0.3s ease;
     }
 
     .card-header {
@@ -96,6 +120,12 @@
         margin-bottom: 1.5rem;
         flex-wrap: wrap;
         gap: 1rem;
+    }
+
+    .card-title {
+        margin: 0; 
+        color: var(--text-primary); 
+        font-weight: 700;
     }
 
     /* Responsive Table Wrapper */
@@ -131,15 +161,15 @@
 
     .data-table td {
         padding: 1rem;
-        border-bottom: 1px solid #e5e7eb;
+        border-bottom: 1px solid var(--border-color);
         font-size: 0.875rem;
-        color: #4b5563;
+        color: var(--table-text);
         transition: all 0.2s ease;
     }
 
     .data-table tbody tr:hover td {
-        background-color: #f3f4f6;
-        color: #111827;
+        background-color: var(--hover-bg);
+        color: var(--text-primary);
     }
 
     /* Badges */
@@ -161,24 +191,24 @@
         padding: 0.45rem 1rem;
         border-radius: 8px;
         font-weight: 600;
-        text-decoration: none;
+        text-decoration: none !important;
         font-size: 0.875rem;
         display: inline-flex;
         transition: all 0.3s ease;
     }
 
-    .btn-edit { background: #3b82f6; color: white; margin-right: 0.5rem; }
+    .btn-edit { background: #3b82f6; color: white !important; margin-right: 0.5rem; }
     .btn-edit:hover { background: #2563eb; transform: translateY(-2px); }
 
-    .btn-delete { background: #ef4444; color: white; }
+    .btn-delete { background: #ef4444; color: white !important; }
     .btn-delete:hover { background: #dc2626; transform: translateY(-2px); }
 
     .btn-create {
         background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-        color: white;
+        color: white !important;
         padding: 0.75rem 1.5rem;
         border-radius: 12px;
-        text-decoration: none;
+        text-decoration: none !important;
         font-weight: 600;
         display: inline-flex;
         align-items: center;
@@ -190,6 +220,22 @@
     .btn-create:hover {
         transform: translateY(-2px);
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .empty-state {
+        color: var(--text-secondary); 
+        text-align: center; 
+        padding: 2rem;
+    }
+
+    .empty-state-link {
+        color: #3b82f6;
+        font-weight: 600;
+        text-decoration: none !important;
+    }
+
+    .empty-state-link:hover {
+        text-decoration: underline !important; /* Optional: Keep underline on hover for visibility, or remove if strictly unwanted */
     }
 
     /* Mobile Queries */
@@ -216,7 +262,7 @@
 
     <div class="content-card">
         <div class="card-header">
-            <h2 style="margin: 0; color: #1f2937; font-weight: 700;">All Bills ({{ bills|length }})</h2>
+            <h2 class="card-title">All Bills ({{ bills|length }})</h2>
             <a href="{% url 'admin_dashboard:bill_create' %}" class="btn-create">
                 ➕ Create New Bill
             </a>
@@ -261,7 +307,7 @@
             </table>
         </div>
         {% else %}
-        <p style="color: #6b7280; text-align: center; padding: 2rem;">No bills found. <a href="{% url 'admin_dashboard:bill_create' %}" style="color: #3b82f6; font-weight: 600;">Create your first bill</a>.</p>
+        <p class="empty-state">No bills found. <a href="{% url 'admin_dashboard:bill_create' %}" class="empty-state-link">Create your first bill</a>.</p>
         {% endif %}
     </div>
 </div>

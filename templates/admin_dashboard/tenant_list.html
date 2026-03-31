@@ -5,6 +5,28 @@
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
+    /* Color Variables for Light/Dark Mode auto-switching */
+    :root {
+        --card-bg: rgba(255, 255, 255, 0.95);
+        --text-primary: #1f2937;
+        --text-secondary: #6b7280;
+        --border-color: #e5e7eb;
+        --hover-bg: #f3f4f6;
+        --table-text: #374151;
+    }
+
+    /* Automatically switch to dark theme if system is dark */
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --card-bg: rgba(15, 23, 42, 0.95); /* Deep dark blue/black */
+            --text-primary: #ffffff; /* White font on black background */
+            --text-secondary: #94a3b8;
+            --border-color: #334155;
+            --hover-bg: #1e293b;
+            --table-text: #e2e8f0;
+        }
+    }
+
     * {
         font-family: 'Manrope', sans-serif;
         box-sizing: border-box; 
@@ -21,7 +43,7 @@
 
     /* Fixed Header layout */
     .admin-header {
-        background: rgba(255, 255, 255, 0.95);
+        background: var(--card-bg);
         backdrop-filter: blur(10px);
         border-radius: 20px;
         padding: 1.5rem 2rem;
@@ -32,6 +54,7 @@
         align-items: center;
         width: 100%;
         max-width: 1200px;
+        transition: background-color 0.3s ease;
     }
 
     .header-text {
@@ -49,7 +72,7 @@
     }
 
     .admin-subtitle {
-        color: #6b7280;
+        color: var(--text-secondary);
         font-size: 0.95rem;
         margin-top: 0.25rem;
         font-weight: 500;
@@ -58,10 +81,10 @@
     /* Dashboard Button (formerly .btn-back) */
     .btn-dashboard {
         background: #374151;
-        color: white;
+        color: white !important;
         padding: 0.6rem 1.5rem;
         border-radius: 12px;
-        text-decoration: none;
+        text-decoration: none !important;
         font-weight: 600;
         display: inline-flex;
         align-items: center;
@@ -78,13 +101,14 @@
 
     /* Content Card */
     .content-card {
-        background: rgba(255, 255, 255, 0.95);
+        background: var(--card-bg);
         border-radius: 16px;
         padding: 2rem;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         margin-bottom: 2rem;
         width: 100%;
         max-width: 1200px;
+        transition: background-color 0.3s ease;
     }
 
     /* Reusable Card Header */
@@ -99,7 +123,7 @@
 
     .card-title {
         margin: 0;
-        color: #1f2937;
+        color: var(--text-primary);
         font-weight: 700;
         font-size: 1.25rem;
     }
@@ -141,16 +165,18 @@
         transition: background-color 0.2s ease;
     }
 
-    .data-table tbody tr:hover {
-        background: #f3f4f6; 
+    .data-table tbody tr:hover td {
+        background-color: var(--hover-bg); 
+        color: var(--text-primary);
     }
 
     .data-table td {
         padding: 1rem;
-        border-bottom: 1px solid #e5e7eb;
+        border-bottom: 1px solid var(--border-color);
         font-size: 0.9rem;
-        color: #374151;
+        color: var(--table-text);
         vertical-align: middle;
+        transition: all 0.2s ease;
     }
 
     /* Action Buttons */
@@ -158,7 +184,7 @@
         padding: 0.45rem 1rem;
         border-radius: 8px;
         font-weight: 600;
-        text-decoration: none;
+        text-decoration: none !important;
         font-size: 0.875rem;
         display: inline-flex;
         align-items: center;
@@ -168,7 +194,7 @@
 
     .btn-edit {
         background: #3b82f6;
-        color: white;
+        color: white !important;
         margin-right: 0.5rem;
     }
 
@@ -180,7 +206,7 @@
 
     .btn-delete {
         background: #ef4444;
-        color: white;
+        color: white !important;
     }
 
     .btn-delete:hover {
@@ -191,12 +217,12 @@
 
     .btn-create {
         background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-        color: white;
+        color: white !important;
         padding: 0.75rem 1.5rem;
         border-radius: 12px;
         font-weight: 600;
         font-size: 0.95rem;
-        text-decoration: none;
+        text-decoration: none !important;
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
@@ -213,17 +239,17 @@
     .empty-state {
         text-align: center;
         padding: 3rem 1rem;
-        color: #6b7280;
+        color: var(--text-secondary);
     }
 
     .empty-state a {
         color: #3b82f6;
         font-weight: 600;
-        text-decoration: none;
+        text-decoration: none !important;
     }
 
     .empty-state a:hover {
-        text-decoration: underline;
+        text-decoration: underline !important; /* Keep underline on hover for links, unless you prefer it strictly off */
     }
 
     /* Mobile Responsiveness */

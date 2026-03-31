@@ -5,6 +5,24 @@
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
+    /* Color Variables for Light/Dark Mode auto-switching */
+    :root {
+        --card-bg: rgba(255, 255, 255, 0.95);
+        --text-primary: #1f2937;
+        --border-color: #e5e7eb;
+        --input-bg: #ffffff;
+    }
+
+    /* Automatically switch to dark theme if system is dark */
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --card-bg: rgba(15, 23, 42, 0.95); /* Deep dark blue/black */
+            --text-primary: #ffffff; /* White font on black background */
+            --border-color: #374151;
+            --input-bg: #1e293b;
+        }
+    }
+
     * {
         font-family: 'Manrope', sans-serif;
         box-sizing: border-box; /* Crucial for preventing input overflow */
@@ -20,7 +38,7 @@
     }
 
     .admin-header {
-        background: rgba(255, 255, 255, 0.95);
+        background: var(--card-bg);
         backdrop-filter: blur(10px);
         border-radius: 20px;
         padding: 1.5rem 2rem;
@@ -31,6 +49,7 @@
         align-items: center;
         width: 100%;
         max-width: 900px; /* Constrain max width for ultra-wide screens */
+        transition: background-color 0.3s ease;
     }
 
     .admin-title {
@@ -43,12 +62,13 @@
     }
 
     .content-card {
-        background: rgba(255, 255, 255, 0.95);
+        background: var(--card-bg);
         border-radius: 16px;
         padding: 2.5rem;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         width: 100%;
         max-width: 900px;
+        transition: background-color 0.3s ease;
     }
 
     /* --- Form Styles --- */
@@ -66,8 +86,9 @@
 
     .form-label {
         font-weight: 600;
-        color: #374151;
+        color: var(--text-primary);
         margin-bottom: 0.5rem;
+        transition: color 0.3s ease;
     }
 
     /* Unified input styling with min-height and line-height */
@@ -79,12 +100,12 @@
     textarea {
         width: 100%;
         padding: 0.75rem 1rem;
-        background-color: #ffffff !important; /* Defeats dark mode extension glitches */
-        border: 2px solid #e5e7eb;
+        background-color: var(--input-bg) !important; 
+        border: 2px solid var(--border-color);
         border-radius: 8px;
         font-size: 1rem;
         font-family: 'Manrope', sans-serif;
-        color: #1f2937 !important; /* Ensures text is always visible */
+        color: var(--text-primary) !important; 
         transition: all 0.3s ease;
         box-sizing: border-box;
         min-height: 3rem; /* Prevents text squishing */
@@ -112,8 +133,8 @@
     }
 
     select option {
-        color: #1f2937;
-        background-color: #ffffff;
+        color: var(--text-primary);
+        background-color: var(--input-bg);
         padding: 0.5rem;
     }
 
@@ -126,7 +147,7 @@
 
     .btn-submit {
         background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-        color: white;
+        color: white !important;
         padding: 0.75rem 2rem;
         border: none;
         border-radius: 12px;
@@ -135,6 +156,7 @@
         cursor: pointer;
         transition: all 0.3s ease;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        text-decoration: none !important;
     }
 
     .btn-submit:hover {
@@ -143,13 +165,13 @@
     }
 
     .btn-cancel, .btn-dashboard {
-        color: white;
+        color: white !important;
         padding: 0.75rem 2rem;
         border: none;
         border-radius: 12px;
         font-weight: 600;
         font-size: 1rem;
-        text-decoration: none;
+        text-decoration: none !important;
         display: inline-flex;
         align-items: center;
         transition: all 0.3s ease;
