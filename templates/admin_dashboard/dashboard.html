@@ -5,6 +5,15 @@
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
     
+    :root {
+        --card-bg: #000000;
+        --text-primary: #ffffff;
+        --text-secondary: #9ca3af;
+        --border-color: #374151;
+        --hover-bg: #1f2937;
+        --table-text: #e5e7eb;
+    }
+
     * {
         font-family: 'Manrope', sans-serif;
     }
@@ -12,6 +21,7 @@
     .dashboard-container {
         background: transparent;
         padding: 0;
+        color: var(--text-primary);
     }
     
     .dashboard-header {
@@ -26,10 +36,11 @@
     }
     
     .stat-card {
-        background: rgba(255, 255, 255, 0.95);
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
         border-radius: 16px;
         padding: 1.5rem;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         transition: all 0.3s ease;
         border-left: 4px solid;
         position: relative;
@@ -43,14 +54,14 @@
         right: 0;
         width: 100px;
         height: 100px;
-        background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
         border-radius: 50%;
         transform: translate(30%, -30%);
     }
     
     .stat-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
     }
     
     .stat-card.purple { border-left-color: #8b5cf6; }
@@ -59,283 +70,39 @@
     .stat-card.yellow { border-left-color: #f59e0b; }
     .stat-card.red { border-left-color: #ef4444; }
     .stat-card.indigo { border-left-color: #6366f1; }
+    .stat-card.pink { border-left-color: #ec4899; }
     
-    .stat-label {
-        font-size: 0.875rem;
-        color: #6b7280;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        margin-bottom: 0.5rem;
-    }
-    
-    .stat-value {
-        font-size: 2.5rem;
-        font-weight: 800;
-        color: #1f2937;
-        line-height: 1;
-    }
-    
-    .stat-description {
-        font-size: 0.8rem;
-        color: #9ca3af;
-        margin-top: 0.5rem;
-    }
-    
-    .stat-badge {
-        display: inline-block;
-        background: #fef3c7;
-        color: #92400e;
-        padding: 0.25rem 0.75rem;
-        border-radius: 12px;
-        font-size: 0.75rem;
-        font-weight: 600;
-        margin-top: 0.5rem;
-    }
-    
-    .chart-section {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-        gap: 1.5rem;
-        margin-bottom: 2rem;
-    }
-    
-    .chart-card {
-        background: rgba(255, 255, 255, 0.95);
-        border-radius: 16px;
-        padding: 2rem;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    }
-    
-    .chart-title {
-        font-size: 1.25rem;
-        font-weight: 700;
-        color: #1f2937;
-        margin-bottom: 1.5rem;
-    }
-    
-    .table-section {
-        background: rgba(255, 255, 255, 0.95);
-        border-radius: 16px;
-        padding: 2rem;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        margin-bottom: 1.5rem;
-    }
-    
-    .section-title {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: #1f2937;
-        margin-bottom: 1.5rem;
-    }
-    
-    .data-table {
-        width: 100%;
-        border-collapse: separate;
-        border-spacing: 0;
-    }
-    
-    .data-table thead {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-    }
-    
-    .data-table th {
-        padding: 1rem;
-        text-align: left;
-        font-weight: 600;
-        font-size: 0.875rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-    
-    .data-table th:first-child {
-        border-radius: 12px 0 0 0;
-    }
-    
-    .data-table th:last-child {
-        border-radius: 0 12px 0 0;
-    }
-    
-    .data-table tbody tr {
-        transition: all 0.2s ease;
-    }
-    
-    .data-table tbody tr:hover {
-        background: #f9fafb;
-    }
-    
-    .data-table td {
-        padding: 1rem;
-        border-bottom: 1px solid #e5e7eb;
-        font-size: 0.875rem;
-    }
-    
-    .status-badge {
-        display: inline-block;
-        padding: 0.25rem 0.75rem;
-        border-radius: 12px;
-        font-size: 0.75rem;
-        font-weight: 600;
-    }
-    
-    .status-pending {
-        background: #fef3c7;
-        color: #92400e;
-    }
-    
-    .status-progress {
-        background: #dbeafe;
-        color: #1e40af;
-    }
-    
-    .status-completed {
-        background: #d1fae5;
-        color: #065f46;
-    }
-    
-    .quick-actions {
-        display: flex;
-        gap: 1rem;
-        flex-wrap: wrap;
-        margin-top: 1.5rem;
-    }
-    
-    .action-btn {
-        padding: 0.75rem 1.5rem;
-        border-radius: 12px;
-        font-weight: 600;
-        text-decoration: none;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-    
-    .action-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-    }
-    
-    .btn-purple {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-    }
-    
-    .btn-blue {
-        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-        color: white;
-    }
-    
-    .btn-green {
-        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-        color: white;
-    }
-    
-    .btn-yellow {
-        background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-        color: white;
-    }
-    
-    .building-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        gap: 1rem;
-        margin-top: 1rem;
-    }
-    
-    .building-card {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        padding: 1.5rem;
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-    
-    .building-name {
-        font-size: 1.125rem;
-        font-weight: 700;
-        margin-bottom: 1rem;
-    }
-    
-    .building-stat {
+    .stat-header {
         display: flex;
         justify-content: space-between;
+        align-items: flex-start;
         margin-bottom: 0.5rem;
-        font-size: 0.875rem;
     }
-    
-    .progress-bar {
-        background: rgba(255, 255, 255, 0.3);
-        height: 8px;
-        border-radius: 4px;
-        overflow: hidden;
-        margin-top: 0.5rem;
-    }
-    
-    .progress-fill {
-        background: white;
-        height: 100%;
-        border-radius: 4px;
-        transition: width 0.5s ease;
-    }
-</style>
-{% endblock %}
 
-{% block page_content %}
-        border-radius: 16px;
-        padding: 1.5rem;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;
-        border-left: 4px solid;
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .stat-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 100px;
-        height: 100px;
-        background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
-        border-radius: 50%;
-        transform: translate(30%, -30%);
-    }
-    
-    .stat-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-    }
-    
-    .stat-card.purple { border-left-color: #8b5cf6; }
-    .stat-card.blue { border-left-color: #3b82f6; }
-    .stat-card.green { border-left-color: #10b981; }
-    .stat-card.yellow { border-left-color: #f59e0b; }
-    .stat-card.red { border-left-color: #ef4444; }
-    .stat-card.indigo { border-left-color: #6366f1; }
-    
     .stat-label {
         font-size: 0.875rem;
-        color: #6b7280;
+        color: var(--text-secondary);
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.5px;
-        margin-bottom: 0.5rem;
+    }
+
+    .stat-icon {
+        font-size: 1.5rem;
+        line-height: 1;
+        opacity: 0.8;
     }
     
     .stat-value {
         font-size: 2.5rem;
         font-weight: 800;
-        color: #1f2937;
+        color: var(--text-primary);
         line-height: 1;
     }
     
     .stat-description {
         font-size: 0.8rem;
-        color: #9ca3af;
+        color: var(--text-secondary);
         margin-top: 0.5rem;
     }
     
@@ -350,46 +117,64 @@
         margin-top: 0.5rem;
     }
     
+    /* Chart & Table Common */
     .chart-section {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
         gap: 1.5rem;
         margin-bottom: 2rem;
     }
     
     .chart-card {
-        background: rgba(255, 255, 255, 0.95);
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
         border-radius: 16px;
         padding: 2rem;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     }
     
     .chart-title {
         font-size: 1.25rem;
         font-weight: 700;
-        color: #1f2937;
+        color: var(--text-primary);
         margin-bottom: 1.5rem;
     }
     
     .table-section {
-        background: rgba(255, 255, 255, 0.95);
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
         border-radius: 16px;
         padding: 2rem;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        margin-bottom: 1.5rem;
+    }
+
+    .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         margin-bottom: 1.5rem;
     }
     
     .section-title {
         font-size: 1.5rem;
         font-weight: 700;
-        color: #1f2937;
-        margin-bottom: 1.5rem;
+        color: var(--text-primary);
+        margin-bottom: 0;
     }
     
+    /* Enhanced Table Styles Patterned After Lists */
+    .table-responsive {
+        overflow-x: auto;
+        border-radius: 12px;
+        border: 1px solid var(--border-color);
+    }
+
     .data-table {
         width: 100%;
         border-collapse: separate;
         border-spacing: 0;
+        min-width: 800px;
     }
     
     .data-table thead {
@@ -406,51 +191,58 @@
         letter-spacing: 0.5px;
     }
     
-    .data-table th:first-child {
-        border-radius: 12px 0 0 0;
-    }
-    
-    .data-table th:last-child {
-        border-radius: 0 12px 0 0;
-    }
-    
     .data-table tbody tr {
-        transition: all 0.2s ease;
+        transition: background-color 0.2s ease;
     }
     
     .data-table tbody tr:hover {
-        background: #f9fafb;
+        background: var(--hover-bg);
     }
     
     .data-table td {
-        padding: 1rem;
-        border-bottom: 1px solid #e5e7eb;
+        padding: 1.25rem 1rem;
+        border-bottom: 1px solid var(--border-color);
         font-size: 0.875rem;
+        vertical-align: middle;
+        color: var(--table-text);
+    }
+
+    .data-table tbody tr:last-child td {
+        border-bottom: none;
     }
     
+    /* Modern Status Badges */
     .status-badge {
-        display: inline-block;
-        padding: 0.25rem 0.75rem;
-        border-radius: 12px;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.375rem;
+        padding: 0.375rem 0.875rem;
+        border-radius: 9999px;
         font-size: 0.75rem;
         font-weight: 600;
+        letter-spacing: 0.025em;
+    }
+
+    .status-badge::before {
+        content: '';
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
     }
     
-    .status-pending {
-        background: #fef3c7;
-        color: #92400e;
-    }
+    .status-pending { background: #fef3c7; color: #92400e; }
+    .status-pending::before { background: #d97706; }
     
-    .status-progress {
-        background: #dbeafe;
-        color: #1e40af;
-    }
+    .status-progress { background: #dbeafe; color: #1e40af; }
+    .status-progress::before { background: #2563eb; }
     
-    .status-completed {
-        background: #d1fae5;
-        color: #065f46;
-    }
+    .status-completed, .status-resolved { background: #d1fae5; color: #065f46; }
+    .status-completed::before, .status-resolved::before { background: #059669; }
     
+    .status-unresolved { background: #fee2e2; color: #b91c1c; }
+    .status-unresolved::before { background: #dc2626; }
+    
+    /* Buttons */
     .quick-actions {
         display: flex;
         gap: 1rem;
@@ -462,39 +254,35 @@
         padding: 0.75rem 1.5rem;
         border-radius: 12px;
         font-weight: 600;
-        text-decoration: none;
+        text-decoration: none !important;
         transition: all 0.3s ease;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
     }
+
+    .btn-sm {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+        border-radius: 8px;
+        box-shadow: none;
+        font-weight: 600;
+    }
     
     .action-btn:hover {
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
     }
     
-    .btn-purple {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-    }
+    .btn-purple { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white !important; }
+    .btn-blue { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white !important; }
+    .btn-green { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white !important; }
+    .btn-yellow { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white !important; }
+    .btn-outline { background: transparent; border: 1px solid var(--border-color); color: var(--text-primary) !important; }
+    .btn-outline:hover { background: var(--hover-bg); color: #ffffff !important; }
     
-    .btn-blue {
-        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-        color: white;
-    }
-    
-    .btn-green {
-        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-        color: white;
-    }
-    
-    .btn-yellow {
-        background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-        color: white;
-    }
-    
+    /* Building Grid */
     .building-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -507,7 +295,7 @@
         color: white;
         padding: 1.5rem;
         border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     }
     
     .building-name {
@@ -542,39 +330,40 @@
 
 {% block content %}
 <div class="dashboard-container">
-    <!-- Key Metrics Grid -->
     <div class="stats-grid">
-        <!-- Occupancy Rate -->
-        <div class="stat-card purple">
-            <div class="stat-label">Occupancy Rate</div>
-            <div class="stat-value">{{ occupancy_rate }}%</div>
-            <div class="stat-description">{{ occupied_units }}/{{ total_units }} units occupied</div>
+
+        <div class="stat-card pink">
+            <div class="stat-header">
+                <div class="stat-label">Pending Inquiries</div>
+                <div class="stat-icon">📬</div>
+            </div>
+            <div class="stat-value">{{ unresolved_inquiries|default:"0" }}</div>
+            <div class="stat-description">Inquiries awaiting response</div>
         </div>
 
-        <!-- Total Revenue -->
-        <div class="stat-card green">
-            <div class="stat-label">Total Revenue</div>
-            <div class="stat-value">₱{{ total_revenue|floatformat:0 }}</div>
-            <div class="stat-description">{{ collection_rate }}% collection rate</div>
-        </div>
-
-        <!-- Outstanding Bills -->
-        <div class="stat-card red">
-            <div class="stat-label">Outstanding Bills</div>
-            <div class="stat-value">{{ outstanding_bills_count }}</div>
-            <div class="stat-description">₱{{ outstanding_amount|floatformat:0 }} unpaid</div>
-        </div>
-
-        <!-- Pending Maintenance -->
         <div class="stat-card yellow">
-            <div class="stat-label">Pending Requests</div>
+            <div class="stat-header">
+                <div class="stat-label">Pending Requests</div>
+                <div class="stat-icon">🔧</div>
+            </div>
             <div class="stat-value">{{ pending_requests }}</div>
             <div class="stat-description">{{ monthly_requests }} requests this month</div>
         </div>
 
-        <!-- Active Tenants -->
+        <div class="stat-card purple">
+            <div class="stat-header">
+                <div class="stat-label">Occupancy Rate</div>
+                <div class="stat-icon">🏢</div>
+            </div>
+            <div class="stat-value">{{ occupancy_rate }}%</div>
+            <div class="stat-description">{{ occupied_units }}/{{ total_units }} units occupied</div>
+        </div>
+
         <div class="stat-card blue">
-            <div class="stat-label">Active Tenants</div>
+            <div class="stat-header">
+                <div class="stat-label">Active Tenants</div>
+                <div class="stat-icon">👥</div>
+            </div>
             <div class="stat-value">{{ total_tenants }}</div>
             <div class="stat-description">{{ expiring_leases }} leases expiring soon</div>
             {% if expiring_leases > 0 %}
@@ -582,46 +371,66 @@
             {% endif %}
         </div>
 
-        <!-- Monthly Revenue -->
+        <div class="stat-card red">
+            <div class="stat-header">
+                <div class="stat-label">Outstanding Bills</div>
+                <div class="stat-icon">⚠️</div>
+            </div>
+            <div class="stat-value">{{ outstanding_bills_count }}</div>
+            <div class="stat-description">₱{{ outstanding_amount|floatformat:0 }} unpaid</div>
+        </div>
+
         <div class="stat-card indigo">
-            <div class="stat-label">This Month</div>
+            <div class="stat-header">
+                <div class="stat-label">This Month</div>
+                <div class="stat-icon">💰</div>
+            </div>
             <div class="stat-value">₱{{ monthly_revenue|floatformat:0 }}</div>
             <div class="stat-description">Revenue collected</div>
         </div>
+
+        <div class="stat-card green">
+            <div class="stat-header">
+                <div class="stat-label">Total Revenue</div>
+                <div class="stat-icon">📈</div>
+            </div>
+            <div class="stat-value">₱{{ total_revenue|floatformat:0 }}</div>
+            <div class="stat-description">{{ collection_rate }}% collection rate</div>
+        </div>
+
     </div>
 
-    <!-- Management Hub -->
     <div class="table-section" style="margin-bottom: 2rem;">
-        <h2 class="section-title" style="display: flex; align-items: center; gap: 0.5rem;">
+        <h2 class="section-title" style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem;">
             🎯 Management Hub
-            <span style="font-size: 0.8rem; font-weight: 400; color: #6b7280;">Direct Access to All Sections</span>
+            <span style="font-size: 0.8rem; font-weight: 400; color: var(--text-secondary);">Direct Access to All Sections</span>
         </h2>
         <div class="quick-actions" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem;">
-            <a href="{% url 'admin_dashboard:unit_list' %}" class="action-btn btn-purple" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem 1.5rem; text-decoration: none; border-radius: 16px; text-align: center;">
+            <a href="{% url 'admin_dashboard:unit_list' %}" class="action-btn btn-purple" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem 1.5rem; border-radius: 16px; text-align: center;">
                 <div style="font-size: 2.5rem; margin-bottom: 0.75rem; line-height: 1;">🏢</div>
                 <div style="font-weight: 700; font-size: 1.1rem; margin-bottom: 0.25rem; color: white;">Units Management</div>
                 <div style="font-size: 0.85rem; opacity: 0.9; margin-bottom: 1rem; color: white;">View, create, edit units</div>
                 <div style="font-size: 0.7rem; color: white; opacity: 0.8; background: rgba(0,0,0,0.15); padding: 0.3rem 0.75rem; border-radius: 8px;">/admin-dashboard/units/</div>
             </a>
-            <a href="{% url 'admin_dashboard:tenant_list' %}" class="action-btn btn-blue" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem 1.5rem; text-decoration: none; border-radius: 16px; text-align: center;">
+            <a href="{% url 'admin_dashboard:tenant_list' %}" class="action-btn btn-blue" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem 1.5rem; border-radius: 16px; text-align: center;">
                 <div style="font-size: 2.5rem; margin-bottom: 0.75rem; line-height: 1;">👥</div>
                 <div style="font-weight: 700; font-size: 1.1rem; margin-bottom: 0.25rem; color: white;">Tenants Management</div>
                 <div style="font-size: 0.85rem; opacity: 0.9; margin-bottom: 1rem; color: white;">Manage tenant profiles</div>
                 <div style="font-size: 0.7rem; color: white; opacity: 0.8; background: rgba(0,0,0,0.15); padding: 0.3rem 0.75rem; border-radius: 8px;">/admin-dashboard/tenants/</div>
             </a>
-            <a href="{% url 'admin_dashboard:bill_list' %}" class="action-btn btn-green" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem 1.5rem; text-decoration: none; border-radius: 16px; text-align: center;">
+            <a href="{% url 'admin_dashboard:bill_list' %}" class="action-btn btn-green" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem 1.5rem; border-radius: 16px; text-align: center;">
                 <div style="font-size: 2.5rem; margin-bottom: 0.75rem; line-height: 1;">💰</div>
                 <div style="font-weight: 700; font-size: 1.1rem; margin-bottom: 0.25rem; color: white;">Bills Management</div>
                 <div style="font-size: 0.85rem; opacity: 0.9; margin-bottom: 1rem; color: white;">Create and track payments</div>
                 <div style="font-size: 0.7rem; color: white; opacity: 0.8; background: rgba(0,0,0,0.15); padding: 0.3rem 0.75rem; border-radius: 8px;">/admin-dashboard/bills/</div>
             </a>
-            <a href="{% url 'admin_dashboard:maintenance_list' %}" class="action-btn btn-yellow" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem 1.5rem; text-decoration: none; border-radius: 16px; text-align: center;">
+            <a href="{% url 'admin_dashboard:maintenance_list' %}" class="action-btn btn-yellow" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem 1.5rem; border-radius: 16px; text-align: center;">
                 <div style="font-size: 2.5rem; margin-bottom: 0.75rem; line-height: 1;">🔧</div>
                 <div style="font-weight: 700; font-size: 1.1rem; margin-bottom: 0.25rem; color: white;">Maintenance Hub</div>
                 <div style="font-size: 0.85rem; opacity: 0.9; margin-bottom: 1rem; color: white;">Handle service requests</div>
                 <div style="font-size: 0.7rem; color: white; opacity: 0.8; background: rgba(0,0,0,0.15); padding: 0.3rem 0.75rem; border-radius: 8px;">/admin-dashboard/maintenance/</div>
             </a>
-            <a href="{% url 'admin_dashboard:inquiry_list' %}" class="action-btn" style="background: linear-gradient(135deg, #ec4899 0%, #db2777 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem 1.5rem; text-decoration: none; border-radius: 16px; text-align: center;">
+            <a href="{% url 'admin_dashboard:inquiry_list' %}" class="action-btn" style="background: linear-gradient(135deg, #ec4899 0%, #db2777 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem 1.5rem; border-radius: 16px; text-align: center; color: white !important;">
                 <div style="font-size: 2.5rem; margin-bottom: 0.75rem; line-height: 1;">💬</div>
                 <div style="font-weight: 700; font-size: 1.1rem; margin-bottom: 0.25rem; color: white;">Unit Inquiries</div>
                 <div style="font-size: 0.85rem; opacity: 0.9; margin-bottom: 1rem; color: white;">Prospect inquiries & follow-ups</div>
@@ -630,12 +439,18 @@
         </div>
     </div>
 
-    <!-- Charts Section -->
     <div class="chart-section">
         <div class="chart-card">
-            <h3 class="chart-title">Maintenance Request Status</h3>
+            <h3 class="chart-title">Maintenance Status</h3>
             <div class="chart-container" style="position: relative; height: 300px; width: 100%;">
                 <canvas id="maintenanceChart"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-card">
+            <h3 class="chart-title">Inquiry Status</h3>
+            <div class="chart-container" style="position: relative; height: 300px; width: 100%;">
+                <canvas id="inquiryChart"></canvas>
             </div>
         </div>
 
@@ -647,9 +462,8 @@
         </div>
     </div>
 
-    <!-- Buildings Overview -->
     <div class="table-section">
-        <h2 class="section-title">Building Overview</h2>
+        <h2 class="section-title" style="margin-bottom: 1.5rem;">Building Overview</h2>
         <div class="building-grid">
             {% for building in buildings_data %}
             <div class="building-card">
@@ -677,58 +491,82 @@
         </div>
     </div>
 
-    <!-- Recent Maintenance Requests -->
     <div class="table-section">
-        <h2 class="section-title">Recent Maintenance Requests</h2>
+        <div class="section-header">
+            <div>
+                <h2 class="section-title">Recent Maintenance Requests</h2>
+                <p style="color: var(--text-secondary); font-size: 0.875rem; margin-top: 0.25rem;">Overview of the latest service tickets submitted by tenants.</p>
+            </div>
+            <a href="{% url 'admin_dashboard:maintenance_list' %}" class="action-btn btn-purple btn-sm">View All Requests &rarr;</a>
+        </div>
+        
         {% if recent_maintenance %}
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th>Tenant</th>
-                    <th>Unit</th>
-                    <th>Description</th>
-                    <th>Status</th>
-                    <th>Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for request in recent_maintenance %}
-                <tr>
-                    <td>{{ request.tenant.user.get_full_name }}</td>
-                    <td>{{ request.unit.unit_code }}</td>
-                    <td>{{ request.description|truncatewords:10 }}</td>
-                    <td>
-                        {% if request.status == 'pending' %}
-                            <span class="status-badge status-pending">Pending</span>
-                        {% elif request.status == 'in_progress' %}
-                            <span class="status-badge status-progress">In Progress</span>
-                        {% else %}
-                            <span class="status-badge status-completed">Completed</span>
-                        {% endif %}
-                    </td>
-                    <td>{{ request.created_at|date:"M d, Y" }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Tenant</th>
+                        <th>Unit Details</th>
+                        <th>Issue Description</th>
+                        <th>Date Submitted</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for request in recent_maintenance %}
+                    <tr>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--border-color); display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--text-primary);">
+                                    {{ request.tenant.user.first_name|first|default:"T" }}{{ request.tenant.user.last_name|first|default:"" }}
+                                </div>
+                                <span style="font-weight: 600; color: var(--text-primary);">{{ request.tenant.user.get_full_name }}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <span style="background: var(--border-color); padding: 0.25rem 0.5rem; border-radius: 6px; font-weight: 600; font-size: 0.75rem; color: var(--text-primary);">
+                                {{ request.unit.unit_code }}
+                            </span>
+                        </td>
+                        <td style="color: var(--table-text); max-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                            {{ request.description }}
+                        </td>
+                        <td style="color: var(--text-secondary);">{{ request.created_at|date:"M d, Y" }}</td>
+                        <td>
+                            {% if request.status == 'pending' %}
+                                <span class="status-badge status-pending">Pending</span>
+                            {% elif request.status == 'in_progress' %}
+                                <span class="status-badge status-progress">In Progress</span>
+                            {% else %}
+                                <span class="status-badge status-completed">Completed</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
         {% else %}
-        <p style="color: #6b7280; text-align: center; padding: 2rem;">No maintenance requests yet.</p>
+        <div style="text-align: center; padding: 4rem 1rem; background: var(--hover-bg); border-radius: 12px; border: 2px dashed var(--border-color);">
+            <div style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.8;">✨</div>
+            <h3 style="font-size: 1.125rem; color: var(--text-primary); font-weight: 700; margin-bottom: 0.5rem;">All Caught Up!</h3>
+            <p style="color: var(--text-secondary); margin: 0; max-width: 300px; margin: 0 auto;">There are no pending or recent maintenance requests at this time. Great job keeping the property running smoothly!</p>
+        </div>
         {% endif %}
     </div>
 
-    <!-- Quick Actions -->
     <div class="table-section">
-        <h2 class="section-title">🌐 Additional Access</h2>
+        <h2 class="section-title" style="margin-bottom: 1.5rem;">🌐 Additional Access</h2>
         
         <div class="quick-actions" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-bottom: 1rem;">
             
-            <a href="/" class="action-btn" style="background: linear-gradient(135deg, #059669 0%, #047857 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem 1.5rem; text-decoration: none; border-radius: 16px; text-align: center; color: white;">
+            <a href="/" class="action-btn" style="background: linear-gradient(135deg, #059669 0%, #047857 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem 1.5rem; border-radius: 16px; text-align: center; color: white !important;">
                 <div style="font-size: 2.5rem; margin-bottom: 0.75rem; line-height: 1;">🏠</div>
                 <div style="font-weight: 700; font-size: 1.1rem; margin-bottom: 0.5rem;">Main Website</div>
                 <div style="font-size: 0.85rem; opacity: 0.9;">View public property listings</div>
             </a>
 
-            <a href="/admin/" class="action-btn" style="background: linear-gradient(135deg, #374151 0%, #1f2937 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem 1.5rem; text-decoration: none; border-radius: 16px; text-align: center; color: white;">
+            <a href="/admin/" class="action-btn" style="background: linear-gradient(135deg, #374151 0%, #1f2937 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem 1.5rem; border-radius: 16px; text-align: center; color: white !important;">
                 <div style="font-size: 2.5rem; margin-bottom: 0.75rem; line-height: 1;">🔧</div>
                 <div style="font-weight: 700; font-size: 1.1rem; margin-bottom: 0.5rem;">Django Admin Panel</div>
                 <div style="font-size: 0.85rem; opacity: 0.9;">Advanced system controls</div>
@@ -736,81 +574,58 @@
             
         </div>
     </div>
-
-    <!-- Navigation Guide -->
-    <!--
-    <div class="table-section">
-        <h2 class="section-title">Navigation Guide</h2>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
-            <div class="nav-guide-section">
-                <h3 style="color: #667eea; font-weight: 700; margin-bottom: 1rem;">🏢 Units Management</h3>
-                <ul style="list-style: none; padding: 0;">
-                    <li style="margin-bottom: 0.5rem;"><a href="{% url 'admin_dashboard:unit_list' %}" style="color: #4b5563; text-decoration: none;">• View All Units</a></li>
-                    <li style="margin-bottom: 0.5rem;"><a href="{% url 'admin_dashboard:unit_create' %}" style="color: #4b5563; text-decoration: none;">• Create New Unit</a></li>
-                    <li style="margin-bottom: 0.5rem; color: #6b7280; font-size: 0.9rem;">• Edit/Delete from list page</li>
-                </ul>
-            </div>
-            <div class="nav-guide-section">
-                <h3 style="color: #3b82f6; font-weight: 700; margin-bottom: 1rem;">👥 Tenants Management</h3>
-                <ul style="list-style: none; padding: 0;">
-                    <li style="margin-bottom: 0.5rem;"><a href="{% url 'admin_dashboard:tenant_list' %}" style="color: #4b5563; text-decoration: none;">• View All Tenants</a></li>
-                    <li style="margin-bottom: 0.5rem;"><a href="{% url 'admin_dashboard:tenant_create' %}" style="color: #4b5563; text-decoration: none;">• Create New Tenant</a></li>
-                    <li style="margin-bottom: 0.5rem; color: #6b7280; font-size: 0.9rem;">• Edit/Delete from list page</li>
-                </ul>
-            </div>
-            <div class="nav-guide-section">
-                <h3 style="color: #10b981; font-weight: 700; margin-bottom: 1rem;">💰 Bills Management</h3>
-                <ul style="list-style: none; padding: 0;">
-                    <li style="margin-bottom: 0.5rem;"><a href="{% url 'admin_dashboard:bill_list' %}" style="color: #4b5563; text-decoration: none;">• View All Bills</a></li>
-                    <li style="margin-bottom: 0.5rem;"><a href="{% url 'admin_dashboard:bill_create' %}" style="color: #4b5563; text-decoration: none;">• Create New Bill</a></li>
-                    <li style="margin-bottom: 0.5rem; color: #6b7280; font-size: 0.9rem;">• Edit/Delete from list page</li>
-                </ul>
-            </div>
-            <div class="nav-guide-section">
-                <h3 style="color: #f59e0b; font-weight: 700; margin-bottom: 1rem;">🔧 Maintenance</h3>
-                <ul style="list-style: none; padding: 0;">
-                    <li style="margin-bottom: 0.5rem;"><a href="{% url 'admin_dashboard:maintenance_list' %}" style="color: #4b5563; text-decoration: none;">• View All Requests</a></li>
-                    <li style="margin-bottom: 0.5rem; color: #6b7280; font-size: 0.9rem;">• Update status from list page</li>
-                    <li style="margin-bottom: 0.5rem; color: #6b7280; font-size: 0.9rem;">• Requests submitted by tenants</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    -->
 </div>
 
-<!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script>
+    const commonChartOptions = {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+            legend: {
+                position: 'bottom',
+                labels: {
+                    color: '#ffffff', // Ensures text is visible against black background
+                    padding: 20,
+                    font: {
+                        size: 12,
+                        family: 'Manrope',
+                        weight: '600'
+                    }
+                }
+            }
+        }
+    };
+
     // Maintenance Status Pie Chart
     const maintenanceCtx = document.getElementById('maintenanceChart').getContext('2d');
     new Chart(maintenanceCtx, {
         type: 'doughnut',
         data: {
-            labels: {{ maintenance_chart_data.labels|safe }},
+            // Using explicit conditional tags prevents JS syntax errors if the dictionary exists but the specific key is empty
+            labels: {% if maintenance_chart_data and maintenance_chart_data.labels %}{{ maintenance_chart_data.labels|safe }}{% else %}['Pending', 'In Progress', 'Completed']{% endif %},
             datasets: [{
-                data: {{ maintenance_chart_data.data|safe }},
-                backgroundColor: {{ maintenance_chart_data.colors|safe }},
+                data: {% if maintenance_chart_data and maintenance_chart_data.data %}{{ maintenance_chart_data.data|safe }}{% else %}[0, 0, 0]{% endif %},
+                backgroundColor: {% if maintenance_chart_data and maintenance_chart_data.colors %}{{ maintenance_chart_data.colors|safe }}{% else %}['#f59e0b', '#3b82f6', '#10b981']{% endif %},
                 borderWidth: 0,
             }]
         },
-        options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            plugins: {
-                legend: {
-                    position: 'bottom',
-                    labels: {
-                        padding: 20,
-                        font: {
-                            size: 12,
-                            family: 'Manrope',
-                            weight: '600'
-                        }
-                    }
-                }
-            }
-        }
+        options: commonChartOptions
+    });
+
+    // Inquiry Status Pie Chart - Fixed generation issue via robust fallback checks
+    const inquiryCtx = document.getElementById('inquiryChart').getContext('2d');
+    new Chart(inquiryCtx, {
+        type: 'doughnut',
+        data: {
+            labels: {% if inquiry_chart_data and inquiry_chart_data.labels %}{{ inquiry_chart_data.labels|safe }}{% else %}['Resolved', 'Unresolved']{% endif %},
+            datasets: [{
+                data: {% if inquiry_chart_data and inquiry_chart_data.data %}{{ inquiry_chart_data.data|safe }}{% else %}[0, 0]{% endif %},
+                backgroundColor: {% if inquiry_chart_data and inquiry_chart_data.colors %}{{ inquiry_chart_data.colors|safe }}{% else %}['#10b981', '#ef4444']{% endif %},
+                borderWidth: 0,
+            }]
+        },
+        options: commonChartOptions
     });
 
     // Building Occupancy Bar Chart
@@ -818,10 +633,10 @@
     new Chart(buildingCtx, {
         type: 'bar',
         data: {
-            labels: {{ building_labels|safe }},
+            labels: {% if building_labels %}{{ building_labels|safe }}{% else %}[]{% endif %},
             datasets: [{
                 label: 'Occupancy Rate (%)',
-                data: {{ building_occupancy|safe }},
+                data: {% if building_occupancy %}{{ building_occupancy|safe }}{% else %}[]{% endif %},
                 backgroundColor: 'rgba(102, 126, 234, 0.8)',
                 borderColor: 'rgba(102, 126, 234, 1)',
                 borderWidth: 2,
@@ -836,6 +651,7 @@
                     beginAtZero: true,
                     max: 100,
                     ticks: {
+                        color: '#9ca3af',
                         callback: function(value) {
                             return value + '%';
                         },
@@ -844,11 +660,12 @@
                         }
                     },
                     grid: {
-                        color: 'rgba(0, 0, 0, 0.05)'
+                        color: 'rgba(255, 255, 255, 0.1)'
                     }
                 },
                 x: {
                     ticks: {
+                        color: '#9ca3af',
                         font: {
                             family: 'Manrope',
                             weight: '600'

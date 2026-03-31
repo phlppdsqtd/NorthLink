@@ -116,6 +116,15 @@ def dashboard(request):
         'data': [pending_requests, in_progress_requests, completed_requests],
         'colors': ['#F59E0B', '#3B82F6', '#10B981']
     }
+
+    # We calculate resolved vs unresolved based on your existing variables
+    resolved_inquiries = total_inquiries - unresolved_inquiries
+    
+    inquiry_chart_data = {
+        'labels': ['Resolved', 'Unresolved'],
+        'data': [resolved_inquiries, unresolved_inquiries],
+        'colors': ['#10B981', '#EF4444'] # Green for resolved, Red for unresolved
+    }
     
     # Occupancy by building for bar chart
     building_labels = [b['name'] for b in buildings_data]
@@ -160,6 +169,7 @@ def dashboard(request):
         
         # Chart data
         'maintenance_chart_data': maintenance_chart_data,
+        'inquiry_chart_data': inquiry_chart_data,
         'building_labels': building_labels,
         'building_occupancy': building_occupancy,
 

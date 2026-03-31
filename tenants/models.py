@@ -46,7 +46,7 @@ def save_tenant_profile(sender, instance, **kwargs):
         instance.tenant_profile.save()
 
 
-
+# -------------------------------------- I DONT THINK BELOW IS USED ANYMORE --------------------------------------
 
 # =========================
 # INQUIRY MODEL
