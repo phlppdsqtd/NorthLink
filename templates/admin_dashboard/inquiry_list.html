@@ -198,7 +198,14 @@
         cursor: pointer;
     }
 
-    .btn-resolve { background: #3b82f6; color: white !important; margin-right: 0.5rem; }
+    .action-buttons {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        white-space: nowrap;
+    }
+
+    .btn-resolve { background: #3b82f6; color: white !important; }
     .btn-resolve:hover { background: #2563eb; transform: translateY(-2px); }
 
     .btn-delete { background: #ef4444; color: white !important; }
@@ -266,13 +273,15 @@
                             {% endif %}
                         </td>
                         <td>
-                            <form method="POST" action="{% url 'admin_dashboard:inquiry_resolve' inquiry.pk %}" style="display: inline;">
-                                {% csrf_token %}
-                                <button type="submit" class="action-btn btn-resolve">
-                                    {% if inquiry.is_resolved %}Mark Unresolved{% else %}Mark Resolved{% endif %}
-                                </button>
-                            </form>
-                            <a href="{% url 'admin_dashboard:inquiry_delete' inquiry.pk %}" class="action-btn btn-delete">Delete</a>
+                            <div class="action-buttons">
+                                <form method="POST" action="{% url 'admin_dashboard:inquiry_resolve' inquiry.pk %}" style="margin: 0;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="action-btn btn-resolve">
+                                        {% if inquiry.is_resolved %}Mark Unresolved{% else %}Mark Resolved{% endif %}
+                                    </button>
+                                </form>
+                                <a href="{% url 'admin_dashboard:inquiry_delete' inquiry.pk %}" class="action-btn btn-delete">Delete</a>
+                            </div>
                         </td>
                     </tr>
                     {% endfor %}

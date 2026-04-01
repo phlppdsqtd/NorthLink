@@ -120,7 +120,7 @@
     /* Chart & Table Common */
     .chart-section {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         gap: 1.5rem;
         margin-bottom: 2rem;
     }
@@ -281,11 +281,30 @@
     .btn-yellow { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white !important; }
     .btn-outline { background: transparent; border: 1px solid var(--border-color); color: var(--text-primary) !important; }
     .btn-outline:hover { background: var(--hover-bg); color: #ffffff !important; }
+
+    /* Combined Building Row Layout */
+    .building-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+        align-items: stretch;
+    }
+
+    .building-overview-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        display: flex;
+        flex-direction: column;
+    }
     
     /* Building Grid */
     .building-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
         gap: 1rem;
         margin-top: 1rem;
     }
@@ -455,39 +474,48 @@
         </div>
 
         <div class="chart-card">
+            <h3 class="chart-title">Revenue Collection</h3>
+            <div class="chart-container" style="position: relative; height: 300px; width: 100%;">
+                <canvas id="billsChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="building-row">
+        <div class="chart-card" style="margin-bottom: 0;">
             <h3 class="chart-title">Occupancy by Building</h3>
             <div class="chart-container" style="position: relative; height: 300px; width: 100%;">
                 <canvas id="buildingChart"></canvas>
             </div>
         </div>
-    </div>
 
-    <div class="table-section">
-        <h2 class="section-title" style="margin-bottom: 1.5rem;">Building Overview</h2>
-        <div class="building-grid">
-            {% for building in buildings_data %}
-            <div class="building-card">
-                <div class="building-name">{{ building.name }}</div>
-                <div class="building-stat">
-                    <span>Total Units:</span>
-                    <strong>{{ building.total_units }}</strong>
+        <div class="building-overview-card">
+            <h2 class="section-title" style="margin-bottom: 1.5rem;">Building Overview</h2>
+            <div class="building-grid" style="flex: 1; align-content: start;">
+                {% for building in buildings_data %}
+                <div class="building-card">
+                    <div class="building-name">{{ building.name }}</div>
+                    <div class="building-stat">
+                        <span>Total Units:</span>
+                        <strong>{{ building.total_units }}</strong>
+                    </div>
+                    <div class="building-stat">
+                        <span>Occupied:</span>
+                        <strong>{{ building.occupied }}</strong>
+                    </div>
+                    <div class="building-stat">
+                        <span>Available:</span>
+                        <strong>{{ building.available }}</strong>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: {{ building.occupancy_rate }}%"></div>
+                    </div>
+                    <div style="text-align: center; margin-top: 0.5rem; font-size: 0.875rem;">
+                        {{ building.occupancy_rate }}% Occupied
+                    </div>
                 </div>
-                <div class="building-stat">
-                    <span>Occupied:</span>
-                    <strong>{{ building.occupied }}</strong>
-                </div>
-                <div class="building-stat">
-                    <span>Available:</span>
-                    <strong>{{ building.available }}</strong>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: {{ building.occupancy_rate }}%"></div>
-                </div>
-                <div style="text-align: center; margin-top: 0.5rem; font-size: 0.875rem;">
-                    {{ building.occupancy_rate }}% Occupied
-                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
     </div>
 
@@ -578,31 +606,11 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script>
-    const commonChartOptions = {
-        responsive: true,
-        maintainAspectRatio: true,
-        plugins: {
-            legend: {
-                position: 'bottom',
-                labels: {
-                    color: '#ffffff', // Ensures text is visible against black background
-                    padding: 20,
-                    font: {
-                        size: 12,
-                        family: 'Manrope',
-                        weight: '600'
-                    }
-                }
-            }
-        }
-    };
-
     // Maintenance Status Pie Chart
     const maintenanceCtx = document.getElementById('maintenanceChart').getContext('2d');
     new Chart(maintenanceCtx, {
         type: 'doughnut',
         data: {
-            // Using explicit conditional tags prevents JS syntax errors if the dictionary exists but the specific key is empty
             labels: {% if maintenance_chart_data and maintenance_chart_data.labels %}{{ maintenance_chart_data.labels|safe }}{% else %}['Pending', 'In Progress', 'Completed']{% endif %},
             datasets: [{
                 data: {% if maintenance_chart_data and maintenance_chart_data.data %}{{ maintenance_chart_data.data|safe }}{% else %}[0, 0, 0]{% endif %},
@@ -610,22 +618,139 @@
                 borderWidth: 0,
             }]
         },
-        options: commonChartOptions
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: { color: '#ffffff', padding: 20, font: { size: 12, family: 'Manrope', weight: '600' } }
+                }
+            }
+        }
     });
 
-    // Inquiry Status Pie Chart - Fixed generation issue via robust fallback checks
+    // Inquiry Status - Standard Bar Chart
     const inquiryCtx = document.getElementById('inquiryChart').getContext('2d');
     new Chart(inquiryCtx, {
-        type: 'doughnut',
+        type: 'bar',
         data: {
             labels: {% if inquiry_chart_data and inquiry_chart_data.labels %}{{ inquiry_chart_data.labels|safe }}{% else %}['Resolved', 'Unresolved']{% endif %},
             datasets: [{
+                label: 'Inquiries',
                 data: {% if inquiry_chart_data and inquiry_chart_data.data %}{{ inquiry_chart_data.data|safe }}{% else %}[0, 0]{% endif %},
                 backgroundColor: {% if inquiry_chart_data and inquiry_chart_data.colors %}{{ inquiry_chart_data.colors|safe }}{% else %}['#10b981', '#ef4444']{% endif %},
                 borderWidth: 0,
+                borderRadius: 6,
             }]
         },
-        options: commonChartOptions
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    display: false 
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        color: '#9ca3af',
+                        font: { family: 'Manrope' }
+                    },
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    }
+                },
+                x: {
+                    ticks: {
+                        color: '#9ca3af',
+                        font: { family: 'Manrope', weight: '600' }
+                    },
+                    grid: {
+                        display: false
+                    }
+                }
+            }
+        }
+    });
+
+    // UPDATED: Revenue Collection - Horizontal Bar Chart with Custom Tooltips
+    const billsCtx = document.getElementById('billsChart').getContext('2d');
+    const collectedPercentage = parseFloat("{{ collection_rate|default:'0' }}");
+    const pendingPercentage = Math.max(0, 100 - collectedPercentage);
+    
+    // Grabbing the actual monetary amounts directly from Django context to display in hover
+    const collectedAmount = parseFloat("{{ total_revenue|default:'0' }}"); 
+    const outstandingAmount = parseFloat("{{ outstanding_amount|default:'0' }}");
+
+    new Chart(billsCtx, {
+        type: 'bar', 
+        data: {
+            labels: ['Collected', 'Outstanding'],
+            datasets: [{
+                label: 'Percentage',
+                data: [collectedPercentage, pendingPercentage],
+                // We add a custom array to hold the monetary amounts for the tooltip to read
+                amounts: [collectedAmount, outstandingAmount],
+                backgroundColor: ['#10b981', '#ef4444'], 
+                borderWidth: 0,
+                borderRadius: 6,
+            }]
+        },
+        options: {
+            indexAxis: 'y', 
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        // Customizing the tooltip label when you hover
+                        label: function(context) {
+                            let percentage = context.raw.toFixed(1) + '%';
+                            let rawAmount = context.dataset.amounts[context.dataIndex];
+                            
+                            // Format the monetary value into Philippine Pesos (₱)
+                            let formattedAmount = new Intl.NumberFormat('en-PH', {
+                                style: 'currency',
+                                currency: 'PHP'
+                            }).format(rawAmount);
+
+                            return `${context.label}: ${formattedAmount} (${percentage})`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    max: 100, 
+                    ticks: {
+                        color: '#9ca3af',
+                        callback: function(value) {
+                            return value + '%';
+                        },
+                        font: { family: 'Manrope' }
+                    },
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    }
+                },
+                y: {
+                    ticks: {
+                        color: '#9ca3af',
+                        font: { family: 'Manrope', weight: '600' }
+                    },
+                    grid: {
+                        display: false
+                    }
+                }
+            }
+        }
     });
 
     // Building Occupancy Bar Chart

@@ -49,10 +49,11 @@ def dashboard(request):
     outstanding_amount = Bill.objects.filter(status='unpaid').aggregate(Sum('amount'))['amount__sum'] or 0
     
     # Monthly revenue (current month)
-    current_month_start = timezone.now().replace(day=1)
+    now = timezone.now()
     monthly_revenue = Bill.objects.filter(
         status='paid',
-        created_at__gte=current_month_start
+        created_at__year=now.year,
+        created_at__month=now.month
     ).aggregate(Sum('amount'))['amount__sum'] or 0
     
     # Collection rate
@@ -67,7 +68,8 @@ def dashboard(request):
     
     # Requests this month
     monthly_requests = MaintenanceRequest.objects.filter(
-        created_at__gte=current_month_start
+        created_at__year=now.year,
+        created_at__month=now.month
     ).count()
     
     # ===== INQUIRY METRICS =====
